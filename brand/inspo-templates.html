@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>inspo templates — erewhon · alfred · cha cha · forma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Schibsted+Grotesk:wght@500;700;900&family=Instrument+Serif:ital@0;1&family=Caveat:wght@600&family=Hanken+Grotesk:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Playfair+Display:wght@500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#E5E2DB;color:#1C1A15;font-family:Inter,system-ui,sans-serif;padding:32px 16px 80px}
+.intro{max-width:880px;margin:0 auto 28px}
+.intro h1{font-size:26px;font-weight:600}
+.intro p{margin-top:6px;font-size:14px;opacity:.75}
+.card{max-width:880px;margin:0 auto 46px;border-radius:14px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.09)}
+.card .label{padding:16px 26px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;background:#1C1A15;color:#EFECE4}
+.card .label .num{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.card .label .refs{font-size:12px;opacity:.65}
+.bar{text-align:center;font-size:11.5px;letter-spacing:.06em;padding:9px 12px;text-transform:uppercase}
+.mininav{display:flex;justify-content:space-between;align-items:center;padding:16px 26px}
+.stage{padding:40px 28px 46px}
+.note{padding:14px 26px 20px;font-size:13px;line-height:1.55;background:rgba(0,0,0,.05);color:#1C1A15}
+.row{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start}
+.col{flex:1;min-width:270px}
+.minicard{margin-top:26px;max-width:290px;overflow:hidden}
+.swatches{display:flex;gap:8px;margin-bottom:28px}
+.sw{width:44px;height:44px;border-radius:8px;border:1px solid rgba(0,0,0,.15)}
+.sw span{display:block;font-size:9px;margin-top:46px;white-space:nowrap;color:#1C1A15}
+
+/* ===== T1 EREWHON ===== */
+.t1{background:#FCFBF9;color:#212121}
+.t1 .bar{background:#212121;color:#FCFBF9}
+.t1 .mininav{font-family:Archivo,sans-serif;font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.t1 .mininav .lg{font-size:15px;letter-spacing:.34em}
+.t1 h2{font-family:Archivo,sans-serif;font-weight:700;font-size:46px;letter-spacing:.02em;text-transform:uppercase;line-height:1.02}
+.t1 .sub{margin-top:14px;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:#6b6b66}
+.t1 .btn{display:inline-block;margin-top:24px;background:#EAE7E0;color:#212121;padding:15px 34px;border-radius:2px;font-family:Archivo,sans-serif;font-size:13px;font-weight:600;letter-spacing:.22em;text-transform:uppercase}
+.t1 .btn.dark{background:#212121;color:#FCFBF9;margin-left:10px}
+.t1 .minicard{background:#F1EFE9;border-radius:2px}
+.t1 .minicard .ph{height:150px;background:linear-gradient(160deg,#E7E3D8,#D8D3C4)}
+.t1 .minicard .bd{padding:18px}
+.t1 .minicard h3{font-family:Archivo,sans-serif;font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+.t1 .minicard p{font-size:12.5px;margin-top:6px;color:#6b6b66}
+.t1 .logo-sample{margin-top:26px;font-family:Archivo,sans-serif;font-weight:700;font-size:24px;letter-spacing:.4em;text-transform:uppercase}
+
+/* ===== T2 ALFRED ===== */
+.t2{background:#F2ECEA;color:#4F2115}
+.t2 .bar{background:#3B1B10;color:#F2ECEA;letter-spacing:.1em}
+.t2 .mininav{font-family:'Schibsted Grotesk',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase}
+.t2 .mininav .lg{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;text-transform:none}
+.t2 .mininav .ord{text-decoration:underline;text-underline-offset:5px}
+.t2 .heroblock{background:#171512;color:#F2ECEA;padding:38px 30px;border-radius:6px}
+.t2 h2{font-family:'Schibsted Grotesk',sans-serif;font-weight:700;font-size:44px;line-height:1.04;text-transform:uppercase;letter-spacing:.01em;text-align:center}
+.t2 .accent{font-family:'Instrument Serif',serif;font-style:italic;font-size:30px;display:block;text-align:center;margin-top:14px;color:#E8DCD6;text-transform:none;font-weight:400}
+.t2 .btn{display:block;width:max-content;margin:26px auto 0;background:#F2ECEA;color:#3B1B10;padding:14px 36px;border-radius:0;font-family:'Schibsted Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.t2 .minicard{background:#FFF;border-radius:0}
+.t2 .minicard .ph{height:150px;background:linear-gradient(160deg,#D9C6BC,#8C5A43)}
+.t2 .minicard .bd{padding:18px}
+.t2 .minicard h3{font-family:'Schibsted Grotesk',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase}
+.t2 .minicard p{font-size:12.5px;margin-top:6px;color:#7a5648}
+.t2 .logo-sample{margin-top:26px;font-family:'Playfair Display',serif;font-size:26px}
+
+/* ===== T3 CHA CHA ===== */
+.t3{background:#FFFAF5;color:#0B4924}
+.t3 .bar{background:#111;color:#FFFAF5;letter-spacing:.08em}
+.t3 .mininav .lg{font-family:Caveat,cursive;font-weight:600;font-size:30px;color:#111}
+.t3 .mininav .cart{font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:13px;text-transform:uppercase}
+.t3 .heroblock{position:relative;background:linear-gradient(160deg,#F5D7DF 0%,#EDBFCC 55%,#A9C97E 100%);border-radius:14px;padding:46px 30px 40px;overflow:hidden}
+.t3 h2{font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:44px;line-height:1;text-transform:uppercase;color:#FFF;text-shadow:0 1px 2px rgba(0,0,0,.06)}
+.t3 .sub{margin-top:12px;font-size:14.5px;color:#FFF;font-weight:700}
+.t3 .btn{display:inline-block;margin-top:22px;background:#F8CFD9;color:#0E6B38;padding:14px 30px;border-radius:10px;font-family:'Hanken Grotesk',sans-serif;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.t3 .btn.alt{background:#0E6B38;color:#F8CFD9;margin-left:8px}
+.t3 .minicard{background:#FFF;border-radius:14px;border:1px solid #F0E4D8}
+.t3 .minicard .ph{height:150px;background:linear-gradient(160deg,#C7E39B,#8DBF5A)}
+.t3 .minicard .bd{padding:18px}
+.t3 .minicard h3{font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:15px;text-transform:uppercase}
+.t3 .minicard p{font-size:12.5px;margin-top:6px;color:#5a7a63}
+.t3 .logo-sample{margin-top:26px;font-family:Caveat,cursive;font-weight:600;font-size:38px;color:#111}
+
+/* ===== T4 FORMA ===== */
+.t4{background:#FFFFFF;color:#111}
+.t4 .bar{display:none}
+.t4 .mininav .lg{font-family:'Playfair Display',serif;font-weight:500;font-size:26px;letter-spacing:.12em}
+.t4 .mininav .in{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.t4 .heroblock{position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,#B39273,#8A6A4E);padding:120px 34px 34px;color:#FFF}
+.t4 h2{font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:44px;line-height:1.08;letter-spacing:.01em}
+.t4 .sub{margin-top:10px;font-size:14.5px;color:rgba(255,255,255,.85)}
+.t4 .btn{display:inline-block;margin-top:24px;background:#FFF;color:#111;padding:14px 36px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.t4 .minicard{background:#FFF;border:1px solid #E8E4DE;border-radius:14px}
+.t4 .minicard .ph{height:150px;background:linear-gradient(160deg,#D9CBBB,#B39273)}
+.t4 .minicard .bd{padding:18px}
+.t4 .minicard h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:21px}
+.t4 .minicard p{font-size:12.5px;margin-top:6px;color:#8a857d}
+.t4 .logo-sample{margin-top:26px;font-family:'Playfair Display',serif;font-weight:500;font-size:24px;letter-spacing:.22em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <h1>4 inspo templates — reviewed from the real sites</h1>
+  <p>Each template copies that brand's exact recipe (colours, fonts, shapes, moves) applied to a store like yours. Mix and match pieces to build your new style guide.</p>
+</div>
+
+<!-- T1 EREWHON -->
+<div class="card">
+  <div class="label"><span class="num">Template 1 — Erewhon</span><span class="refs">luxury through restraint · photography does the selling</span></div>
+  <div class="t1">
+    <div class="bar">free local delivery on orders over $500</div>
+    <div class="mininav"><span>shop</span><span class="lg">SEALED</span><span>cart (0)</span></div>
+    <div class="stage">
+      <div class="swatches">
+        <div class="sw" style="background:#FCFBF9"><span>warm white</span></div>
+        <div class="sw" style="background:#212121"><span>near black</span></div>
+        <div class="sw" style="background:#EAE7E0"><span>stone</span></div>
+        <div class="sw" style="background:#D8D3C4"><span>sand</span></div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h2>The Signature Kit</h2>
+          <p class="sub">your drink · your brand · delivered sealed</p>
+          <a class="btn">shop the kit</a><a class="btn dark">view all</a>
+        </div>
+        <div class="col">
+          <div class="minicard">
+            <div class="ph"></div>
+            <div class="bd"><h3>signature package</h3><p>$2,399 — machine, 200 cans, your branding</p></div>
+          </div>
+          <div class="logo-sample">SEALED &amp; CO</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>Their recipe:</b> one font family for everything. Wide, letter-spaced capitals. No borders, no shadows — products sit on pale stone-coloured blocks. Buttons are flat rectangles with extreme letter spacing. Feels expensive because nothing is trying hard. <b>Steal:</b> the letter-spaced caps and the product-on-stone photo cards.</div>
+</div>
+
+<!-- T2 ALFRED -->
+<div class="card">
+  <div class="label"><span class="num">Template 2 — Alfred</span><span class="refs">coffee-shop cool · chocolate + cream + one italic wink</span></div>
+  <div class="t2">
+    <div class="bar">now sealing in toronto — come say hi</div>
+    <div class="mininav"><span class="lg">S&amp;Co</span><span class="ord">order now</span></div>
+    <div class="stage">
+      <div class="swatches">
+        <div class="sw" style="background:#F2ECEA"><span>blush cream</span></div>
+        <div class="sw" style="background:#4F2115"><span>espresso</span></div>
+        <div class="sw" style="background:#171512"><span>off black</span></div>
+        <div class="sw" style="background:#D9C6BC"><span>latte</span></div>
+      </div>
+      <div class="heroblock">
+        <h2>The neighborhood<br>can seal of toronto</h2>
+        <span class="accent">your drink, in your can, since 2026</span>
+        <a class="btn">shop machines</a>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="minicard">
+            <div class="ph"></div>
+            <div class="bd"><h3>Signature package</h3><p>$2,399 — machine, 200 cans, your branding</p></div>
+          </div>
+          <div class="logo-sample">Sealed &amp; Co.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>Their recipe:</b> espresso brown instead of black, blush cream instead of white. Giant stacked capitals centred in near-black panels, then one italic serif line as the wink. Links are underlined, not buttoned. <b>Steal:</b> the dark hero panel with the italic serif accent, and the warm brown-on-cream palette.</div>
+</div>
+
+<!-- T3 CHA CHA -->
+<div class="card">
+  <div class="label"><span class="num">Template 3 — Cha Cha Matcha</span><span class="refs">pink + green flirt · script logo · loud and friendly</span></div>
+  <div class="t3">
+    <div class="bar">your daily source of good energy · free delivery over $50</div>
+    <div class="mininav"><span class="lg">Sealed &amp; Co</span><span class="cart">cart · 0</span></div>
+    <div class="stage">
+      <div class="swatches">
+        <div class="sw" style="background:#FFFAF5"><span>warm white</span></div>
+        <div class="sw" style="background:#0B4924"><span>forest</span></div>
+        <div class="sw" style="background:#F8CFD9"><span>baby pink</span></div>
+        <div class="sw" style="background:#8DBF5A"><span>matcha</span></div>
+      </div>
+      <div class="heroblock">
+        <h2>Your daily<br>source of<br>good branding</h2>
+        <p class="sub">seal it. post it. sell it.</p>
+        <a class="btn">shop the machine</a><a class="btn alt">watch it seal</a>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="minicard">
+            <div class="ph"></div>
+            <div class="bd"><h3>Signature package</h3><p>$2,399 — machine, 200 cans, your branding</p></div>
+          </div>
+          <div class="logo-sample">Sealed &amp; Co</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>Their recipe:</b> forest green text on warm white, chunky white capitals over pink-and-green photos, baby-pink buttons with green text, and a handwritten script logo that feels like a signature. Everything rounded 10px. <b>Steal:</b> the pink button + green text combo, and the script logo idea. Closest match to your matcha photo library.</div>
+</div>
+
+<!-- T4 FORMA -->
+<div class="card">
+  <div class="label"><span class="num">Template 4 — Forma Pilates</span><span class="refs">quiet luxury · thin italic serif floating on photos</span></div>
+  <div class="t4">
+    <div class="mininav"><span class="lg">SEALED</span><span class="in">sign in</span></div>
+    <div class="stage">
+      <div class="swatches">
+        <div class="sw" style="background:#FFFFFF"><span>pure white</span></div>
+        <div class="sw" style="background:#111111"><span>black</span></div>
+        <div class="sw" style="background:#B39273"><span>warm wood</span></div>
+        <div class="sw" style="background:#D9CBBB"><span>oat</span></div>
+      </div>
+      <div class="heroblock">
+        <h2>Now your cafe can<br>bottle anything</h2>
+        <p class="sub">Challenging margins. Transformative cans.</p>
+        <a class="btn">explore</a>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="minicard">
+            <div class="ph"></div>
+            <div class="bd"><h3>Signature package</h3><p>$2,399 — machine, 200 cans, your branding</p></div>
+          </div>
+          <div class="logo-sample">SEALED</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>Their recipe:</b> pure white, almost no UI. A thin italic serif floats over warm full-bleed photos, one small pill button, a fashion-serif logo in spaced capitals. The site feels like a members club. <b>Steal:</b> the floating italic serif over photos, and the discipline — one button per screen. Works only if your photography is strong.</div>
+</div>
+
+</body>
+</html>

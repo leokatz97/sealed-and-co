@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sealed &amp; co. — erewhon × cha cha, 4 mixes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Hanken+Grotesk:wght@500;700;800&family=Caveat:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#E7E4DC;color:#212121;font-family:Inter,system-ui,sans-serif;padding:32px 16px 80px}
+.intro{max-width:880px;margin:0 auto 28px}
+.intro h1{font-size:26px;font-weight:600}
+.intro p{margin-top:6px;font-size:14px;opacity:.75;max-width:70ch}
+.card{max-width:880px;margin:0 auto 44px;border-radius:14px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.09)}
+.label{padding:16px 26px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;background:#0B4924;color:#FFFAF5}
+.label .num{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.label .refs{font-size:12px;opacity:.7}
+.note{padding:15px 26px 20px;font-size:13px;line-height:1.55;background:rgba(0,0,0,.05)}
+.bar{text-align:center;font-size:10.5px;padding:9px 14px}
+.mininav{display:flex;justify-content:space-between;align-items:center;padding:17px 28px}
+.stage{padding:40px 28px 46px}
+.swatches{display:flex;gap:8px;margin-bottom:30px}
+.sw{width:44px;height:44px;border-radius:8px;border:1px solid rgba(0,0,0,.12)}
+.sw span{display:block;font-size:9px;margin-top:46px;white-space:nowrap}
+.row{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start}
+.col{flex:1;min-width:270px}
+.pc{margin-top:26px;max-width:300px;overflow:hidden}
+.pc .ph{height:150px}
+.pc .bd{padding:17px 19px}
+.logolabel{margin-top:24px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.5}
+.cta{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.chips{margin-top:20px;display:flex;gap:8px;flex-wrap:wrap}
+
+/* ============ M1 · orchard grocer (erewhon bones, cha cha palette) ============ */
+.m1{background:#FFFAF5;color:#0B4924}
+.m1 .bar{background:#0B4924;color:#FFFAF5;font-family:Archivo;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.m1 .mininav{font-family:Archivo;font-weight:600;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid #EFE6DC}
+.m1 .mininav .lg{font-size:14px;letter-spacing:.3em}
+.m1 .mininav .cart{color:#B4557B}
+.m1 .eyebrow{font-family:Archivo;font-weight:600;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#B4557B}
+.m1 h2{font-family:Archivo;font-weight:700;font-size:44px;line-height:1.02;letter-spacing:.02em;text-transform:uppercase;margin-top:12px}
+.m1 .sub{margin-top:15px;font-size:13.5px;letter-spacing:.06em;text-transform:uppercase;color:#5d7a68}
+.m1 .btn{display:inline-block;background:#0B4924;color:#FFFAF5;padding:15px 32px;border-radius:2px;font-family:Archivo;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.m1 .btn.pink{background:#F8CFD9;color:#0E6B38}
+.m1 .chip{display:inline-block;background:#F1EDE4;padding:7px 15px;border-radius:2px;font-family:Archivo;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.m1 .chip.p{background:#FBE4EA;color:#B4557B}
+.m1 .pc{background:#F1EDE4;border-radius:2px}
+.m1 .pc .ph{background:linear-gradient(160deg,#E6EAD9,#C9D8B2)}
+.m1 .pc h3{font-family:Archivo;font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.m1 .pc p{font-size:12.5px;margin-top:6px;color:#5d7a68}
+.m1 .pc .tag{display:inline-block;margin-top:9px;font-family:Archivo;font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#B4557B}
+.m1 .logo{font-family:Archivo;font-weight:700;font-size:22px;letter-spacing:.36em;text-transform:uppercase}
+
+/* ============ M2 · matcha counter (cha cha volume, erewhon discipline) ============ */
+.m2{background:#FFFAF5;color:#0B4924}
+.m2 .bar{background:#F8CFD9;color:#0E6B38;font-family:'Hanken Grotesk';font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.m2 .mininav{font-family:'Hanken Grotesk';font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.m2 .mininav .lg{font-family:Archivo;font-weight:700;font-size:14px;letter-spacing:.3em}
+.m2 .hero{background:linear-gradient(150deg,#DCE9C9,#B9D394 60%,#8DBF5A);border-radius:10px;padding:40px 30px 36px}
+.m2 h2{font-family:'Hanken Grotesk';font-weight:800;font-size:46px;line-height:.98;text-transform:uppercase;color:#FFF}
+.m2 .sub{margin-top:12px;font-size:13.5px;font-weight:700;color:#FFF;letter-spacing:.02em}
+.m2 .btn{display:inline-block;background:#F8CFD9;color:#0E6B38;padding:14px 28px;border-radius:10px;font-family:'Hanken Grotesk';font-size:12.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.m2 .btn.dk{background:#0B4924;color:#FFFAF5}
+.m2 .chip{display:inline-block;background:#FFF;padding:7px 15px;border-radius:10px;font-family:'Hanken Grotesk';font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#0E6B38}
+.m2 .pc{background:#FFF;border:1px solid #F0E4D8;border-radius:10px}
+.m2 .pc .ph{background:linear-gradient(160deg,#C7E39B,#8DBF5A)}
+.m2 .pc h3{font-family:'Hanken Grotesk';font-weight:800;font-size:14px;text-transform:uppercase}
+.m2 .pc p{font-size:12.5px;margin-top:5px;color:#5a7a63}
+.m2 .pc .tag{display:inline-block;margin-top:9px;background:#F8CFD9;color:#0E6B38;border-radius:999px;padding:3px 11px;font-family:'Hanken Grotesk';font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.m2 .logo{font-family:Archivo;font-weight:700;font-size:22px;letter-spacing:.36em;text-transform:uppercase}
+
+/* ============ M3 · signature (erewhon everything + script logo) ============ */
+.m3{background:#FCFBF9;color:#1D3A2B}
+.m3 .bar{background:#F1EDE4;color:#1D3A2B;font-family:Archivo;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.m3 .mininav{border-bottom:1px solid #EDE9E0;font-family:Archivo;font-weight:600;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
+.m3 .mininav .lg{font-family:Caveat;font-weight:700;font-size:27px;letter-spacing:0;text-transform:none;color:#1D3A2B}
+.m3 .eyebrow{font-family:Archivo;font-weight:600;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#7E9A88}
+.m3 h2{font-family:Archivo;font-weight:700;font-size:42px;line-height:1.04;letter-spacing:.02em;text-transform:uppercase;margin-top:12px}
+.m3 h2 .script{font-family:Caveat;font-weight:700;font-size:56px;letter-spacing:0;text-transform:none;color:#C77E9A;display:inline-block;line-height:.8}
+.m3 .sub{margin-top:15px;font-size:13.5px;letter-spacing:.06em;text-transform:uppercase;color:#6d7f74}
+.m3 .btn{display:inline-block;background:#1D3A2B;color:#FCFBF9;padding:15px 32px;border-radius:2px;font-family:Archivo;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.m3 .btn.gh{background:#F1EDE4;color:#1D3A2B}
+.m3 .chip{display:inline-block;background:#F1EDE4;padding:7px 15px;border-radius:2px;font-family:Archivo;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.m3 .pc{background:#F1EDE4;border-radius:2px}
+.m3 .pc .ph{background:linear-gradient(160deg,#E4EADC,#C3D2BE)}
+.m3 .pc h3{font-family:Archivo;font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.m3 .pc p{font-size:12.5px;margin-top:6px;color:#6d7f74}
+.m3 .pc .tag{display:inline-block;margin-top:8px;font-family:Caveat;font-weight:700;font-size:17px;color:#C77E9A}
+.m3 .logo{font-family:Caveat;font-weight:700;font-size:38px;color:#1D3A2B}
+
+/* ============ M4 · deep green house (green base, pink accent) ============ */
+.m4{background:#F6F3EC;color:#123024}
+.m4 .bar{background:#123024;color:#F6F3EC;font-family:Archivo;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.m4 .mininav{font-family:Archivo;font-weight:600;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
+.m4 .mininav .lg{font-size:14px;letter-spacing:.3em}
+.m4 .hero{background:#123024;color:#F6F3EC;border-radius:4px;padding:44px 32px 40px}
+.m4 .eyebrow{font-family:Archivo;font-weight:600;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#EFB9CB}
+.m4 h2{font-family:Archivo;font-weight:700;font-size:44px;line-height:1.02;letter-spacing:.02em;text-transform:uppercase;margin-top:12px}
+.m4 h2 .pk{color:#EFB9CB}
+.m4 .sub{margin-top:15px;font-size:13.5px;letter-spacing:.06em;text-transform:uppercase;color:#A9BFB2}
+.m4 .btn{display:inline-block;background:#EFB9CB;color:#123024;padding:15px 32px;border-radius:2px;font-family:Archivo;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.m4 .btn.gh{background:none;color:#F6F3EC;border:1px solid rgba(246,243,236,.45)}
+.m4 .chip{display:inline-block;background:#E9E5DA;padding:7px 15px;border-radius:2px;font-family:Archivo;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#123024}
+.m4 .pc{background:#E9E5DA;border-radius:4px}
+.m4 .pc .ph{background:linear-gradient(160deg,#DDE4D6,#B7C8B4)}
+.m4 .pc h3{font-family:Archivo;font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.m4 .pc p{font-size:12.5px;margin-top:6px;color:#4d6156}
+.m4 .pc .tag{display:inline-block;margin-top:9px;background:#EFB9CB;color:#123024;padding:3px 10px;border-radius:2px;font-family:Archivo;font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+.m4 .logo{font-family:Archivo;font-weight:700;font-size:22px;letter-spacing:.36em;text-transform:uppercase}
+
+/* ============ print: one mix per page ============ */
+.pagefoot{display:none}
+@media print{
+  @page{size:letter;margin:0.4in}
+  body{background:#fff;padding:0}
+  .intro{display:none}
+  .card{max-width:none;margin:0;border-radius:0;box-shadow:none;break-after:page;page-break-after:always}
+  .card:last-of-type{break-after:auto;page-break-after:auto}
+  .label{padding:13px 24px}
+  .stage{padding:26px 24px 30px}
+  .swatches{margin-bottom:20px;gap:22px}
+  .sw{width:38px;height:38px}
+  .sw span{margin-top:40px;font-size:8px}
+  .row{gap:22px}
+  .pc{margin-top:20px}
+  .pc .ph{height:120px}
+  .note{padding:12px 24px 16px;font-size:12px}
+  .m1 h2,.m3 h2,.m4 h2{font-size:38px}
+  .m2 h2{font-size:40px}
+  .m3 h2 .script{font-size:50px}
+  .m2 .hero{padding:30px 26px 28px}
+  .m4 .hero{padding:32px 26px 30px}
+  .cta{margin-top:20px}
+  .pagefoot{display:block;padding:0 24px 14px;font-family:Archivo;font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;opacity:.5}
+}
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <h1>erewhon × cha cha matcha — 4 mixes</h1>
+  <p>Template 1 gave the bones: warm white, flat shapes, letter-spaced capitals, no clutter. Template 3 gave the mood: forest green, baby pink, a script signature. Each mix below turns that blend a different amount.</p>
+</div>
+
+<!-- M1 -->
+<div class="card m1">
+  <div class="label"><span class="num">Mix 1 — orchard grocer</span><span class="refs">erewhon layout · cha cha colours · 80/20</span></div>
+  <div class="bar">free gta delivery + setup · ships canada-wide</div>
+  <div class="mininav"><span>shop</span><span class="lg">SEALED</span><span class="cart">cart (0)</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#FFFAF5"><span>warm white</span></div>
+      <div class="sw" style="background:#0B4924"><span>forest</span></div>
+      <div class="sw" style="background:#F1EDE4"><span>stone</span></div>
+      <div class="sw" style="background:#F8CFD9"><span>baby pink</span></div>
+      <div class="sw" style="background:#B4557B"><span>rose · words</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <span class="eyebrow">the machine · the cans · your brand</span>
+        <h2>The<br>Signature<br>Kit</h2>
+        <p class="sub">your drink · your brand · delivered sealed</p>
+        <div class="cta"><a class="btn">shop the kit</a><a class="btn pink">watch it seal</a></div>
+        <div class="chips"><span class="chip">coffee shops</span><span class="chip p">pilates studios</span><span class="chip">juice bars</span></div>
+      </div>
+      <div class="col">
+        <div class="pc"><div class="ph"></div><div class="bd"><h3>signature package</h3><p>$2,399 — machine, 200 cans, your branding</p><span class="tag">most popular</span></div></div>
+        <p class="logolabel">logo</p>
+        <div class="logo">SEALED &amp; CO</div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>The blend:</b> Erewhon's exact structure, but forest green replaces black and baby pink replaces the blue. Text greens are deep enough to read; pink only appears on one button, one chip, and the "most popular" tag. <b>Best if</b> you want quiet-expensive first, personality second.</div>
+  <div class="pagefoot">sealed &amp; co. · design direction · sealedandco.ca</div>
+</div>
+
+<!-- M2 -->
+<div class="card m2">
+  <div class="label"><span class="num">Mix 2 — matcha counter</span><span class="refs">cha cha volume · erewhon restraint · 50/50</span></div>
+  <div class="bar">your daily source of good branding · free gta delivery</div>
+  <div class="mininav"><span>menu</span><span class="lg">SEALED</span><span>cart · 0</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#FFFAF5"><span>warm white</span></div>
+      <div class="sw" style="background:#0B4924"><span>forest</span></div>
+      <div class="sw" style="background:#8DBF5A"><span>matcha</span></div>
+      <div class="sw" style="background:#F8CFD9"><span>baby pink</span></div>
+    </div>
+    <div class="hero">
+      <h2>Your drink.<br>Your brand.<br>Sealed.</h2>
+      <p class="sub">the machine, the cans, and your branding — in one box.</p>
+      <div class="cta"><a class="btn">shop the machine</a><a class="btn dk">watch it seal</a></div>
+    </div>
+    <div class="row" style="margin-top:24px">
+      <div class="col">
+        <div class="chips" style="margin-top:0"><span class="chip">coffee shops</span><span class="chip">pilates studios</span><span class="chip">juice bars</span></div>
+        <p class="logolabel">logo</p>
+        <div class="logo">SEALED &amp; CO</div>
+      </div>
+      <div class="col">
+        <div class="pc" style="margin-top:0"><div class="ph"></div><div class="bd"><h3>signature package</h3><p>$2,399 — machine, 200 cans, your branding</p><span class="tag">most popular</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>The blend:</b> Cha Cha's chunky white capitals over a green gradient hero, pink buttons with green text, 10px rounded cards — but only one hero panel is loud, and the rest of the page stays Erewhon-plain. <b>Best if</b> you want the site to feel young and photograph well on Instagram.</div>
+  <div class="pagefoot">sealed &amp; co. · design direction · sealedandco.ca</div>
+</div>
+
+<!-- M3 -->
+<div class="card m3">
+  <div class="label"><span class="num">Mix 3 — the signature</span><span class="refs">erewhon page · one script flourish · 90/10</span></div>
+  <div class="bar">free gta delivery + setup · pay by e-transfer, save 3%</div>
+  <div class="mininav"><span>shop</span><span class="lg">Sealed &amp; Co</span><span>cart (0)</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#FCFBF9"><span>warm white</span></div>
+      <div class="sw" style="background:#1D3A2B"><span>pine</span></div>
+      <div class="sw" style="background:#F1EDE4"><span>stone</span></div>
+      <div class="sw" style="background:#C77E9A"><span>dusty rose</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <span class="eyebrow">the machine · the cans · your brand</span>
+        <h2>Your drink.<br><span class="script">your brand.</span><br>Sealed.</h2>
+        <p class="sub">one-time · from $1,400 · toronto</p>
+        <div class="cta"><a class="btn">shop the kit</a><a class="btn gh">how it works</a></div>
+        <div class="chips"><span class="chip">coffee shops</span><span class="chip">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="pc"><div class="ph"></div><div class="bd"><h3>signature package</h3><p>$2,399 — machine, 200 cans, your branding</p><span class="tag">most popular</span></div></div>
+        <p class="logolabel">logo</p>
+        <div class="logo">Sealed &amp; Co.</div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>The blend:</b> almost pure Erewhon, with Cha Cha's handwritten script as the single signature move — in the logo, one headline line, and the little product tags. Dusty rose instead of baby pink so it stays grown-up. <b>Best if</b> you want one memorable mark, not a colourful site.</div>
+  <div class="pagefoot">sealed &amp; co. · design direction · sealedandco.ca</div>
+</div>
+
+<!-- M4 -->
+<div class="card m4">
+  <div class="label"><span class="num">Mix 4 — deep green house</span><span class="refs">green as the base · pink as the spark</span></div>
+  <div class="bar">free gta delivery + setup · ships canada-wide</div>
+  <div class="mininav"><span>shop</span><span class="lg">SEALED</span><span>cart (0)</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#F6F3EC"><span>bone</span></div>
+      <div class="sw" style="background:#123024"><span>deep green</span></div>
+      <div class="sw" style="background:#EFB9CB"><span>blush</span></div>
+      <div class="sw" style="background:#E9E5DA"><span>stone</span></div>
+    </div>
+    <div class="hero">
+      <span class="eyebrow">the machine · the cans · your brand</span>
+      <h2>The Signature<br><span class="pk">Kit</span></h2>
+      <p class="sub">your drink · your brand · delivered sealed</p>
+      <div class="cta"><a class="btn">shop the kit</a><a class="btn gh">watch it seal</a></div>
+    </div>
+    <div class="row" style="margin-top:24px">
+      <div class="col">
+        <div class="chips" style="margin-top:0"><span class="chip">coffee shops</span><span class="chip">pilates studios</span><span class="chip">juice bars</span></div>
+        <p class="logolabel">logo</p>
+        <div class="logo">SEALED &amp; CO</div>
+      </div>
+      <div class="col">
+        <div class="pc" style="margin-top:0"><div class="ph"></div><div class="bd"><h3>signature package</h3><p>$2,399 — machine, 200 cans, your branding</p><span class="tag">most popular</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>The blend:</b> Erewhon's discipline, but the hero is a deep green panel instead of white — the Alfred trick with Cha Cha's palette. Blush pink is the only bright thing on the page, so every button pulls the eye. <b>Best if</b> you want it to feel like a real established brand, not a startup page.</div>
+  <div class="pagefoot">sealed &amp; co. · design direction · sealedandco.ca</div>
+</div>
+
+</body>
+</html>

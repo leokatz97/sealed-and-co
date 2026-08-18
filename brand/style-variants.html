@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sealed &amp; co. — variants of 7 and 8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#E9E5DC;color:#221F17;font-family:Inter,system-ui,sans-serif;padding:32px 16px 80px}
+.intro{max-width:860px;margin:0 auto 28px}
+.intro h1{font-size:26px;font-weight:700}
+.intro p{margin-top:6px;font-size:14px;opacity:.75}
+.card{max-width:860px;margin:0 auto 40px;border-radius:16px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.08)}
+.card .head{padding:18px 28px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.card .head .num{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.card .head .refs{font-size:12px;opacity:.65}
+.stage{padding:36px 28px 40px}
+.swatches{display:flex;gap:8px;margin-bottom:26px}
+.sw{width:44px;height:44px;border-radius:8px;border:1px solid rgba(0,0,0,.15)}
+.sw span{display:block;font-size:9px;margin-top:46px;white-space:nowrap}
+.minicard{margin-top:28px;max-width:300px;overflow:hidden}
+.row{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+.col{flex:1;min-width:260px}
+.note{padding:14px 28px 20px;font-size:13px;line-height:1.5;background:rgba(0,0,0,.04)}
+.logolabel{margin-top:22px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.5}
+
+/* ===== 7A: cream soda — sky lead ===== */
+.a .stage{background:#F5F1E8;color:#221F17}
+.a .head{background:#8FD3E8;color:#221F17}
+.a h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:42px;line-height:1.02;letter-spacing:-.02em}
+.a h2 .bl{color:#2E8CB0}
+.a h2 .pk{background:#E85D9A;color:#F5F1E8;padding:0 8px;border-radius:10px}
+.a .body-sample{margin-top:14px;font-size:14.5px;line-height:1.65;max-width:46ch;color:#454034}
+.a .btn{display:inline-block;margin-top:20px;background:#8FD3E8;color:#221F17;padding:14px 32px;border-radius:999px;font-family:'Bricolage Grotesque',sans-serif;font-size:14.5px;font-weight:700;border:2px solid #221F17;box-shadow:4px 4px 0 #221F17}
+.a .chip{display:inline-block;background:#F6C9DC;border:2px solid #221F17;border-radius:999px;padding:5px 14px;font-size:11.5px;font-weight:700;margin-right:6px}
+.a .minicard{border:2px solid #221F17;border-radius:16px;background:#FBF8F1;box-shadow:5px 5px 0 #E85D9A}
+.a .minicard .ph{height:110px;background:linear-gradient(120deg,#8FD3E8,#D6EEF6 55%,#F6C9DC);border-bottom:2px solid #221F17}
+.a .minicard .bd{padding:16px 18px}
+.a .minicard h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px}
+.a .minicard p{font-size:12.5px;margin-top:4px;color:#454034}
+.a .logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:27px}
+.a .logo .amp{color:#2E8CB0}
+.a .logo .dot{color:#E85D9A}
+
+/* ===== 7B: cream soda — night ===== */
+.b .stage{background:#221F17;color:#F5F1E8}
+.b .head{background:linear-gradient(90deg,#E85D9A,#8FD3E8);color:#221F17}
+.b h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:42px;line-height:1.02;letter-spacing:-.02em;color:#F5F1E8}
+.b h2 .pk{color:#F27DB4}
+.b h2 .bl{color:#8FD3E8}
+.b .body-sample{margin-top:14px;font-size:14.5px;line-height:1.65;max-width:46ch;color:#CFC8B8}
+.b .btn{display:inline-block;margin-top:20px;background:#E85D9A;color:#221F17;padding:14px 32px;border-radius:999px;font-family:'Bricolage Grotesque',sans-serif;font-size:14.5px;font-weight:700;box-shadow:4px 4px 0 #8FD3E8}
+.b .chip{display:inline-block;background:none;border:2px solid #8FD3E8;color:#8FD3E8;border-radius:999px;padding:5px 14px;font-size:11.5px;font-weight:700;margin-right:6px}
+.b .minicard{border:2px solid #F5F1E8;border-radius:16px;background:#2C2820;box-shadow:5px 5px 0 #E85D9A}
+.b .minicard .ph{height:110px;background:linear-gradient(120deg,#E85D9A,#5B4450 55%,#8FD3E8);border-bottom:2px solid #F5F1E8}
+.b .minicard .bd{padding:16px 18px}
+.b .minicard h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;color:#F5F1E8}
+.b .minicard p{font-size:12.5px;margin-top:4px;color:#CFC8B8}
+.b .logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:27px;color:#F5F1E8}
+.b .logo .amp{color:#F27DB4}
+.b .logo .dot{color:#8FD3E8}
+
+/* ===== 8A: poster pop — blackout ===== */
+.c .stage{background:#221F17;color:#F5F1E8}
+.c .head{background:#C6E86D;color:#221F17}
+.c h2{font-family:Anton,sans-serif;font-weight:400;font-size:48px;line-height:1;letter-spacing:.01em;text-transform:uppercase;color:#C6E86D}
+.c h2 .cm{color:#F5F1E8}
+.c h2 .pk{background:#E85D9A;color:#221F17;padding:0 10px}
+.c .body-sample{margin-top:16px;font-size:14.5px;line-height:1.65;max-width:46ch;color:#CFC8B8}
+.c .btn{display:inline-block;margin-top:20px;background:#C6E86D;color:#221F17;padding:15px 34px;border-radius:0;font-family:Anton,sans-serif;font-size:15px;letter-spacing:.06em;text-transform:uppercase;box-shadow:5px 5px 0 #E85D9A}
+.c .chip{display:inline-block;background:none;border:2px solid #C6E86D;color:#C6E86D;padding:5px 12px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-right:6px}
+.c .minicard{border:2px solid #F5F1E8;background:#2C2820}
+.c .minicard .ph{height:110px;background:linear-gradient(120deg,#C6E86D,#4E5B2C 55%,#E85D9A);border-bottom:2px solid #F5F1E8}
+.c .minicard .bd{padding:16px 18px}
+.c .minicard h3{font-family:Anton,sans-serif;font-weight:400;font-size:19px;letter-spacing:.03em;text-transform:uppercase;color:#F5F1E8}
+.c .minicard p{font-size:12.5px;margin-top:4px;color:#CFC8B8}
+.c .logo{font-family:Anton,sans-serif;font-size:25px;letter-spacing:.03em;text-transform:uppercase;color:#C6E86D}
+.c .logo .amp{color:#E85D9A}
+
+/* ===== 8B: the mashup ===== */
+.d .stage{background:#F5F1E8;color:#221F17}
+.d .head{background:#221F17;color:#F5F1E8}
+.d .head .num .p{color:#F27DB4}.d .head .num .b{color:#8FD3E8}.d .head .num .l{color:#C6E86D}
+.d h2{font-family:Anton,sans-serif;font-weight:400;font-size:48px;line-height:1;letter-spacing:.01em;text-transform:uppercase}
+.d h2 .pk{background:#E85D9A;color:#F5F1E8;padding:0 10px}
+.d h2 .bl{background:#8FD3E8;color:#221F17;padding:0 10px}
+.d .body-sample{margin-top:16px;font-family:'Bricolage Grotesque',sans-serif;font-weight:500;font-size:15px;line-height:1.6;max-width:46ch;color:#454034}
+.d .btn{display:inline-block;margin-top:20px;background:#E85D9A;color:#F5F1E8;padding:15px 34px;border-radius:999px;font-family:Anton,sans-serif;font-size:15px;letter-spacing:.06em;text-transform:uppercase;border:2px solid #221F17;box-shadow:5px 5px 0 #C6E86D}
+.d .chip{display:inline-block;background:#D6EEF6;border:2px solid #221F17;border-radius:999px;padding:5px 14px;font-size:11.5px;font-weight:700;margin-right:6px}
+.d .chip.alt{background:#C6E86D}
+.d .minicard{border:2px solid #221F17;border-radius:16px;background:#FBF8F1;box-shadow:6px 6px 0 #8FD3E8}
+.d .minicard .ph{height:110px;background:linear-gradient(120deg,#E85D9A,#F6C9DC 40%,#8FD3E8 75%,#C6E86D);border-bottom:2px solid #221F17}
+.d .minicard .bd{padding:16px 18px}
+.d .minicard h3{font-family:Anton,sans-serif;font-weight:400;font-size:19px;letter-spacing:.03em;text-transform:uppercase}
+.d .minicard p{font-family:'Bricolage Grotesque',sans-serif;font-size:12.5px;margin-top:4px;color:#454034}
+.d .logo{font-family:Anton,sans-serif;font-size:25px;letter-spacing:.03em;text-transform:uppercase}
+.d .logo .amp{color:#E85D9A}
+.d .logo .dot{color:#3FA7CC}
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <h1>variants of 7 and 8</h1>
+  <p>Four remixes. Same bones, different volume knobs. All keep your original colours.</p>
+</div>
+
+<!-- 7A -->
+<div class="card a">
+  <div class="head"><span class="num">7A — cream soda · sky lead</span><span class="refs">blue does the talking, pink does the punctuation</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#F5F1E8"><span>cream</span></div>
+      <div class="sw" style="background:#221F17"><span>ink</span></div>
+      <div class="sw" style="background:#8FD3E8"><span>sky · lead</span></div>
+      <div class="sw" style="background:#E85D9A"><span>pink · accent</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h2>your drink.<br><span class="bl">your brand.</span><br><span class="pk">sealed.</span></h2>
+        <p class="body-sample">the machine, the cans, and your branding — so the matcha you already make becomes the can your clients photograph on the way out.</p>
+        <a class="btn">shop the machine</a>
+        <div style="margin-top:20px"><span class="chip">coffee shops</span><span class="chip">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="minicard">
+          <div class="ph"></div>
+          <div class="bd"><h3>signature package</h3><p>$2,399 e-transfer · $2,471 card</p></div>
+        </div>
+        <p class="logolabel">logo</p>
+        <div class="logo">sealed <span class="amp">&amp;</span> co<span class="dot">.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>What changed:</b> blue leads, pink is the exclamation mark. Calmer than the original 7 - reads slightly more "trustworthy equipment," still pops. Good if most buyers are men and women both.</div>
+</div>
+
+<!-- 7B -->
+<div class="card b">
+  <div class="head"><span class="num">7B — cream soda · night</span><span class="refs">dark mode. neon pink + blue on ink</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#221F17"><span>ink · base</span></div>
+      <div class="sw" style="background:#F5F1E8"><span>cream</span></div>
+      <div class="sw" style="background:#F27DB4"><span>neon pink</span></div>
+      <div class="sw" style="background:#8FD3E8"><span>sky</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h2>your drink.<br><span class="pk">your brand.</span><br><span class="bl">sealed.</span></h2>
+        <p class="body-sample">the machine, the cans, and your branding — so the matcha you already make becomes the can your clients photograph on the way out.</p>
+        <a class="btn">shop the machine</a>
+        <div style="margin-top:20px"><span class="chip">coffee shops</span><span class="chip">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="minicard">
+          <div class="ph"></div>
+          <div class="bd"><h3>signature package</h3><p>$2,399 e-transfer · $2,471 card</p></div>
+        </div>
+        <p class="logolabel">logo</p>
+        <div class="logo">sealed <span class="amp">&amp;</span> co<span class="dot">.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>What changed:</b> the whole site goes dark. Pink and blue glow like neon signs, and your bright product photos will jump off the page. The biggest scroll-stopper of everything so far. Risk: dark sites are harder to keep feeling "clean."</div>
+</div>
+
+<!-- 8A -->
+<div class="card c">
+  <div class="head"><span class="num">8A — poster pop · blackout</span><span class="refs">the poster, printed in reverse</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#221F17"><span>ink · base</span></div>
+      <div class="sw" style="background:#C6E86D"><span>lime</span></div>
+      <div class="sw" style="background:#E85D9A"><span>pink</span></div>
+      <div class="sw" style="background:#F5F1E8"><span>cream</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h2>your drink.<br><span class="cm">your brand.</span><br><span class="pk">sealed.</span></h2>
+        <p class="body-sample">the machine, the cans, and your branding — so the matcha you already make becomes the can your clients photograph on the way out.</p>
+        <a class="btn">shop the machine</a>
+        <div style="margin-top:20px"><span class="chip">coffee shops</span><span class="chip">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="minicard">
+          <div class="ph"></div>
+          <div class="bd"><h3>signature package</h3><p>$2,399 e-transfer · $2,471 card</p></div>
+        </div>
+        <p class="logolabel">logo</p>
+        <div class="logo">sealed <span class="amp">&amp;</span> co.</div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>What changed:</b> same loud poster type, flipped to a black base so the lime burns. Feels like streetwear. Strongest merch and sticker potential. Same risk as 7B: dark needs discipline.</div>
+</div>
+
+<!-- 8B -->
+<div class="card d">
+  <div class="head"><span class="num">8B — the mashup · 7 + 8 combined</span><span class="refs">poster letters, cream soda colours. all four of yours</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#F5F1E8"><span>cream</span></div>
+      <div class="sw" style="background:#E85D9A"><span>pink</span></div>
+      <div class="sw" style="background:#8FD3E8"><span>sky</span></div>
+      <div class="sw" style="background:#C6E86D"><span>lime</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h2>your drink.<br><span class="pk">your brand.</span><br><span class="bl">sealed.</span></h2>
+        <p class="body-sample">the machine, the cans, and your branding — so the matcha you already make becomes the can your clients photograph on the way out.</p>
+        <a class="btn">shop the machine</a>
+        <div style="margin-top:20px"><span class="chip">coffee shops</span><span class="chip alt">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="minicard">
+          <div class="ph"></div>
+          <div class="bd"><h3>signature package</h3><p>$2,399 e-transfer · $2,471 card</p></div>
+        </div>
+        <p class="logolabel">logo</p>
+        <div class="logo">sealed <span class="amp">&amp;</span> co<span class="dot">.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>What changed:</b> 8's big poster headlines on 7's bright cream-soda world. Pink and blue lead, lime shows up in shadows and buttons. Maximum pop while staying on a light, clean background - the safest way to be loud.</div>
+</div>
+
+</body>
+</html>

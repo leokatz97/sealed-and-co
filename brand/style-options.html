@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sealed &amp; co. — 9 design directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=Young+Serif&family=Archivo:wght@400;500;700&family=Fraunces:ital,wght@0,400;0,600;1,400&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Bricolage+Grotesque:wght@500;700;800&family=Anton&family=Gabarito:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#E9E5DC;color:#1C1A15;font-family:Inter,system-ui,sans-serif;padding:32px 16px 80px}
+.intro{max-width:860px;margin:0 auto 28px}
+.intro h1{font-size:26px;font-weight:700}
+.intro p{margin-top:6px;font-size:14px;opacity:.75}
+.card{max-width:860px;margin:0 auto 40px;border-radius:16px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.08)}
+.card .head{padding:18px 28px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.card .head .num{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.card .head .refs{font-size:12px;opacity:.65}
+.stage{padding:36px 28px 40px}
+.swatches{display:flex;gap:8px;margin-bottom:26px}
+.sw{width:44px;height:44px;border-radius:8px;border:1px solid rgba(0,0,0,.15)}
+.sw span{display:block;font-size:9px;margin-top:46px;white-space:nowrap}
+.minicard{margin-top:28px;max-width:300px;overflow:hidden}
+.row{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+.col{flex:1;min-width:260px}
+.note{padding:14px 28px 20px;font-size:13px;line-height:1.5;background:rgba(0,0,0,.04)}
+
+/* ---------- option 1: quiet studio ---------- */
+.o1 .stage{background:#F2EEE3;color:#1C1A15}
+.o1 .head{background:#1C1A15;color:#F2EEE3}
+.o1 h2{font-family:'Instrument Serif',serif;font-weight:400;font-size:44px;line-height:1.05;letter-spacing:-.01em}
+.o1 h2 em{font-style:italic}
+.o1 .body-sample{margin-top:14px;font-size:14.5px;line-height:1.7;max-width:46ch;color:#3B3830}
+.o1 .btn{display:inline-block;margin-top:20px;background:#1C1A15;color:#F2EEE3;padding:13px 30px;border-radius:2px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+.o1 .chip{display:inline-block;border:1px solid #1C1A15;border-radius:999px;padding:5px 14px;font-size:11.5px;letter-spacing:.08em;margin-right:6px}
+.o1 .minicard{border:1px solid #1C1A15;border-radius:4px;background:#F7F4EB}
+.o1 .minicard .ph{height:110px;background:linear-gradient(135deg,#C9D8B2,#8FA971)}
+.o1 .minicard .bd{padding:16px 18px}
+.o1 .minicard h3{font-family:'Instrument Serif',serif;font-weight:400;font-size:20px}
+.o1 .minicard p{font-size:12.5px;margin-top:4px;color:#3B3830}
+.o1 .logo{font-family:'Instrument Serif',serif;font-size:30px;letter-spacing:.01em}
+.o1 .logo em{font-style:italic}
+
+/* ---------- option 2: mono grid ---------- */
+.o2 .stage{background:#FAF7F0;color:#141414}
+.o2 .head{background:#C6E86D;color:#141414}
+.o2 h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:42px;line-height:1.02;letter-spacing:-.03em}
+.o2 h2 .hl{background:#C6E86D;padding:0 6px}
+.o2 .body-sample{margin-top:14px;font-size:14.5px;line-height:1.65;max-width:46ch;color:#333}
+.o2 .btn{display:inline-block;margin-top:20px;background:#141414;color:#C6E86D;padding:14px 30px;border-radius:0;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:.02em}
+.o2 .chip{display:inline-block;border:1.5px solid #141414;padding:5px 12px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-right:6px}
+.o2 .minicard{border:1.5px solid #141414;background:#FAF7F0}
+.o2 .minicard .ph{height:110px;background:linear-gradient(135deg,#DDE9BC,#C6E86D);border-bottom:1.5px solid #141414}
+.o2 .minicard .bd{padding:16px 18px}
+.o2 .minicard h3{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;letter-spacing:-.01em}
+.o2 .minicard p{font-size:12.5px;margin-top:4px;color:#333}
+.o2 .logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:26px;letter-spacing:-.03em}
+.o2 .logo .dot{color:#7da33c}
+
+/* ---------- option 3: house classic ---------- */
+.o3 .stage{background:#F6EDDC;color:#234034}
+.o3 .head{background:#234034;color:#F6EDDC}
+.o3 h2{font-family:'Young Serif',serif;font-weight:400;font-size:38px;line-height:1.1;color:#234034}
+.o3 h2 .red{color:#D2452B}
+.o3 .body-sample{margin-top:14px;font-family:Archivo,sans-serif;font-size:14.5px;line-height:1.65;max-width:46ch;color:#3d5247}
+.o3 .btn{display:inline-block;margin-top:20px;background:#D2452B;color:#F6EDDC;padding:13px 30px;border-radius:8px;font-family:Archivo,sans-serif;font-size:14px;font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+.o3 .chip{display:inline-block;border:2px solid #234034;border-radius:6px;padding:5px 12px;font-family:Archivo,sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
+.o3 .minicard{border:2px solid #234034;border-radius:10px;background:#FBF4E6}
+.o3 .minicard .ph{height:110px;background:linear-gradient(135deg,#E8D9A8,#B9C98A);border-bottom:2px solid #234034}
+.o3 .minicard .bd{padding:16px 18px}
+.o3 .minicard h3{font-family:'Young Serif',serif;font-size:19px;color:#234034}
+.o3 .minicard p{font-family:Archivo,sans-serif;font-size:12.5px;margin-top:4px;color:#3d5247}
+.o3 .logo{font-family:'Young Serif',serif;font-size:27px;color:#234034}
+.o3 .logo .amp{color:#D2452B}
+
+/* ---------- option 4: soft blush (pink) ---------- */
+.o4 .stage{background:#F7F1E6;color:#221F17}
+.o4 .head{background:#E85D9A;color:#F7F1E6}
+.o4 h2{font-family:Fraunces,serif;font-weight:600;font-size:42px;line-height:1.05;letter-spacing:-.01em}
+.o4 h2 em{font-style:italic;font-weight:400;color:#D14B87}
+.o4 .body-sample{margin-top:14px;font-size:14.5px;line-height:1.7;max-width:46ch;color:#4a443a}
+.o4 .btn{display:inline-block;margin-top:20px;background:#221F17;color:#F7F1E6;padding:13px 32px;border-radius:999px;font-size:13.5px;font-weight:600;letter-spacing:.04em}
+.o4 .chip{display:inline-block;background:#F3D9E2;border:1px solid #221F17;border-radius:999px;padding:5px 14px;font-size:11.5px;font-weight:600;margin-right:6px}
+.o4 .minicard{border:1px solid #221F17;border-radius:14px;background:#FBF7EF}
+.o4 .minicard .ph{height:110px;background:linear-gradient(135deg,#F3D9E2,#E85D9A)}
+.o4 .minicard .bd{padding:16px 18px}
+.o4 .minicard h3{font-family:Fraunces,serif;font-weight:600;font-size:19px}
+.o4 .minicard p{font-size:12.5px;margin-top:4px;color:#4a443a}
+.o4 .logo{font-family:Fraunces,serif;font-weight:600;font-size:28px}
+.o4 .logo em{font-style:italic;font-weight:400;color:#E85D9A}
+
+/* ---------- option 5: plum club (purple) ---------- */
+.o5 .stage{background:#F5F1E8;color:#2E2438}
+.o5 .head{background:#5B3A6E;color:#EDE4F5}
+.o5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:42px;line-height:1.06}
+.o5 h2 em{font-style:italic;color:#8B5FBF}
+.o5 .body-sample{margin-top:14px;font-family:'DM Sans',sans-serif;font-size:14.5px;line-height:1.65;max-width:46ch;color:#4d4258}
+.o5 .btn{display:inline-block;margin-top:20px;background:#5B3A6E;color:#F5F1E8;padding:13px 32px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:700;letter-spacing:.05em}
+.o5 .chip{display:inline-block;background:#E4DAF0;border:1px solid #5B3A6E;border-radius:4px;padding:5px 12px;font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:700;margin-right:6px;color:#2E2438}
+.o5 .minicard{border:1px solid #5B3A6E;border-radius:8px;background:#FAF7F0}
+.o5 .minicard .ph{height:110px;background:linear-gradient(135deg,#E4DAF0,#8B5FBF)}
+.o5 .minicard .bd{padding:16px 18px}
+.o5 .minicard h3{font-family:'DM Serif Display',serif;font-size:19px}
+.o5 .minicard p{font-family:'DM Sans',sans-serif;font-size:12.5px;margin-top:4px;color:#4d4258}
+.o5 .logo{font-family:'DM Serif Display',serif;font-size:28px;color:#2E2438}
+.o5 .logo .amp{font-style:italic;color:#8B5FBF}
+
+/* ---------- option 6: fresh press (blue) ---------- */
+.o6 .stage{background:#F4F1EA;color:#16323F}
+.o6 .head{background:#16323F;color:#BFE4F0}
+.o6 h2{font-family:'Source Serif 4',serif;font-weight:600;font-size:41px;line-height:1.08;letter-spacing:-.01em}
+.o6 h2 em{font-style:italic;font-weight:400;color:#2E7A99}
+.o6 .body-sample{margin-top:14px;font-size:14.5px;line-height:1.7;max-width:46ch;color:#3c5560}
+.o6 .btn{display:inline-block;margin-top:20px;background:#16323F;color:#F4F1EA;padding:13px 32px;border-radius:6px;font-size:13.5px;font-weight:600;letter-spacing:.04em}
+.o6 .chip{display:inline-block;background:#DCEEF4;border:1px solid #16323F;border-radius:999px;padding:5px 14px;font-size:11.5px;font-weight:600;margin-right:6px}
+.o6 .minicard{border:1px solid #16323F;border-radius:10px;background:#FAF8F2}
+.o6 .minicard .ph{height:110px;background:linear-gradient(135deg,#DCEEF4,#8FD3E8)}
+.o6 .minicard .bd{padding:16px 18px}
+.o6 .minicard h3{font-family:'Source Serif 4',serif;font-weight:600;font-size:19px}
+.o6 .minicard p{font-size:12.5px;margin-top:4px;color:#3c5560}
+.o6 .logo{font-family:'Source Serif 4',serif;font-weight:600;font-size:27px;color:#16323F}
+.o6 .logo em{font-style:italic;font-weight:400;color:#2E7A99}
+
+/* ---------- option 7: cream soda (pink + blue) ---------- */
+.o7 .stage{background:#F5F1E8;color:#221F17}
+.o7 .head{background:linear-gradient(90deg,#E85D9A,#8FD3E8);color:#221F17}
+.o7 h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:42px;line-height:1.02;letter-spacing:-.02em}
+.o7 h2 .pk{color:#E85D9A}
+.o7 h2 .bl{background:#8FD3E8;padding:0 8px;border-radius:10px}
+.o7 .body-sample{margin-top:14px;font-size:14.5px;line-height:1.65;max-width:46ch;color:#454034}
+.o7 .btn{display:inline-block;margin-top:20px;background:#E85D9A;color:#F5F1E8;padding:14px 32px;border-radius:999px;font-family:'Bricolage Grotesque',sans-serif;font-size:14.5px;font-weight:700;box-shadow:4px 4px 0 #221F17}
+.o7 .chip{display:inline-block;background:#D6EEF6;border:2px solid #221F17;border-radius:999px;padding:5px 14px;font-size:11.5px;font-weight:700;margin-right:6px}
+.o7 .minicard{border:2px solid #221F17;border-radius:16px;background:#FBF8F1;box-shadow:5px 5px 0 #8FD3E8}
+.o7 .minicard .ph{height:110px;background:linear-gradient(120deg,#F6C9DC,#E85D9A 55%,#8FD3E8);border-bottom:2px solid #221F17}
+.o7 .minicard .bd{padding:16px 18px}
+.o7 .minicard h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px}
+.o7 .minicard p{font-size:12.5px;margin-top:4px;color:#454034}
+.o7 .logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:27px}
+.o7 .logo .amp{color:#E85D9A}
+.o7 .logo .dot{color:#3FA7CC}
+
+/* ---------- option 8: poster pop (lime + pink) ---------- */
+.o8 .stage{background:#F5F1E8;color:#221F17}
+.o8 .head{background:#221F17;color:#C6E86D}
+.o8 h2{font-family:Anton,sans-serif;font-weight:400;font-size:48px;line-height:1;letter-spacing:.01em;text-transform:uppercase}
+.o8 h2 .lm{color:#7DA33C}
+.o8 h2 .pk{background:#E85D9A;color:#F5F1E8;padding:0 10px}
+.o8 .body-sample{margin-top:16px;font-size:14.5px;line-height:1.65;max-width:46ch;color:#454034}
+.o8 .btn{display:inline-block;margin-top:20px;background:#C6E86D;color:#221F17;padding:15px 34px;border-radius:0;font-family:Anton,sans-serif;font-size:15px;letter-spacing:.06em;text-transform:uppercase;border:2px solid #221F17;box-shadow:5px 5px 0 #E85D9A}
+.o8 .chip{display:inline-block;background:#F5F1E8;border:2px solid #221F17;padding:5px 12px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-right:6px}
+.o8 .minicard{border:2px solid #221F17;background:#FBF8F1}
+.o8 .minicard .ph{height:110px;background:linear-gradient(120deg,#C6E86D,#E85D9A);border-bottom:2px solid #221F17}
+.o8 .minicard .bd{padding:16px 18px}
+.o8 .minicard h3{font-family:Anton,sans-serif;font-weight:400;font-size:19px;letter-spacing:.03em;text-transform:uppercase}
+.o8 .minicard p{font-size:12.5px;margin-top:4px;color:#454034}
+.o8 .logo{font-family:Anton,sans-serif;font-size:25px;letter-spacing:.03em;text-transform:uppercase}
+.o8 .logo .amp{color:#E85D9A}
+
+/* ---------- option 9: sunny club (blue + butter) ---------- */
+.o9 .stage{background:#F7F3E9;color:#1F3C4A}
+.o9 .head{background:#8FD3E8;color:#1F3C4A}
+.o9 h2{font-family:Gabarito,sans-serif;font-weight:900;font-size:43px;line-height:1.04;letter-spacing:-.02em}
+.o9 h2 .bt{background:#F5D66D;padding:0 8px;border-radius:12px}
+.o9 h2 .bl{color:#2E8CB0}
+.o9 .body-sample{margin-top:14px;font-size:14.5px;line-height:1.65;max-width:46ch;color:#3c5560}
+.o9 .btn{display:inline-block;margin-top:20px;background:#1F3C4A;color:#F5D66D;padding:14px 32px;border-radius:14px;font-family:Gabarito,sans-serif;font-size:14.5px;font-weight:700}
+.o9 .chip{display:inline-block;background:#FBEBB8;border:2px solid #1F3C4A;border-radius:10px;padding:5px 13px;font-size:11.5px;font-weight:700;margin-right:6px}
+.o9 .minicard{border:2px solid #1F3C4A;border-radius:18px;background:#FCF9F0}
+.o9 .minicard .ph{height:110px;background:linear-gradient(120deg,#F5D66D,#8FD3E8);border-bottom:2px solid #1F3C4A}
+.o9 .minicard .bd{padding:16px 18px}
+.o9 .minicard h3{font-family:Gabarito,sans-serif;font-weight:900;font-size:19px}
+.o9 .minicard p{font-size:12.5px;margin-top:4px;color:#3c5560}
+.o9 .logo{font-family:Gabarito,sans-serif;font-weight:900;font-size:27px;color:#1F3C4A}
+.o9 .logo .amp{color:#E0AF1F}
+
+/* ---------- logo lineup ---------- */
+.logos{max-width:860px;margin:0 auto 40px;border-radius:16px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.08);background:#FFFDF8}
+.logos .head{padding:18px 28px;background:#221F17;color:#F5F1E8;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.logos .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.logos .cell{padding:30px 24px;border:1px solid rgba(0,0,0,.07);display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.logos .cell .tag{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.5}
+.logos .lock{display:flex;align-items:center;gap:10px}
+.logos svg{flex:none}
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <h1>sealed &amp; co. — 9 design directions</h1>
+  <p>Same site, same photos, same words. Only the colours, fonts, and shapes change. Pick one and I restyle everything to match: site, logo, favicon, and the Stripe checkout colours.</p>
+</div>
+
+<!-- OPTION 1 -->
+<div class="card o1">
+  <div class="head"><span class="num">Option 1 — quiet studio</span><span class="refs">feels like: rhode · village juicery</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#F2EEE3"><span>bone</span></div>
+      <div class="sw" style="background:#1C1A15"><span>ink</span></div>
+      <div class="sw" style="background:#8FA971"><span>matcha</span></div>
+      <div class="sw" style="background:#F7F4EB"><span>paper</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h2>your drink.<br><em>your brand.</em> sealed.</h2>
+        <p class="body-sample">the machine, the cans, and your branding — so the matcha you already make becomes the can your clients photograph on the way out.</p>
+        <a class="btn">shop the machine</a>
+        <div style="margin-top:18px"><span class="chip">coffee shops</span><span class="chip">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="minicard">
+          <div class="ph"></div>
+          <div class="bd"><h3>signature package</h3><p>$2,399 e-transfer · $2,471 card</p></div>
+        </div>
+        <p style="margin-top:22px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.5">logo</p>
+        <div class="logo">sealed <em>&amp;</em> co.</div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>The vibe:</b> calm, expensive, editorial. A serif headline font, thin lines instead of thick cartoon borders, one muted green accent. This is the look your customers (cafes, pilates, juice bars) already trust. Sharpest jump from "juvenile" to "premium."</div>
+</div>
+
+<!-- OPTION 2 -->
+<div class="card o2">
+  <div class="head"><span class="num">Option 2 — mono grid</span><span class="refs">feels like: pilot coffee</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#FAF7F0"><span>paper</span></div>
+      <div class="sw" style="background:#141414"><span>black</span></div>
+      <div class="sw" style="background:#C6E86D"><span>lime</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h2>YOUR DRINK.<br><span class="hl">YOUR BRAND.</span><br>SEALED.</h2>
+        <p class="body-sample">the machine, the cans, and your branding — so the matcha you already make becomes the can your clients photograph on the way out.</p>
+        <a class="btn">SHOP THE MACHINE</a>
+        <div style="margin-top:18px"><span class="chip">coffee shops</span><span class="chip">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="minicard">
+          <div class="ph"></div>
+          <div class="bd"><h3>SIGNATURE PACKAGE</h3><p>$2,399 e-transfer · $2,471 card</p></div>
+        </div>
+        <p style="margin-top:22px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.5">logo</p>
+        <div class="logo">SEALED &amp; CO<span class="dot">.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>The vibe:</b> sharp, modern, equipment-brand. Square corners, strong type, keeps your lime as the only colour. Feels like serious hardware. Least soft of the three — reads more "tool company" than "drink brand."</div>
+</div>
+
+<!-- OPTION 3 -->
+<div class="card o3">
+  <div class="head"><span class="num">Option 3 — house classic</span><span class="refs">feels like: rizzo's house of parm</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#F6EDDC"><span>cream</span></div>
+      <div class="sw" style="background:#234034"><span>forest</span></div>
+      <div class="sw" style="background:#D2452B"><span>tomato</span></div>
+      <div class="sw" style="background:#E8D9A8"><span>straw</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h2>your drink. your brand. <span class="red">sealed.</span></h2>
+        <p class="body-sample">the machine, the cans, and your branding — so the matcha you already make becomes the can your clients photograph on the way out.</p>
+        <a class="btn">Shop the machine</a>
+        <div style="margin-top:18px"><span class="chip">coffee shops</span><span class="chip">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="minicard">
+          <div class="ph"></div>
+          <div class="bd"><h3>signature package</h3><p>$2,399 e-transfer · $2,471 card</p></div>
+        </div>
+        <p style="margin-top:22px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.5">logo</p>
+        <div class="logo">sealed <span class="amp">&amp;</span> co.</div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>The vibe:</b> warm, retro, personality. Keeps the playfulness you have now but with grown-up fonts and a real palette. Most memorable of the three, but the furthest from your wellness-y photo library (all that green matcha wants option 1 or 2).</div>
+</div>
+
+<!-- OPTION 4 -->
+<div class="card o4">
+  <div class="head"><span class="num">Option 4 — soft blush · pink</span><span class="refs">feels like: rhode · glossy beauty, keeps your cream + pink</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#F7F1E6"><span>cream</span></div>
+      <div class="sw" style="background:#221F17"><span>ink</span></div>
+      <div class="sw" style="background:#E85D9A"><span>your pink</span></div>
+      <div class="sw" style="background:#F3D9E2"><span>blush</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h2>your drink.<br><em>your brand.</em> sealed.</h2>
+        <p class="body-sample">the machine, the cans, and your branding — so the matcha you already make becomes the can your clients photograph on the way out.</p>
+        <a class="btn">shop the machine</a>
+        <div style="margin-top:18px"><span class="chip">coffee shops</span><span class="chip">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="minicard">
+          <div class="ph"></div>
+          <div class="bd"><h3>signature package</h3><p>$2,399 e-transfer · $2,471 card</p></div>
+        </div>
+        <p style="margin-top:22px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.5">logo</p>
+        <div class="logo">sealed <em>&amp;</em> co.</div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>The vibe:</b> beauty-brand warm. Keeps your exact cream and pink, swaps the cartoon borders for soft serif type. Feels like a drink your pilates crowd already buys. The most "female-founder wellness" of the six.</div>
+</div>
+
+<!-- OPTION 5 -->
+<div class="card o5">
+  <div class="head"><span class="num">Option 5 — plum club · purple</span><span class="refs">feels like: boutique studio, evening menu · keeps your cream</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#F5F1E8"><span>your cream</span></div>
+      <div class="sw" style="background:#5B3A6E"><span>plum</span></div>
+      <div class="sw" style="background:#8B5FBF"><span>violet</span></div>
+      <div class="sw" style="background:#E4DAF0"><span>lavender</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h2>your drink. <em>your brand.</em> sealed.</h2>
+        <p class="body-sample">the machine, the cans, and your branding — so the matcha you already make becomes the can your clients photograph on the way out.</p>
+        <a class="btn">shop the machine</a>
+        <div style="margin-top:18px"><span class="chip">coffee shops</span><span class="chip">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="minicard">
+          <div class="ph"></div>
+          <div class="bd"><h3>signature package</h3><p>$2,399 e-transfer · $2,471 card</p></div>
+        </div>
+        <p style="margin-top:22px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.5">logo</p>
+        <div class="logo">sealed <span class="amp">&amp;</span> co.</div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>The vibe:</b> rich and a little upscale-nightlife. Purple stands out because nobody in your space uses it — instant recognition. Watch out: it fights a bit with your green matcha photos.</div>
+</div>
+
+<!-- OPTION 6 -->
+<div class="card o6">
+  <div class="head"><span class="num">Option 6 — fresh press · blue</span><span class="refs">feels like: ag1 · sundays furniture · keeps your sky blue</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#F4F1EA"><span>bone</span></div>
+      <div class="sw" style="background:#16323F"><span>marine</span></div>
+      <div class="sw" style="background:#8FD3E8"><span>your sky</span></div>
+      <div class="sw" style="background:#DCEEF4"><span>mist</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h2>your drink.<br><em>your brand.</em> sealed.</h2>
+        <p class="body-sample">the machine, the cans, and your branding — so the matcha you already make becomes the can your clients photograph on the way out.</p>
+        <a class="btn">shop the machine</a>
+        <div style="margin-top:18px"><span class="chip">coffee shops</span><span class="chip">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="minicard">
+          <div class="ph"></div>
+          <div class="bd"><h3>signature package</h3><p>$2,399 e-transfer · $2,471 card</p></div>
+        </div>
+        <p style="margin-top:22px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.5">logo</p>
+        <div class="logo">sealed <em>&amp;</em> co.</div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>The vibe:</b> clean, trusted, health-forward — the AG1 playbook. Deep marine blue reads "professional equipment," your sky blue keeps it friendly, and it makes the green in every photo pop. Best of the new three for looking like a real company.</div>
+</div>
+
+<!-- OPTION 7 -->
+<div class="card o7">
+  <div class="head"><span class="num">Option 7 — cream soda · pink + blue</span><span class="refs">your pink + your sky together · built to stop the scroll</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#F5F1E8"><span>your cream</span></div>
+      <div class="sw" style="background:#221F17"><span>your ink</span></div>
+      <div class="sw" style="background:#E85D9A"><span>your pink</span></div>
+      <div class="sw" style="background:#8FD3E8"><span>your sky</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h2>your drink.<br><span class="pk">your brand.</span><br><span class="bl">sealed.</span></h2>
+        <p class="body-sample">the machine, the cans, and your branding — so the matcha you already make becomes the can your clients photograph on the way out.</p>
+        <a class="btn">shop the machine</a>
+        <div style="margin-top:20px"><span class="chip">coffee shops</span><span class="chip">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="minicard">
+          <div class="ph"></div>
+          <div class="bd"><h3>signature package</h3><p>$2,399 e-transfer · $2,471 card</p></div>
+        </div>
+        <p style="margin-top:22px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.5">logo</p>
+        <div class="logo">sealed <span class="amp">&amp;</span> co<span class="dot">.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>The vibe:</b> the one you asked for — pink and blue, all four of your original colours, offset shadows that feel like stickers. Loud enough for an influencer's feed, sharp enough to charge $2,400. This is "fun brand run by adults."</div>
+</div>
+
+<!-- OPTION 8 -->
+<div class="card o8">
+  <div class="head"><span class="num">Option 8 — poster pop · lime + pink</span><span class="refs">street poster energy · your lime + pink, turned up</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#F5F1E8"><span>your cream</span></div>
+      <div class="sw" style="background:#221F17"><span>your ink</span></div>
+      <div class="sw" style="background:#C6E86D"><span>your lime</span></div>
+      <div class="sw" style="background:#E85D9A"><span>your pink</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h2>your drink.<br><span class="lm">your brand.</span><br><span class="pk">sealed.</span></h2>
+        <p class="body-sample">the machine, the cans, and your branding — so the matcha you already make becomes the can your clients photograph on the way out.</p>
+        <a class="btn">shop the machine</a>
+        <div style="margin-top:20px"><span class="chip">coffee shops</span><span class="chip">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="minicard">
+          <div class="ph"></div>
+          <div class="bd"><h3>signature package</h3><p>$2,399 e-transfer · $2,471 card</p></div>
+        </div>
+        <p style="margin-top:22px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.5">logo</p>
+        <div class="logo">sealed <span class="amp">&amp;</span> co.</div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>The vibe:</b> concert-poster loud. Tall condensed caps, hard shadows, zero soft edges. The most "pop" of all nine — great for merch, stickers, and Instagram tiles. Risk: it can shout over your product photos.</div>
+</div>
+
+<!-- OPTION 9 -->
+<div class="card o9">
+  <div class="head"><span class="num">Option 9 — sunny club · blue + butter</span><span class="refs">your sky + your butter yellow · fresh patio energy</span></div>
+  <div class="stage">
+    <div class="swatches">
+      <div class="sw" style="background:#F7F3E9"><span>your cream</span></div>
+      <div class="sw" style="background:#1F3C4A"><span>deep sea</span></div>
+      <div class="sw" style="background:#8FD3E8"><span>your sky</span></div>
+      <div class="sw" style="background:#F5D66D"><span>your butter</span></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h2>your drink.<br><span class="bt">your brand.</span> <span class="bl">sealed.</span></h2>
+        <p class="body-sample">the machine, the cans, and your branding — so the matcha you already make becomes the can your clients photograph on the way out.</p>
+        <a class="btn">shop the machine</a>
+        <div style="margin-top:20px"><span class="chip">coffee shops</span><span class="chip">pilates studios</span></div>
+      </div>
+      <div class="col">
+        <div class="minicard">
+          <div class="ph"></div>
+          <div class="bd"><h3>signature package</h3><p>$2,399 e-transfer · $2,471 card</p></div>
+        </div>
+        <p style="margin-top:22px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.5">logo</p>
+        <div class="logo">sealed <span class="amp">&amp;</span> co.</div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>The vibe:</b> sunshine and patios. Your sky blue and butter yellow with a deep sea-blue anchor so it still feels grown-up. Friendly, summery, very Toronto cafe. The happiest of the nine without going childish.</div>
+</div>
+
+<!-- LOGO LINEUP -->
+<div class="logos">
+  <div class="head">the logo, 6 ways — wordmark + can mark</div>
+  <div class="grid">
+    <div class="cell" style="background:#F2EEE3">
+      <span class="tag">1 · quiet studio</span>
+      <div class="lock">
+        <svg width="22" height="30" viewBox="0 0 22 30"><rect x="2" y="6" width="18" height="22" rx="4" fill="none" stroke="#1C1A15" stroke-width="1.4"/><rect x="1" y="1" width="20" height="6" rx="3" fill="none" stroke="#1C1A15" stroke-width="1.4"/></svg>
+        <span style="font-family:'Instrument Serif',serif;font-size:26px;color:#1C1A15">sealed <em>&amp;</em> co.</span>
+      </div>
+    </div>
+    <div class="cell" style="background:#FAF7F0">
+      <span class="tag">2 · mono grid</span>
+      <div class="lock">
+        <svg width="22" height="30" viewBox="0 0 22 30"><rect x="2" y="6" width="18" height="22" fill="#141414"/><rect x="1" y="1" width="20" height="6" fill="#C6E86D" stroke="#141414" stroke-width="1.5"/></svg>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.03em;color:#141414">SEALED &amp; CO<span style="color:#7da33c">.</span></span>
+      </div>
+    </div>
+    <div class="cell" style="background:#F6EDDC">
+      <span class="tag">3 · house classic</span>
+      <div class="lock">
+        <svg width="22" height="30" viewBox="0 0 22 30"><rect x="2" y="6" width="18" height="22" rx="5" fill="#234034"/><rect x="1" y="1" width="20" height="6" rx="3" fill="#D2452B"/></svg>
+        <span style="font-family:'Young Serif',serif;font-size:23px;color:#234034">sealed <span style="color:#D2452B">&amp;</span> co.</span>
+      </div>
+    </div>
+    <div class="cell" style="background:#F7F1E6">
+      <span class="tag">4 · soft blush</span>
+      <div class="lock">
+        <svg width="22" height="30" viewBox="0 0 22 30"><rect x="2" y="6" width="18" height="22" rx="9" fill="#F3D9E2" stroke="#221F17" stroke-width="1.4"/><rect x="1" y="1" width="20" height="6" rx="3" fill="#E85D9A" stroke="#221F17" stroke-width="1.4"/></svg>
+        <span style="font-family:Fraunces,serif;font-weight:600;font-size:24px;color:#221F17">sealed <em style="font-weight:400;color:#E85D9A">&amp;</em> co.</span>
+      </div>
+    </div>
+    <div class="cell" style="background:#F5F1E8">
+      <span class="tag">5 · plum club</span>
+      <div class="lock">
+        <svg width="22" height="30" viewBox="0 0 22 30"><rect x="2" y="6" width="18" height="22" rx="4" fill="#5B3A6E"/><rect x="1" y="1" width="20" height="6" rx="3" fill="#E4DAF0" stroke="#5B3A6E" stroke-width="1.4"/></svg>
+        <span style="font-family:'DM Serif Display',serif;font-size:24px;color:#2E2438">sealed <em style="color:#8B5FBF">&amp;</em> co.</span>
+      </div>
+    </div>
+    <div class="cell" style="background:#F4F1EA">
+      <span class="tag">6 · fresh press</span>
+      <div class="lock">
+        <svg width="22" height="30" viewBox="0 0 22 30"><rect x="2" y="6" width="18" height="22" rx="5" fill="none" stroke="#16323F" stroke-width="1.6"/><rect x="1" y="1" width="20" height="6" rx="3" fill="#8FD3E8" stroke="#16323F" stroke-width="1.6"/></svg>
+        <span style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;color:#16323F">sealed <em style="font-weight:400;color:#2E7A99">&amp;</em> co.</span>
+      </div>
+    </div>
+    <div class="cell" style="background:#F5F1E8">
+      <span class="tag">7 · cream soda</span>
+      <div class="lock">
+        <svg width="24" height="32" viewBox="0 0 22 30"><rect x="3" y="7" width="18" height="22" rx="6" fill="#8FD3E8"/><rect x="2" y="6" width="18" height="22" rx="6" fill="#E85D9A" stroke="#221F17" stroke-width="2"/><rect x="1" y="1" width="20" height="6" rx="3" fill="#8FD3E8" stroke="#221F17" stroke-width="2"/></svg>
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;color:#221F17">sealed <span style="color:#E85D9A">&amp;</span> co<span style="color:#3FA7CC">.</span></span>
+      </div>
+    </div>
+    <div class="cell" style="background:#F5F1E8">
+      <span class="tag">8 · poster pop</span>
+      <div class="lock">
+        <svg width="24" height="32" viewBox="0 0 22 30"><rect x="4" y="8" width="18" height="22" fill="#E85D9A"/><rect x="2" y="6" width="18" height="22" fill="#C6E86D" stroke="#221F17" stroke-width="2"/><rect x="1" y="1" width="20" height="6" fill="#221F17"/></svg>
+        <span style="font-family:Anton,sans-serif;font-size:20px;letter-spacing:.03em;color:#221F17">SEALED <span style="color:#E85D9A">&amp;</span> CO.</span>
+      </div>
+    </div>
+    <div class="cell" style="background:#F7F3E9">
+      <span class="tag">9 · sunny club</span>
+      <div class="lock">
+        <svg width="24" height="32" viewBox="0 0 22 30"><rect x="2" y="6" width="18" height="22" rx="7" fill="#8FD3E8" stroke="#1F3C4A" stroke-width="2"/><rect x="1" y="1" width="20" height="6" rx="3" fill="#F5D66D" stroke="#1F3C4A" stroke-width="2"/></svg>
+        <span style="font-family:Gabarito,sans-serif;font-weight:900;font-size:22px;color:#1F3C4A">sealed <span style="color:#E0AF1F">&amp;</span> co.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

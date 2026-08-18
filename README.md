@@ -59,7 +59,7 @@ version was deployed briefly, then reverted).
 | product | e-transfer | card (3% baked in) |
 |---|---|---|
 | signature package | $2,399 | $2,471 |
-| basic package | $1,999 | $2,059 |
+| basic package | $1,699 | $1,750 · save $101 vs parts |
 | machine only | $1,400 | $1,442 |
 | cans — 200 pack | $400 | $412 |
 

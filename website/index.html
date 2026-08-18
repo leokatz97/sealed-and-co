@@ -178,7 +178,7 @@ footer .logo{display:inline-flex;align-items:center}
 .prod-info li::before{content:"";flex:none;width:13px;height:13px;border-radius:5px;background:var(--ink);margin-top:5px}
 .variant{display:flex;gap:10px;margin-top:20px}
 .variant button{flex:1;border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--cream);font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:14px;cursor:pointer;color:var(--ink)}
-.variant button.on{background:var(--lime)}
+.variant button.on{background:var(--lime);border-color:var(--lime)}
 .qtyrow{display:flex;align-items:center;gap:14px;margin-top:22px}
 .stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--cream)}
 .stepper button{width:42px;height:42px;border:none;background:none;font-size:20px;font-weight:700;cursor:pointer;color:var(--ink)}
@@ -353,7 +353,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
         </div>
         <div class="cta-row">
           <a class="btn" href="#order" data-goto="order">order your starter package</a>
-          <span class="price-line">from $1,999 · one-time · toronto</span>
+          <span class="price-line">from $1,699 · one-time · toronto</span>
         </div>
       </div>
       <div class="photo hero-img">
@@ -551,6 +551,10 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
 <!-- ============ shop ============ -->
 <section class="panel" id="panel-order" role="tabpanel" aria-labelledby="tab-order" hidden>
   <div class="wrap">
+    <div id="orderBanner" style="display:none;background:var(--sky);border:1px solid var(--line);border-radius:10px;padding:22px 24px;margin-bottom:34px">
+      <p style="font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.04em">order received - thank you.</p>
+      <p style="margin-top:6px;font-size:14px">your payment went through and a receipt is on its way to your inbox. we'll reach out within 24 hours to arrange delivery and setup.</p>
+    </div>
     <div class="panel-head">
       <h2>shop sealed &amp; co.</h2>
       <p>one-time cost. no fees, no contracts - you own everything. add to cart, review, and check out when you're ready.</p>
@@ -563,7 +567,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
         <div class="photo" data-goto="p-signature"><img src="img/captain-lineup.jpg" alt="A lineup of clear cans printed with a cafe's own branding" loading="lazy"></div>
         <div class="body">
           <h3>signature package</h3>
-          <div class="prices"><span class="p-main">$2,399</span><span class="p-sub">e-transfer · $2,471 by card</span></div>
+          <div class="prices"><span class="p-main">$2,399</span><span class="p-sub">e-transfer · $2,471 by card · $2,500 value</span></div>
           <p class="blurb">the machine, 200 cans printed with your logo, lids, and label design. everything to launch your line.</p>
           <div class="row">
             <button class="btn" data-add="signature">add to cart</button>
@@ -576,7 +580,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
         <div class="photo" data-goto="p-basic"><img src="img/hero-cans.jpg" alt="Two clear cans of green smoothie on a marble counter" loading="lazy"></div>
         <div class="body">
           <h3>basic package</h3>
-          <div class="prices"><span class="p-main">$1,999</span><span class="p-sub">e-transfer · $2,059 by card</span></div>
+          <div class="prices"><span class="p-main">$1,699</span><span class="p-sub">e-transfer · $1,750 by card · save $101 vs buying separately</span></div>
           <p class="blurb">the machine plus 200 blank cans and lids. bring your own labels, or add branding later.</p>
           <div class="row">
             <button class="btn" data-add="basic">add to cart</button>
@@ -635,7 +639,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
       <div class="photo prod-img"><img src="img/steel-matcha.jpg" alt="Two branded matcha cans on a steel table" loading="lazy"></div>
       <div class="prod-info">
         <h2>signature package</h2>
-        <div class="prices"><span class="p-main">$2,399</span><span class="p-sub">e-transfer · $2,471 by card</span></div>
+        <div class="prices"><span class="p-main">$2,399</span><span class="p-sub">e-transfer · $2,471 by card · $2,500 value</span></div>
         <ul>
           <li>commercial can sealing machine - white or black</li>
           <li><strong>200 clear tall cans, printed with your logo</strong></li>
@@ -643,6 +647,10 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <li>label design included - send a logo, approve the proof</li>
           <li>seals any drink you already make in about 3 seconds</li>
         </ul>
+        <div class="variant" data-colour-for="signature">
+          <button class="on" data-colour="white">white machine</button>
+          <button data-colour="black">black machine</button>
+        </div>
         <div class="qtyrow"><span style="font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:14px">qty</span>
           <div class="stepper"><button data-q="-1">−</button><span id="qty-signature">1</span><button data-q="1">+</button></div>
         </div>
@@ -660,13 +668,17 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
       <div class="photo prod-img"><img src="img/hero-cans.jpg" alt="Two clear cans of green smoothie on a marble counter" loading="lazy"></div>
       <div class="prod-info">
         <h2>basic package</h2>
-        <div class="prices"><span class="p-main">$1,999</span><span class="p-sub">e-transfer · $2,059 by card</span></div>
+        <div class="prices"><span class="p-main">$1,699</span><span class="p-sub">e-transfer · $1,750 by card · save $101 vs buying separately</span></div>
         <ul>
           <li>commercial can sealing machine - white or black</li>
           <li>200 clear tall cans, blank</li>
           <li>200 aluminum lids</li>
           <li>upgrade to printed cans any time with a branded refill pack</li>
         </ul>
+        <div class="variant" data-colour-for="basic">
+          <button class="on" data-colour="white">white machine</button>
+          <button data-colour="black">black machine</button>
+        </div>
         <div class="qtyrow"><span style="font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:14px">qty</span>
           <div class="stepper"><button data-q="-1">−</button><span id="qty-basic">1</span><button data-q="1">+</button></div>
         </div>
@@ -686,11 +698,15 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
         <h2>machine only</h2>
         <div class="prices"><span class="p-main">$1,400</span><span class="p-sub">e-transfer · $1,442 by card</span></div>
         <ul>
-          <li>commercial can sealer - choose white or black at checkout</li>
+          <li>commercial can sealer - white or black, pick above</li>
           <li>fits cans 2.4" to 6.7"</li>
           <li>seals airtight in about 3 seconds, one press</li>
           <li>you own it outright - no fees, no contracts</li>
         </ul>
+        <div class="variant" data-colour-for="machine">
+          <button class="on" data-colour="white">white machine</button>
+          <button data-colour="black">black machine</button>
+        </div>
         <div class="qtyrow"><span style="font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:14px">qty</span>
           <div class="stepper"><button data-q="-1">−</button><span id="qty-machine">1</span><button data-q="1">+</button></div>
         </div>
@@ -858,7 +874,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
 /* ---------- catalog ---------- */
 const PRODUCTS = {
   'signature':    {name:'signature package',            price:2399, card:2471, img:'img/captain-lineup.jpg', priceId:'price_1U5aMWH7FooXMM91vzo24eNq', plink:'https://buy.stripe.com/00w9AT53K04e2ww6vCaAw00'},
-  'basic':        {name:'basic package',                 price:1999, card:2059, img:'img/hero-cans.jpg',      priceId:'price_1U5aMkH7FooXMM913ShzlTUr', plink:'https://buy.stripe.com/7sY14n7bS2cmgnm4nuaAw01'},
+  'basic':        {name:'basic package',                 price:1699, card:1750, img:'img/hero-cans.jpg',      priceId:'price_1U5aMkH7FooXMM913ShzlTUr', plink:'https://buy.stripe.com/7sY14n7bS2cmgnm4nuaAw01'},
   'machine':      {name:'machine only',                  price:1400, card:1442, img:'img/machine-white.jpg',  priceId:'price_1U5aWBH7FooXMM91QjonZ8K8', plink:'https://buy.stripe.com/6oU28rbs84ku0oo4nuaAw05'},
   'cans-blank':   {name:'cans - 200 pack',               price:400,  card:412,  img:'img/apero-ice.jpg',        priceId:'price_1U5aMyH7FooXMM91QyQjUqKR', plink:'https://buy.stripe.com/aFa3cvbs8dV47QQ4nuaAw02'}
 };
@@ -923,12 +939,25 @@ try { cart = JSON.parse(localStorage.getItem('sc_cart') || '[]').filter(it => PR
 function saveCart() { localStorage.setItem('sc_cart', JSON.stringify(cart)); updateCartBtn(); }
 function cartQty() { return cart.reduce((s, it) => s + it.qty, 0); }
 function updateCartBtn() { document.getElementById('cartCount').textContent = String(cartQty()); }
+const MACHINE_ITEMS = ['signature', 'basic', 'machine'];
+const colourState = {signature: 'white', basic: 'white', machine: 'white'};
+document.querySelectorAll('.variant[data-colour-for]').forEach(v => {
+  v.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    colourState[v.dataset.colourFor] = b.dataset.colour;
+    v.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  }));
+});
 function addToCart(id, qty) {
   qty = Math.max(1, qty | 0);
-  const row = cart.find(it => it.id === id);
-  if (row) row.qty = Math.min(99, row.qty + qty); else cart.push({id, qty});
+  const colour = MACHINE_ITEMS.includes(id) ? (colourState[id] || 'white') : null;
+  const row = cart.find(it => it.id === id && (it.colour || null) === colour);
+  if (row) row.qty = Math.min(99, row.qty + qty); else cart.push(colour ? {id, qty, colour} : {id, qty});
   saveCart();
   showTab('cart');
+}
+function cartColour(i, colour) {
+  cart[i].colour = colour;
+  saveCart(); renderCart();
 }
 document.getElementById('cartBtn').addEventListener('click', () => showTab('cart'));
 
@@ -964,7 +993,10 @@ function renderCart() {
     card += p.card * it.qty; et += p.price * it.qty;
     return '<div class="cartrow">' +
       '<img class="thumb" src="' + p.img + '" alt="">' +
-      '<div><div class="nm">' + p.name + '</div><div style="font-size:12.5px;opacity:.7">' + money(p.price) + ' e-transfer · ' + money(p.card) + ' card</div></div>' +
+      '<div><div class="nm">' + p.name + '</div><div style="font-size:12.5px;opacity:.7">' + money(p.price) + ' e-transfer · ' + money(p.card) + ' card</div>' +
+        (it.colour ? '<div style="margin-top:6px;display:flex;gap:6px;align-items:center;font-size:11px"><span style="opacity:.6">machine:</span>' +
+          ['white','black'].map(c => '<button onclick="cartColour(' + i + ',\'' + c + '\')" style="border:1px solid var(--line);border-radius:6px;padding:2px 9px;cursor:pointer;font-family:Hanken Grotesk,sans-serif;font-weight:800;font-size:10px;text-transform:uppercase;background:' + (it.colour === c ? 'var(--lime)' : 'var(--cream)') + ';color:var(--ink)">' + c + '</button>').join('') +
+        '</div>' : '') + '</div>' +
       '<div class="stepper"><button onclick="cartStep(' + i + ',-1)">−</button><span>' + it.qty + '</span><button onclick="cartStep(' + i + ',1)">+</button></div>' +
       '<div class="ln">' + money(p.card * it.qty) + '</div>' +
       '<button class="rm" onclick="cartRemove(' + i + ')" aria-label="remove">×</button>' +
@@ -1007,13 +1039,22 @@ function renderCart() {
     e.preventDefault();
     const fd = new FormData(etForm);
     fd.append('_subject', 'E-TRANSFER ORDER REQUEST - sealed & co.');
-    fd.append('order', cart.map(it => PRODUCTS[it.id].name + ' x' + it.qty).join(', '));
+    fd.append('order', cart.map(it => PRODUCTS[it.id].name + (it.colour ? ' (' + it.colour + ' machine)' : '') + ' x' + it.qty).join(', '));
     fd.append('etransfer_total', document.querySelectorAll('.totalcard .line')[1].innerText);
     const sb = etForm.querySelector('button'); sb.textContent = 'sending…'; sb.disabled = true;
     try {
       const res = await fetch('https://formspree.io/f/mwleqded', {method: 'POST', body: fd, headers: {'Accept': 'application/json'}});
       if (!res.ok) throw 0;
-      document.getElementById('etBox').innerHTML = '<p style="font-family:Hanken Grotesk,sans-serif;font-weight:700;font-size:15px">order request received.</p><p style="margin-top:6px">check your email - we\'ll reach out shortly to confirm your order and arrange the e-transfer. your cart stays saved until then.</p>';
+      document.getElementById('cartBody').innerHTML = '<div class="cart-empty" style="text-align:left;max-width:620px">' +
+        '<p class="eyebrow">order request received</p>' +
+        '<h3 style="font-size:clamp(24px,3vw,32px);margin-top:10px">you\'re almost sealed.</h3>' +
+        '<div style="margin-top:18px;display:flex;flex-direction:column;gap:12px;font-size:14.5px">' +
+        '<p><strong>1.</strong> check your inbox - a confirmation email is on its way.</p>' +
+        '<p><strong>2.</strong> we\'ll call or text to confirm your order and answer anything.</p>' +
+        '<p><strong>3.</strong> we\'ll send the e-transfer details. once it lands, we schedule your delivery.</p>' +
+        '</div>' +
+        '<p style="margin-top:18px;font-size:13px;opacity:.75">your cart stays saved until everything is confirmed.</p>' +
+        '<button class="btn ghost" data-goto="what" style="margin-top:20px">back to the site</button></div>';
     } catch {
       sb.textContent = 'try again'; sb.disabled = false;
       alert('something went wrong - email us at leokat97@gmail.com');
@@ -1027,7 +1068,7 @@ window.cartRemove = (i) => { cart.splice(i, 1); saveCart(); renderCart(); };
 async function checkoutCard() {
   const btn = document.getElementById('checkoutCard');
   btn.textContent = 'opening checkout…'; btn.disabled = true;
-  const items = cart.map(it => ({price: PRODUCTS[it.id].priceId, qty: it.qty}));
+  const items = cart.map(it => ({price: PRODUCTS[it.id].priceId, qty: it.qty, colour: it.colour || undefined}));
   try {
     const r = await fetch('/api/checkout', {
       method: 'POST',
@@ -1038,19 +1079,14 @@ async function checkoutCard() {
     if (d && d.url) { window.open(d.url, '_blank'); resetBtn(); return; }
     throw new Error('no url');
   } catch {
-    // fallback: single-product carts use the prebuilt payment link
-    if (cart.length === 1) {
-      window.open(PRODUCTS[cart[0].id].plink, '_blank');
-    } else {
-      alert('combined card checkout is almost ready - for a multi-item order, pay by e-transfer (you save 3%) or contact us and we\'ll send one card link for everything.');
-    }
+    alert('card checkout hit a hiccup - try again in a minute, or pay by e-transfer (you save 3%) and we\'ll sort it out.');
     resetBtn();
   }
   function resetBtn() { btn.disabled = false; renderCart(); }
 }
 
 /* clear the cart when stripe redirects back after payment */
-if (location.hash === '#thanks') { cart = []; saveCart(); }
+if (location.hash === '#thanks') { cart = []; saveCart(); document.getElementById('orderBanner').style.display = 'block'; }
 updateCartBtn();
 /* newsletter signup (footer) */
 const newsForm = document.getElementById('newsForm');

@@ -1,21 +1,22 @@
-// creates a Stripe Checkout Session for the cart, so multi-item card orders work.
-// needs STRIPE_SECRET_KEY set in Vercel project env vars (the site owner adds it in
-// the Vercel dashboard - it is never exposed to the browser).
+// creates a Stripe Checkout Session for the cart. product names, prices, and
+// descriptions are defined HERE (inline price_data) so the site and checkout
+// can never disagree. colour is chosen on the site and carried into the order.
 
-const ALLOWED_PRICES = new Set([
-  'price_1U5aMWH7FooXMM91vzo24eNq', // signature
-  'price_1U5aMkH7FooXMM913ShzlTUr', // basic
-  'price_1U5aWBH7FooXMM91QjonZ8K8', // machine only
-  'price_1U5aMyH7FooXMM91QyQjUqKR', // cans blank
-  'price_1U5aNCH7FooXMM910AuFuNyY', // cans branded
-]);
-
-// prices whose products include a machine - these carts get the colour picker
-const MACHINE_PRICES = new Set([
-  'price_1U5aMWH7FooXMM91vzo24eNq',
-  'price_1U5aMkH7FooXMM913ShzlTUr',
-  'price_1U5aWBH7FooXMM91QjonZ8K8',
-]);
+const CATALOG = {
+  'price_1U5aMWH7FooXMM91vzo24eNq': { key: 'signature', name: 'signature package', amount: 247100, machine: true,
+    img: 'https://sealedandco.ca/img/captain-lineup.jpg',
+    desc: 'the machine + cans printed with your logo + lids + label design\nsave 3% by paying e-transfer instead\ncard price includes 3% processing' },
+  'price_1U5aMkH7FooXMM913ShzlTUr': { key: 'basic', name: 'basic package', amount: 175000, machine: true,
+    img: 'https://sealedandco.ca/img/hero-cans.jpg',
+    desc: 'the machine + blank cans + lids\nsave $101 vs buying separately\ncard price includes 3% processing' },
+  'price_1U5aWBH7FooXMM91QjonZ8K8': { key: 'machine', name: 'machine only', amount: 144200, machine: true,
+    img: 'https://sealedandco.ca/img/machine-white.jpg',
+    desc: 'fits cans 2.4" to 6.7"\nseals airtight in about 3 seconds\nyou own it outright - no fees, no contracts\ncard price includes 3% processing' },
+  'price_1U5aMyH7FooXMM91QyQjUqKR': { key: 'cans', name: 'cans - 200 pack', amount: 41200, machine: false,
+    img: 'https://sealedandco.ca/img/apero-ice.jpg',
+    desc: 'clear tall cans + aluminum lids\ncard price includes 3% processing' },
+};
+const COLOURS = new Set(['white', 'black']);
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'method' });
@@ -28,7 +29,7 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'bad-items' });
   }
   for (const it of items) {
-    if (!ALLOWED_PRICES.has(it.price)) return res.status(400).json({ error: 'bad-price' });
+    if (!CATALOG[it.price]) return res.status(400).json({ error: 'bad-price' });
   }
 
   const origin = req.headers.origin || 'https://sealedandco.ca';
@@ -41,7 +42,6 @@ module.exports = async (req, res) => {
   p.set('payment_method_types[0]', 'card');
   p.set('payment_method_types[1]', 'link');
   p.set('payment_intent_data[statement_descriptor]', 'SEALED AND CO');
-  p.set('payment_intent_data[description]', 'sealed & co. - online order');
   p.set('invoice_creation[enabled]', 'true');
   p.set('invoice_creation[invoice_data][description]',
     "thanks for building your brand with sealed & co. - your order is confirmed and we'll reach out within 24 hours.");
@@ -52,24 +52,23 @@ module.exports = async (req, res) => {
   p.set('custom_fields[0][label][custom]', 'business name');
   p.set('custom_fields[0][type]', 'text');
 
-  let hasMachine = false;
+  const colourNotes = [];
   items.forEach((it, i) => {
-    if (MACHINE_PRICES.has(it.price)) hasMachine = true;
+    const c = CATALOG[it.price];
     const qty = Math.min(99, Math.max(1, it.qty | 0));
-    p.set(`line_items[${i}][price]`, it.price);
+    const colour = c.machine && COLOURS.has(it.colour) ? it.colour : (c.machine ? 'white' : null);
+    const name = colour ? c.name + ' \u00b7 ' + colour + ' machine' : c.name;
+    if (colour) colourNotes.push(c.name + ': ' + colour);
+    p.set(`line_items[${i}][price_data][currency]`, 'cad');
+    p.set(`line_items[${i}][price_data][unit_amount]`, String(c.amount));
+    p.set(`line_items[${i}][price_data][product_data][name]`, name);
+    p.set(`line_items[${i}][price_data][product_data][description]`, c.desc);
+    p.set(`line_items[${i}][price_data][product_data][images][0]`, c.img);
     p.set(`line_items[${i}][quantity]`, String(qty));
   });
-
-  if (hasMachine) {
-    p.set('custom_fields[1][key]', 'machine_colour');
-    p.set('custom_fields[1][label][type]', 'custom');
-    p.set('custom_fields[1][label][custom]', 'machine colour');
-    p.set('custom_fields[1][type]', 'dropdown');
-    p.set('custom_fields[1][dropdown][options][0][label]', 'white');
-    p.set('custom_fields[1][dropdown][options][0][value]', 'white');
-    p.set('custom_fields[1][dropdown][options][1][label]', 'black');
-    p.set('custom_fields[1][dropdown][options][1][value]', 'black');
-  }
+  const orderDesc = 'sealed & co. - online order' + (colourNotes.length ? ' (' + colourNotes.join(', ') + ')' : '');
+  p.set('payment_intent_data[description]', orderDesc.slice(0, 900));
+  if (colourNotes.length) p.set('metadata[machine_colour]', colourNotes.join(', ').slice(0, 480));
 
   try {
     const r = await fetch('https://api.stripe.com/v1/checkout/sessions', {

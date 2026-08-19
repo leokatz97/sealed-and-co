@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
   const origin = req.headers.origin || 'https://sealedandco.ca';
   const p = new URLSearchParams();
   p.set('mode', 'payment');
-  p.set('success_url', origin + '/#thanks');
+  p.set('success_url', origin + '/?sid={CHECKOUT_SESSION_ID}#thanks');
   p.set('cancel_url', origin + '/#cart');
   p.set('phone_number_collection[enabled]', 'true');
   p.set('shipping_address_collection[allowed_countries][0]', 'CA');
@@ -66,6 +66,9 @@ module.exports = async (req, res) => {
     p.set(`line_items[${i}][price_data][product_data][images][0]`, c.img);
     p.set(`line_items[${i}][quantity]`, String(qty));
   });
+  const designId = typeof (req.body && req.body.designId) === 'string' && /^dsn_[a-z0-9]+$/.test(req.body.designId) ? req.body.designId : null;
+  if (designId) p.set('metadata[design_id]', designId);
+
   const orderDesc = 'sealed & co. - online order' + (colourNotes.length ? ' (' + colourNotes.join(', ') + ')' : '');
   p.set('payment_intent_data[description]', orderDesc.slice(0, 900));
   if (colourNotes.length) p.set('metadata[machine_colour]', colourNotes.join(', ').slice(0, 480));

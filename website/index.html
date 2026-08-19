@@ -1014,6 +1014,7 @@ function renderCart() {
         '<p style="font-size:13px;margin-top:14px">questions before you order? <button class="backlink" data-goto="contact">contact us</button> - we reply within 24 hours.</p>' +
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:12px">' +
+        (cartNeedsDesign() ? designBlockHtml() : '') +
         '<button class="btn" id="checkoutCard">checkout with card - ' + money(card) + '</button>' +
         '<button class="btn ghost" id="checkoutEt">pay by e-transfer - ' + money(et) + '</button>' +
         '<div id="etBox" style="display:none;background:var(--cream2);border:1px solid var(--line);border-radius:16px;padding:18px;font-size:13px">' +
@@ -1030,6 +1031,7 @@ function renderCart() {
       '</div>' +
     '</div>';
   document.getElementById('checkoutCard').addEventListener('click', checkoutCard);
+  wireDesignBox();
   document.getElementById('checkoutEt').addEventListener('click', () => {
     const box = document.getElementById('etBox');
     box.style.display = box.style.display === 'none' ? 'block' : 'none';
@@ -1041,6 +1043,7 @@ function renderCart() {
     fd.append('_subject', 'E-TRANSFER ORDER REQUEST - sealed & co.');
     fd.append('order', cart.map(it => PRODUCTS[it.id].name + (it.colour ? ' (' + it.colour + ' machine)' : '') + ' x' + it.qty).join(', '));
     fd.append('etransfer_total', document.querySelectorAll('.totalcard .line')[1].innerText);
+    const dz = getDesign(); if (cartNeedsDesign() && dz) fd.append('design', dz.designId + ' (' + dz.filename + ')');
     const sb = etForm.querySelector('button'); sb.textContent = 'sending…'; sb.disabled = true;
     try {
       const res = await fetch('https://formspree.io/f/mwleqded', {method: 'POST', body: fd, headers: {'Accept': 'application/json'}});
@@ -1065,6 +1068,46 @@ window.cartStep = (i, d) => { cart[i].qty = Math.min(99, Math.max(1, cart[i].qty
 window.cartRemove = (i) => { cart.splice(i, 1); saveCart(); renderCart(); };
 
 /* ---------- card checkout: stripe opens in a NEW TAB ---------- */
+/* ---------- design upload (cart) ---------- */
+const DESIGN_ITEMS = ['signature'];
+function getDesign() { try { return JSON.parse(localStorage.getItem('sc_design') || 'null'); } catch { return null; } }
+function setDesign(d) { if (d) localStorage.setItem('sc_design', JSON.stringify(d)); else localStorage.removeItem('sc_design'); }
+function cartNeedsDesign() { return cart.some(it => DESIGN_ITEMS.includes(it.id)); }
+function designBlockHtml() {
+  const d = getDesign();
+  return '<div id="designBox" style="background:var(--cream2);border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-size:13px">' +
+    '<p style="font-family:Hanken Grotesk,sans-serif;font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase">your label design</p>' +
+    (d
+      ? '<p style="margin-top:8px">&#10003; <strong>' + d.filename + '</strong> uploaded. we review every design before it prints.</p>' +
+        '<button class="backlink" id="designClear" style="margin-top:6px">use a different file</button>'
+      : '<p style="margin-top:8px">png, svg, or pdf - under 4mb, at least 500px. we review it before anything prints.</p>' +
+        '<input type="file" id="designFile" accept=".png,.svg,.pdf" style="margin-top:10px;font-size:12.5px;width:100%">' +
+        '<p id="designMsg" style="margin-top:8px;font-weight:600;display:none"></p>' +
+        '<p style="margin-top:10px;opacity:.7">no file handy? check out anyway - we\'ll ask for it by email right after.</p>') +
+    '</div>';
+}
+function wireDesignBox() {
+  const clear = document.getElementById('designClear');
+  if (clear) clear.addEventListener('click', () => { setDesign(null); renderCart(); });
+  const inp = document.getElementById('designFile');
+  if (inp) inp.addEventListener('change', async () => {
+    const f = inp.files && inp.files[0];
+    if (!f) return;
+    const msg = document.getElementById('designMsg');
+    msg.style.display = 'block'; msg.textContent = 'uploading...';
+    try {
+      const r = await fetch('/api/upload?name=' + encodeURIComponent(f.name), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/octet-stream' },
+        body: f,
+      });
+      const d = await r.json();
+      if (r.ok && d.designId) { setDesign({ designId: d.designId, filename: d.filename }); renderCart(); return; }
+      msg.textContent = d.message || 'upload failed - try again, or check out and email it after.';
+    } catch { msg.textContent = 'upload failed - try again, or check out and email it after.'; }
+  });
+}
+
 async function checkoutCard() {
   const btn = document.getElementById('checkoutCard');
   btn.textContent = 'opening checkout…'; btn.disabled = true;
@@ -1073,7 +1116,7 @@ async function checkoutCard() {
     const r = await fetch('/api/checkout', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({items})
+      body: JSON.stringify({items, designId: (cartNeedsDesign() && getDesign() || {}).designId})
     });
     const d = await r.json();
     if (d && d.url) { window.open(d.url, '_blank'); resetBtn(); return; }
@@ -1086,7 +1129,16 @@ async function checkoutCard() {
 }
 
 /* clear the cart when stripe redirects back after payment */
-if (location.hash === '#thanks') { cart = []; saveCart(); document.getElementById('orderBanner').style.display = 'block'; }
+if (location.hash === '#thanks') {
+  cart = []; saveCart();
+  document.getElementById('orderBanner').style.display = 'block';
+  const sid = new URLSearchParams(location.search).get('sid');
+  if (sid) {
+    fetch('/api/confirm?sid=' + encodeURIComponent(sid)).catch(() => {});
+    history.replaceState(null, '', '/#thanks');
+  }
+  try { localStorage.removeItem('sc_design'); } catch {}
+}
 updateCartBtn();
 /* newsletter signup (footer) */
 const newsForm = document.getElementById('newsForm');

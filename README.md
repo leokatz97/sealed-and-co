@@ -6,7 +6,10 @@ Everything for the business lives here.
 
 - **website/** — the live site (sealedandco.ca). Edit `index.html`, then deploy.
 - **website/img/** — every photo on the site.
-- **website/api/checkout.js** — the card checkout engine (needs STRIPE_SECRET_KEY in Vercel).
+- **website/api/checkout.js** — card checkout engine. Prices + product copy live HERE (inline price_data), so the site and Stripe can never disagree. Needs STRIPE_SECRET_KEY.
+- **website/api/upload.js** — design upload. Validates type (png/svg/pdf), size (<4MB), and PNG resolution (>=500px short side); stores in Vercel Blob under a new `dsn_...` id.
+- **website/api/confirm.js** — after payment, verifies the session with Stripe, writes `orders/SC-XXXX.json` to Blob, and emails the order sheet (with art link) to the Formspree inbox. Idempotent per session.
+- **labels/ORDERING-SYSTEM.md** — the ordering-system audit, scenario map, system design, and build slices. Read this before touching the order flow.
 - **brand/** — logo files (`wordmark.png`, `icon.png` — upload in Stripe → Settings → Branding) plus every design exploration: style-options (9 directions), style-variants, style-8b-remixes, inspo-templates (erewhon/alfred/chacha/forma), template1-blue, mix-erewhon-chacha (Mix 2 = the LIVE style), canada-options (leaf option 5 = live).
 - **invoices/** — `invoice-template.html`, the branded invoice for e-transfer sales. Open, fill in, print to PDF.
 
@@ -84,7 +87,14 @@ Branded cans ($500/$515) are archived in Stripe — reactivate when printing is 
 - Lock supplier lead times for machines and cans
 - Land one pilot cafe → testimonial + real photos
 
-### Decisions to make
+### Decisions to make (ordering system — see labels/ORDERING-SYSTEM.md)
+- Sticker size / dieline for the 330ml tall can (front sticker vs full wrap)
+- Sign off tier prices: cans 250 $475 · sticker pack 250 $225 · peel & stick $650 · ready to pour $800 · rush +$125
+- Buy a manual round-container label applicator jig (~$150-300) before order #1
+- Approve the promise wording: "1 week from art approval, guaranteed under 2"
+- Accept .jpg uploads too?
+
+### Other decisions
 - Product name for the machine (shortlist: the seal bar · sealé · the stamp · the S1)
 - FAQ: 3 open answers — machine size/plug, hot drinks yes/no, is label design included in signature
 - Comparison table: approved concept = DIY import vs co-packer vs sealed & co. (say go)

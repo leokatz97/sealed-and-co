@@ -9,6 +9,7 @@ Everything for the business lives here.
 - **website/api/checkout.js** — the card checkout engine (needs STRIPE_SECRET_KEY in Vercel).
 - **brand/** — logo files (`wordmark.png`, `icon.png` — upload in Stripe → Settings → Branding) plus every design exploration: style-options (9 directions), style-variants, style-8b-remixes, inspo-templates (erewhon/alfred/chacha/forma), template1-blue, mix-erewhon-chacha (Mix 2 = the LIVE style), canada-options (leaf option 5 = live).
 - **invoices/** — `invoice-template.html`, the branded invoice for e-transfer sales. Open, fill in, print to PDF.
+- **labels/** — the custom-label business: `SUPPLIERS.md` (supplier research, quote status — 9 vendors emailed Aug 19 2026, pricing, API landscape), `ORDERING-PLAN.md` (decided fulfilment flow: cans + labels ship to Leo → label → box with machine → handoff; 1-week goal; ordering-system requirements), `NEXT-SESSION-PROMPT.md` (paste into a new session to redesign the ordering system).
 
 ## How to deploy the website
 
@@ -83,6 +84,7 @@ Branded cans ($500/$515) are archived in Stripe — reactivate when printing is 
 - Business email on sealedandco.ca (Google Workspace ~$8/mo or improvmx.com forwarding)
 - Lock supplier lead times for machines and cans
 - Land one pilot cafe → testimonial + real photos
+- Chase label supplier quotes (~Aug 22) — see labels/SUPPLIERS.md
 
 ### Decisions to make
 - Product name for the machine (shortlist: the seal bar · sealé · the stamp · the S1)

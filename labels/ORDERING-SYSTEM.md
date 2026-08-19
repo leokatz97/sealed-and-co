@@ -165,21 +165,31 @@ more robustly (survives closed tabs) — add it when dashboard access is back; t
 endpoint stays as backup. Closed-tab risk is acceptable interim: the payment still exists
 in Stripe, nothing is lost but automation.
 
-PRICING PROPOSAL (e-transfer base · card = ×1.03; label COGS $0.45 avg incl. overage;
-applying labour inside the pre-applied gap). PENDING real quotes from SUPPLIERS.md:
-- machine only .................... $1,400 · $1,442 (unchanged)
-- cans — 250 pack, blank .......... $475 · $489
-- sticker pack — 250 custom ....... $225 · $232 approved, but see PRICING FLAG: $295 fits
-                                     your own $1.25/can floor (COGS ~$110)
-- peel & stick bundle (250+250) ... $650 · $670   (save $50 vs parts)
-- ready to pour (pre-applied) ..... $800 · $824   (+$150 applying gap)
-- basic package (machine + blank cans) $1,699 · $1,750 (unchanged, still saves vs parts)
-- signature package (machine + ready-to-pour + design help) $2,399 · $2,471 (unchanged!)
-- rush ............................ +$125 flat, on request
-Nice property: both flagship prices survive; the mid-tier ladder gets filled in.
+MODEL SIMPLIFIED (Leo, Aug 19 2026): we do NOT sell sticker packs. Customers choose
+blank cans or branded cans; when they choose branded, the label cost + margin + applying
+labour is baked into the can price. Every order therefore ships to Leo. No dropship tier,
+no self-apply tier, no instruction card, no reorder-stickers-alone SKU. Pack size stays
+200. Delivery promise: 5-7 business days (from ART APPROVAL on branded orders).
 
-REORDERS: designId doubles as the reorder key. Handoff email includes
-sealedandco.ca/?d=dsn_xxx#reorder → prefilled sticker-pack purchase. (Slice 4.)
+PRICING (LIVE as of Aug 19 2026; e-transfer base, card = x1.03):
+- machine only ......................... $1,400 · $1,442
+- cans - 200 pack, blank ............... $400 · $412
+- cans - 200 pack, your branding ....... $775 · $798   NEW
+- basic package (machine + blank cans) . $1,699 · $1,750   (saves $101 vs $1,800 of parts)
+- signature (machine + branded + design) $2,399 · $2,471  ($2,475 of parts, saves $76)
+Branded-can margin check, from SUPPLIERS.md's own numbers: 200 labels cost ~$90-130 with
+white ink and 10-15% overage; branding at $375 over the blank price is $1.88/can, inside
+SUPPLIERS.md's $1.75-2.25/can for applied branding. Applying 200 spot stickers is ~35-45
+min by hand, no jig.
+WATCH THIS: signature only still clears its own parts because it includes label DESIGN
+work (we draw it for them) valued around $300. If design help is ever dropped from
+signature, its parts fall to $2,175 and $2,399 becomes more expensive than buying the
+pieces - the exact trap basic was in. Keep design in signature, or reprice it.
+
+REORDERS: a reorder is another 200-can branded pack, not a sticker pack. designId is
+still the key: the handoff email carries a link that pre-loads their design so the repeat
+purchase is two minutes and the art never gets re-uploaded. Ships to Leo like any other
+order. (Slice 4.)
 
 PHASE 1 → PHASE 2 SUPPLIER SWAP: order-sheet email today; a suppliers.js module with
 orderLabels(order)/orderCans(order) stubs so SinaLite (label runs to Leo) and
@@ -188,9 +198,10 @@ APIs need (art URL, dieline, qty, ship-to) is already in the order record.
 
 ## 4. BUILD SLICES
 
-- SLICE 0 — model alignment (copy + tiers + policies): 250-can copy, new tier products
-  on site + in checkout catalog, custom-goods refund carve-out, "1 week from art
-  approval" promise. BLOCKED ON: Leo's tier-price sign-off + sticker dimensions. ~2h.
+- SLICE 0 — model alignment: DONE Aug 19 2026. Branded-can product live on site + in the
+  catalog, 5-7 business day promise everywhere, dropship tier removed, dead payment links
+  deleted. STILL TO DO in this slice: the custom-goods refund carve-out on the policies
+  page (no refunds once labels print, defect reprints excepted).
 - SLICE 1 — take order #1 properly (BUILT Aug 19): art upload in cart → Blob;
   designId through Stripe metadata; /api/confirm writes order JSON + emails Leo the
   order sheet with art link; thanks page fires it. ~4h.
@@ -198,9 +209,10 @@ APIs need (art URL, dieline, qty, ship-to) is already in the order record.
   links + customer status page. ~2–3h.
 - SLICE 3 — admin page (list orders, advance states, ADMIN_TOKEN) + status emails on
   state change. ~3h.
-- SLICE 4 — reorder links + sticker-pack product live. ~2h.
-- SLICE 5 (Phase 2) — SinaLite API ordering, Printful/Prodigi dropship, Stripe webhook
-  hardening, client-side big-file uploads. ~1–2 days, gated on API credentials.
+- SLICE 4 — reorder links (branded-can repeat purchase, design pre-loaded). ~2h.
+- SLICE 5 (Phase 2) — print-ready file step (logo onto the 2x2 dieline), SinaLite API
+  label ordering, Stripe webhook hardening, client-side big-file uploads. ~1-2 days,
+  gated on API credentials. Printful/Prodigi dropship is NO LONGER NEEDED.
 
 OPEN DECISIONS FOR LEO:
 1. Sticker size/dieline for the 330ml tall can (front sticker vs full wrap) — from quotes.

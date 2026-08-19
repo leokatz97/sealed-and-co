@@ -15,9 +15,9 @@ function itemNeeds(item) {
   const c = item && item.sku && CATALOG[item.sku];
   if (c && c.needs) return c.needs;
   const n = String((item && item.name) || '').toLowerCase();
-  if (n.includes('sticker')) return ['labels'];
-  if (n.includes('package') || n.includes('ready to pour') || n.includes('peel')) return ['machine', 'cans', 'labels'];
+  if (n.includes('package')) return n.includes('signature') ? ['machine', 'cans', 'labels'] : ['machine', 'cans'];
   if (n.includes('machine')) return ['machine'];
+  if (n.includes('brand')) return ['cans', 'labels'];
   if (n.includes('can')) return ['cans'];
   return [];
 }
@@ -33,14 +33,6 @@ const LABELS_SINALITE = {
   mode: 'to-leo',
   ready: false, // Phase 2: liveapi.sinalite.com - needs trade account + print-ready PDF
   async send() { return { status: 'manual', why: 'sinalite api not connected' }; },
-};
-
-const STICKERS_DROPSHIP = {
-  id: 'stickers-dropship',
-  label: 'order sticker pack shipped DIRECT to the customer',
-  mode: 'dropship',
-  ready: false, // Phase 2: Printful (Toronto, kiss-cut white) or Prodigi (clear, TEST adhesive)
-  async send() { return { status: 'manual', why: 'printful/prodigi api not connected' }; },
 };
 
 const CANS_SUPPLIER = {
@@ -60,17 +52,14 @@ const MACHINE_SUPPLIER = {
 };
 
 // ---------- what does this order need? ----------
+// every order routes through Leo: he applies the labels and boxes everything.
+// there is no dropship tier - we don't sell sticker packs.
 function tasksFor(order) {
   const needs = new Set();
   (order.items || []).forEach((i) => itemNeeds(i).forEach((n) => needs.add(n)));
 
-  // a labels-only order (sticker reorder, design already on file) is the one thing
-  // that ships straight to the customer
-  const stickerOnly = needs.has('labels') && !needs.has('cans') && !needs.has('machine');
-  if (stickerOnly) return [STICKERS_DROPSHIP];
-
   const tasks = [];
-  if (needs.has('labels') && order.design) tasks.push(LABELS_SINALITE);
+  if (needs.has('labels')) tasks.push(LABELS_SINALITE);
   if (needs.has('cans')) tasks.push(CANS_SUPPLIER);
   if (needs.has('machine')) tasks.push(MACHINE_SUPPLIER);
   return tasks;

@@ -63,12 +63,19 @@ version was deployed briefly, then reverted).
 
 | product | e-transfer | card (3% baked in) |
 |---|---|---|
-| signature package | $2,399 | $2,471 |
-| basic package | $1,699 | $1,750 · save $101 vs parts |
+| signature package (machine + branded cans + design help) | $2,399 | $2,471 |
+| basic package (machine + blank cans) | $1,699 | $1,750 · save $101 vs parts |
 | machine only | $1,400 | $1,442 |
-| cans — 200 pack | $400 | $412 |
+| cans — 200 pack, blank | $400 | $412 |
+| cans — 200 pack, your branding | $775 | $798 |
 
-Branded cans ($500/$515) are archived in Stripe — reactivate when printing is ready.
+Prices live in `website/api/_catalog.js`. Edit them there, not in Stripe: checkout builds
+prices inline, so Stripe's stored prices are ignored.
+
+Model: cans are either blank or branded. We do NOT sell sticker packs — label cost, margin,
+and applying labour are baked into the branded can price, and every order ships to Leo so he
+applies the labels and boxes them with the machine. Delivery promise: 5-7 business days,
+counted from art approval on branded orders.
 
 ## Done (Aug 18 2026)
 
@@ -92,8 +99,8 @@ Branded cans ($500/$515) are archived in Stripe — reactivate when printing is 
 ### Decisions to make (ordering system — see labels/ORDERING-SYSTEM.md)
 - LOCKED: 2" x 2" front sticker (2.25" with bleed, 600px min at 300dpi). Tier prices approved. .jpg accepted.
 - OPEN: clear BOPP + white ink, or white BOPP circle? Changes cost 15-25% and cuts some suppliers out. Blocks the quote comparison.
-- OPEN: raise the sticker pack from $225 to $295? $225 is ~30% under the $1.25/can floor in labels/SUPPLIERS.md.
-- OPEN: approve the promise wording "1 week from art approval, guaranteed under 2"
+- DONE: sticker packs dropped. Branded cans $775/$798 with label cost baked in.
+- DONE: delivery promise is 5-7 business days (from art approval on branded orders).
 - No applicator jig needed (SUPPLIERS.md: spot stickers apply by hand)
 
 ### Other decisions

@@ -25,10 +25,16 @@ const CATALOG = {
     desc: 'fits cans 2.4" to 6.7"\nseals airtight in about 3 seconds\nyou own it outright - no fees, no contracts\ncard price includes 3% processing',
   },
   'price_1U5aMyH7FooXMM91QyQjUqKR': {
-    key: 'cans', name: 'cans - 200 pack', amount: 41200,
+    key: 'cans', name: 'cans - 200 pack, blank', amount: 41200,
     machine: false, needs: ['cans'],
     img: 'https://sealedandco.ca/img/apero-ice.jpg',
     desc: 'clear tall cans + aluminum lids\ncard price includes 3% processing',
+  },
+  'price_1U5aNCH7FooXMM910AuFuNyY': {
+    key: 'cans-branded', name: 'cans - 200 pack, your branding', amount: 79800,
+    machine: false, needs: ['cans', 'labels'], requiresDesign: true,
+    img: 'https://sealedandco.ca/img/steel-matcha.jpg',
+    desc: 'clear tall cans + aluminum lids\nyour design printed on 2x2in labels\nwe apply every label before delivery\n5-7 business days from art approval\ncard price includes 3% processing',
   },
 };
 

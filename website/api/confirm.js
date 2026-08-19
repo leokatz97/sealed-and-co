@@ -3,6 +3,7 @@
 // order record to Blob, and emails Leo the order sheet. idempotent per session.
 
 const FORMSPREE = 'https://formspree.io/f/mwleqded';
+const suppliers = require('./_suppliers');
 
 async function stripeGet(path, key) {
   const r = await fetch(`https://api.stripe.com/v1/${path}`, {
@@ -36,6 +37,7 @@ module.exports = async (req, res) => {
 
   const li = await stripeGet(`checkout/sessions/${sid}/line_items?limit=20`, key);
   const items = ((li && li.data) || []).map((x) => ({
+    sku: (x.price && x.price.id) || null,
     name: x.description, qty: x.quantity, amount: x.amount_total,
   }));
 
@@ -96,6 +98,10 @@ module.exports = async (req, res) => {
     if (!put.ok) return res.status(502).json({ error: 'store' });
   } catch { return res.status(502).json({ error: 'store' }); }
 
+  // decide which supplier orders this needs (phase 1: recorded as manual to-dos)
+  let tasks = [];
+  try { tasks = await suppliers.dispatch(order, blobToken); } catch {}
+
   // order sheet to Leo's inbox (existing Formspree route)
   const lines = items.map((i) => `${i.qty}x ${i.name} - $${(i.amount / 100).toFixed(2)}`).join('\n');
   const sheet = [
@@ -114,6 +120,9 @@ module.exports = async (req, res) => {
     art && art.warnings && art.warnings.length ? `art flags: ${art.warnings.join(' | ')}` : null,
     '',
     `stripe: https://dashboard.stripe.com/payments (search ${sid.slice(-8)})`,
+    '',
+    'TO ORDER:',
+    ...tasks.map((t) => `  [ ] ${t.label}${t.mode === 'dropship' ? '  (SHIP TO CUSTOMER)' : ''}${t.status === 'already-handled' ? '  (already handled)' : ''}`),
   ].filter((x) => x !== null).join('\n');
 
   try {

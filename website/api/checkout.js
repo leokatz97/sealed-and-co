@@ -2,21 +2,7 @@
 // descriptions are defined HERE (inline price_data) so the site and checkout
 // can never disagree. colour is chosen on the site and carried into the order.
 
-const CATALOG = {
-  'price_1U5aMWH7FooXMM91vzo24eNq': { key: 'signature', name: 'signature package', amount: 247100, machine: true,
-    img: 'https://sealedandco.ca/img/captain-lineup.jpg',
-    desc: 'the machine + cans printed with your logo + lids + label design\nsave 3% by paying e-transfer instead\ncard price includes 3% processing' },
-  'price_1U5aMkH7FooXMM913ShzlTUr': { key: 'basic', name: 'basic package', amount: 175000, machine: true,
-    img: 'https://sealedandco.ca/img/hero-cans.jpg',
-    desc: 'the machine + blank cans + lids\nsave $101 vs buying separately\ncard price includes 3% processing' },
-  'price_1U5aWBH7FooXMM91QjonZ8K8': { key: 'machine', name: 'machine only', amount: 144200, machine: true,
-    img: 'https://sealedandco.ca/img/machine-white.jpg',
-    desc: 'fits cans 2.4" to 6.7"\nseals airtight in about 3 seconds\nyou own it outright - no fees, no contracts\ncard price includes 3% processing' },
-  'price_1U5aMyH7FooXMM91QyQjUqKR': { key: 'cans', name: 'cans - 200 pack', amount: 41200, machine: false,
-    img: 'https://sealedandco.ca/img/apero-ice.jpg',
-    desc: 'clear tall cans + aluminum lids\ncard price includes 3% processing' },
-};
-const COLOURS = new Set(['white', 'black']);
+const { CATALOG, COLOURS } = require('./_catalog');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'method' });

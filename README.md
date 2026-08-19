@@ -6,7 +6,9 @@ Everything for the business lives here.
 
 - **website/** — the live site (sealedandco.ca). Edit `index.html`, then deploy.
 - **website/img/** — every photo on the site.
-- **website/api/checkout.js** — card checkout engine. Prices + product copy live HERE (inline price_data), so the site and Stripe can never disagree. Needs STRIPE_SECRET_KEY.
+- **website/api/_catalog.js** — THE source of truth for prices, product copy, and what each product needs from suppliers (machine / cans / labels). Edit prices here.
+- **website/api/_suppliers.js** — supplier dispatch. Four adapters (label run, sticker dropship, cans, machine) with claim-before-send so nothing is ever double-ordered. Phase 2 = fill in each send().
+- **website/api/checkout.js** — card checkout engine; prices come from _catalog.js. Needs STRIPE_SECRET_KEY.
 - **website/api/upload.js** — design upload. Validates type (png/svg/pdf), size (<4MB), and PNG resolution (>=500px short side); stores in Vercel Blob under a new `dsn_...` id.
 - **website/api/confirm.js** — after payment, verifies the session with Stripe, writes `orders/SC-XXXX.json` to Blob, and emails the order sheet (with art link) to the Formspree inbox. Idempotent per session.
 - **labels/ORDERING-SYSTEM.md** — the ordering-system audit, scenario map, system design, and build slices. Read this before touching the order flow.

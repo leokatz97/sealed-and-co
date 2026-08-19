@@ -210,3 +210,50 @@ OPEN DECISIONS FOR LEO:
 5. DONE - .jpg accepted.
 6. NEW: clear BOPP + white ink, or white BOPP circle? (see RECONCILIATION - blocks quotes)
 7. NEW: raise the sticker pack to $295? (see PRICING FLAG)
+
+## API READINESS (asked Aug 19 2026) — honest status
+
+Verdict: the DATA and the SEAM are ready; no supplier API is connected yet, and one of the
+three you asked about has no API to connect to.
+
+READY (built and tested):
+- api/_catalog.js — one source of truth for price, copy, and what each product NEEDS
+  ('machine' / 'cans' / 'labels'). checkout.js prices from it; supplier routing reads it.
+  Supplier orders never depend on guessing from a product name.
+- api/_suppliers.js — dispatch layer with four adapters (label run, sticker dropship, cans,
+  machine). Each has mode 'to-leo' or 'dropship' and a send() to fill in later.
+- Idempotency: every task is CLAIMED in Blob (suppliers/{orderId}/{task}.json) before any
+  call, so a retried webhook or a refreshed thank-you page cannot double-order. This is the
+  thing that would otherwise cost real money the day automation goes on.
+- Routing verified for all 6 order shapes, incl. the sticker-only reorder routing to
+  dropship and machine-only NOT triggering a cans order.
+- Art is stored at a public HTTPS URL and pre-validated against the 2x2 dieline, which is
+  exactly the shape print APIs consume, and is SinaLite's precondition (no proofing).
+- Order record already carries everything an API needs: items+sku, qty, machine colour,
+  ship-to address, contact, art URL and dimensions.
+- Phase 1 payoff already live: the order-sheet email now ends in a TO ORDER checklist,
+  marking which lines ship to the customer instead of to Leo.
+
+NOT READY, in the order it will bite:
+1. No print-ready file step. Customers upload logos; SinaLite/Printful want a 2.25" bleed
+   300dpi print file. Something must place the logo on the dieline. Options: a template PDF
+   the customer fills, a server-side composite step, or Sticker it's "Glide" auto-proofer.
+   THIS is the real blocker for label automation, not the API.
+2. No Stripe webhook. Order creation currently rides the thank-you page redirect. Fine for
+   manual ordering; not fine for spending money automatically. Add the webhook before
+   flipping any adapter to ready.
+3. No credentials: SinaLite needs a trade account; Printful/Prodigi need API keys.
+4. Prodigi's transparent stock uses REMOVABLE adhesive (per SUPPLIERS.md). Test on a
+   sweating can before any clear dropship goes live.
+5. Adapters return status only; no retry/backoff or failure alert yet.
+
+THE MACHINE / ALIBABA ANSWER — no, and probably never:
+- Alibaba factories do not offer an ordering API. Orders are placed by message, PO, and
+  Trade Assurance. The Alibaba open platform is for marketplace apps, not for placing
+  custom orders with an arbitrary supplier. The adapter is therefore documented as manual
+  by design, and it appears on the checklist instead.
+- Bigger point: machine DROPSHIP contradicts the decided flow and your moat. Machines are
+  supposed to arrive at Leo so they get boxed with the labelled cans and set up on the
+  customer's counter. Direct-from-factory means weeks of transit, customs paperwork in the
+  customer's name, no setup, and no way to catch a dented unit. Keep machines coming to you
+  and hold stock; automate the LABEL loop, which is the part that repeats.

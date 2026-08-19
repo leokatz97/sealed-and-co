@@ -160,6 +160,16 @@ ART UPLOAD - REVISED Aug 19 2026 to THREE TOUCHES, never a gate:
   WHY NOT PRODUCT PAGE ONLY: the file picker is the highest-friction control on the page.
   Asking before they have committed to anything suppresses add-to-cart.
 
+  THE SHOP-PAGE HOLE, FOUND AND CLOSED: "add to cart" straight off the shop card skipped
+  the product page, so the first time a customer heard about artwork was in the cart. Fixed
+  by inverting the buttons on the two design-bearing cards only: the primary button is now
+  "add your design ->" (which opens the product page), with "skip, add to cart" as the quiet
+  secondary, plus a pink "your logo goes on next" line above them. The other three cards
+  keep a plain one-click add-to-cart, because colour has a sane default and is editable in
+  the cart while a design has no default at all. If they do skip, the cart box heading
+  changes to "one thing left: your label design", gets a pink outline, and a line under the
+  checkout button tells them they can send it afterwards.
+
   ONE DESIGN PER ORDER (deliberate). It is their brand, so one file covers everything in
   the cart. Two different brands in one order would need per-item designs - not built,
   and if it ever comes up, treat it as two orders.

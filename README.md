@@ -27,6 +27,9 @@ Marking an e-transfer order paid is what releases its supplier to-dos.
 ## Where customers upload their design
 
 Three chances, never a requirement to buy:
+0. On the shop page, the two branded products lead with "add your design →" instead of
+   "add to cart", so nobody meets the upload for the first time in their cart. "skip, add to
+   cart" is still there for anyone who'd rather send it later.
 1. On the branded-cans and signature product pages, beside colour and quantity.
 2. In the cart, as a confirmation ("your design is attached", with a link to see it on the sticker).
 3. On the thank-you page right after payment, if they checked out without one — it attaches

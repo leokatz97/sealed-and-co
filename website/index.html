@@ -184,8 +184,10 @@ footer .logo{display:inline-flex;align-items:center}
 .stepper button{width:42px;height:42px;border:none;background:none;font-size:20px;font-weight:700;cursor:pointer;color:var(--ink)}
 .stepper span{min-width:34px;text-align:center;font-family:'Hanken Grotesk',sans-serif;font-weight:700}
 .prod-info .btn{margin-top:20px;width:100%;text-align:center}
+.needs-art{font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-top:2px}
 .designbox{background:var(--cream2);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:20px;font-size:13px}
 .designbox.done{background:var(--sky)}
+.designbox.todo{border-color:var(--pink);border-width:2px}
 .db-h{font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
 .db-p{margin-top:7px;line-height:1.55}
 .db-p.dim{opacity:.7;font-size:12.5px}
@@ -588,9 +590,10 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <h3>signature package</h3>
           <div class="prices"><span class="p-main">$2,399</span><span class="p-sub">e-transfer · $2,471 by card · $2,475 value</span></div>
           <p class="blurb">the machine, 200 cans wearing your logo, lids, and we design the label with you. everything to launch your line.</p>
+          <p class="needs-art">your logo goes on next</p>
           <div class="row">
-            <button class="btn" data-add="signature">add to cart</button>
-            <button class="details" data-goto="p-signature">details →</button>
+            <button class="btn" data-goto="p-signature">add your design →</button>
+            <button class="details" data-add="signature">skip, add to cart</button>
           </div>
         </div>
       </div>
@@ -640,9 +643,10 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <h3>cans - 200 pack, your branding</h3>
           <div class="prices"><span class="p-main">$775</span><span class="p-sub">e-transfer · $798 by card</span></div>
           <p class="blurb">the same cans with your design printed on 2x2 labels - and we apply every one before delivery.</p>
+          <p class="needs-art">your logo goes on next</p>
           <div class="row">
-            <button class="btn" data-add="cans-branded">add to cart</button>
-            <button class="details" data-goto="p-cans-branded">details →</button>
+            <button class="btn" data-goto="p-cans-branded">add your design →</button>
+            <button class="details" data-add="cans-branded">skip, add to cart</button>
           </div>
         </div>
       </div>
@@ -1080,6 +1084,7 @@ function renderCart() {
       '<div style="display:flex;flex-direction:column;gap:12px">' +
         (cartNeedsDesign() ? '<div data-design-slot="cart" class="dbslot-cart"></div>' : '') +
         '<button class="btn" id="checkoutCard">checkout with card - ' + money(card) + '</button>' +
+        ((cartNeedsDesign() && !getDesign()) ? '<p style="font-size:12.5px;opacity:.75;text-align:center">you can check out now and send your design after - we\'ll ask again on the next screen.</p>' : '') +
         '<button class="btn ghost" id="checkoutEt">pay by e-transfer - ' + money(et) + '</button>' +
         '<div id="etBox" style="display:none;background:var(--cream2);border:1px solid var(--line);border-radius:16px;padding:18px;font-size:13px">' +
           '<p style="font-family:Hanken Grotesk,sans-serif;font-weight:700;font-size:14px">save 3% - we\'ll reach out to arrange it.</p>' +
@@ -1165,8 +1170,8 @@ function designBlockHtml(where) {
       '<button class="backlink design-clear">use a different file</button>' +
     '</div>';
   }
-  return '<div class="designbox">' +
-    '<p class="db-h">your label design</p>' +
+  return '<div class="designbox todo">' +
+    '<p class="db-h">' + (where === 'cart' ? 'one thing left: your label design' : 'your label design') + '</p>' +
     '<p class="db-p">upload your logo and we print it on 2x2 inch labels, then apply every one. png, jpg, svg or pdf under 4mb - square art at 600px or more works best.</p>' +
     '<label class="db-file"><input type="file" class="design-file" accept=".png,.jpg,.jpeg,.svg,.pdf"><span>choose your file</span></label>' +
     '<p class="db-msg" style="display:none"></p>' +

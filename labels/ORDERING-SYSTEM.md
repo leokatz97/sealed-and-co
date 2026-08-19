@@ -196,6 +196,49 @@ orderLabels(order)/orderCans(order) stubs so SinaLite (label runs to Leo) and
 Printful/Prodigi (dropship reorders) are implementations, not rewrites. The data the
 APIs need (art URL, dieline, qty, ship-to) is already in the order record.
 
+## 4. BUILD STATUS (all slices shipped Aug 19 2026)
+
+WHAT IS LIVE
+- SLICE 0 model alignment: branded-can product, 5-7 business day promise, dropship tier
+  removed, custom-goods refund carve-out in policies + FAQ + shop page, copy sweep.
+- SLICE 1 order intake: design upload in the cart (png/jpg/svg/pdf, 4MB), 2x2 dieline
+  validation, order records, order-sheet email with the art + a TO ORDER checklist.
+- SLICE 2 print-ready files: api/_dieline.js turns a customer logo into a real print file.
+  Two SVGs per design, both with true physical dimensions (2.25in with bleed at 300dpi):
+    print-2x2.svg = art centred inside the 1.75in safe box, nothing else. send to printer.
+    proof-2x2.svg = same art with bleed / cut / safe guides drawn on, for approval.
+  Raster only (png/jpg); svg and pdf art already scales and goes as-is.
+  HONEST LIMIT: SVG, not PDF. Most printers accept SVG and Leo can print-to-PDF from the
+  proof. If the winning supplier insists on PDF/X, that is a one-file addition.
+- SLICE 2b e-transfer parity: the cart's e-transfer request now creates a real order at
+  state 'awaiting-payment' (api/etransfer.js). Formspree is kept as a backup notification.
+- SLICE 3 order desk: /admin.html + api/orders.js behind ADMIN_TOKEN. Lists every order,
+  shows the art with proof/print/original links and any flags, advances state with a note,
+  and stamps dueBy (7 business days) when the art is approved. Advancing an e-transfer
+  order to 'paid' is what fires its supplier tasks.
+- SLICE 4 reorders: sealedandco.ca/?d=dsn_xxx loads their design from file and drops a
+  branded pack in the cart. Verified: two clicks to repurchase, no re-upload.
+- SLICE 5 webhook: api/webhook.js. It does NOT trust the payload; it takes the session id
+  and re-fetches that session from Stripe with our own key, recording it only if Stripe
+  says paid. So a forged call can at most trigger an idempotent re-check of a real payment.
+  NEEDS LEO: add the endpoint in Stripe (see README) so orders record even if the buyer
+  closes the tab.
+
+STORAGE DECISION CHANGED MID-BUILD - worth remembering. The first version kept one JSON
+per order and edited it. Testing four rapid state changes showed only two surviving:
+Vercel Blob is eventually consistent, so read-modify-write silently loses updates. Orders
+are now an immutable base record plus append-only event files
+(orders/{id}/order.json + orders/{id}/ev/{ts}-{state}.json), folded on read. Appends can
+never collide. Re-tested with five events in three seconds: all five kept.
+
+STILL NOT BUILT (deliberately)
+- Customer-facing status page and status emails on state change. Leo phones people at this
+  volume; build it when order count makes that annoying.
+- Deferred-art nudge emails (an order can sit in 'art-missing' with nobody chasing it).
+- Rush order as a self-serve paid option (still a conversation + a manual payment link).
+- Supplier APIs themselves: SinaLite needs a trade account, and the clear-vs-white-BOPP
+  decision has to land first because it changes which suppliers qualify.
+
 ## 4. BUILD SLICES
 
 - SLICE 0 — model alignment: DONE Aug 19 2026. Branded-can product live on site + in the

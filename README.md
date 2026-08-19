@@ -9,6 +9,24 @@ Everything for the business lives here.
 - **website/api/_catalog.js** — THE source of truth for prices, product copy, and what each product needs from suppliers (machine / cans / labels). Edit prices here.
 - **website/api/_suppliers.js** — supplier dispatch. Four adapters (label run, sticker dropship, cans, machine) with claim-before-send so nothing is ever double-ordered. Phase 2 = fill in each send().
 - **website/api/checkout.js** — card checkout engine; prices come from _catalog.js. Needs STRIPE_SECRET_KEY.
+- **website/api/_dieline.js** — turns a customer logo into a print-ready 2x2in file + a proof with cut lines.
+- **website/api/_order.js** — order records. Immutable base + append-only events (Blob is eventually consistent, so nothing is ever read-modify-written).
+- **website/api/upload.js / confirm.js / webhook.js / etransfer.js / orders.js** — art upload, order creation from Stripe, the webhook, e-transfer orders, admin API.
+- **website/admin.html** — the order desk. Open it, paste your admin key, work your orders.
+
+## The order desk
+
+https://sealedandco.ca/admin.html — paste your ADMIN_TOKEN once and the browser remembers it.
+Shows every order with the customer's design (proof, print file, original), any art flags, and
+a dropdown to move it along: paid → art review → art approved → supplies ordered → received →
+labelled → boxed → handed off. Approving the art stamps a due date 7 business days out.
+Marking an e-transfer order paid is what releases its supplier to-dos.
+
+## Still to switch on (Leo, 2 minutes)
+
+Stripe → Developers → Webhooks → Add endpoint → `https://sealedandco.ca/api/webhook`,
+event `checkout.session.completed`. Without it, an order only records if the buyer's browser
+comes back from Stripe. With it, orders record no matter what.
 - **website/api/upload.js** — design upload. Validates type (png/svg/pdf), size (<4MB), and PNG resolution (>=500px short side); stores in Vercel Blob under a new `dsn_...` id.
 - **website/api/confirm.js** — after payment, verifies the session with Stripe, writes `orders/SC-XXXX.json` to Blob, and emails the order sheet (with art link) to the Formspree inbox. Idempotent per session.
 - **labels/ORDERING-SYSTEM.md** — the ordering-system audit, scenario map, system design, and build slices. Read this before touching the order flow.

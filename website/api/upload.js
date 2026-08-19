@@ -3,6 +3,8 @@
 // beside it so the order sheet can report the art's real dimensions.
 // 4MB cap (serverless relay limit) - bigger files use the "email it after" path.
 
+const { buildPrintFiles } = require('./_dieline');
+
 const EXT_OK = {
   png: 'image/png',
   jpg: 'image/jpeg',
@@ -115,17 +117,28 @@ module.exports = async (req, res) => {
     const art = await blobPut(`designs/pending/${designId}/${name}`, body, EXT_OK[ext], token);
     if (!art.ok || !art.url) return res.status(502).json({ error: 'store', detail: art.detail });
 
+    // build the print-ready + proof files while we still have the bytes in hand
+    let printUrl = null, proofUrl = null;
+    const pf = buildPrintFiles({ buffer: body, mime: EXT_OK[ext], width: dim && dim.w, height: dim && dim.h, filename: name });
+    if (pf) {
+      const a = await blobPut(`designs/pending/${designId}/print-2x2.svg`, pf.print, 'image/svg+xml', token);
+      const b = await blobPut(`designs/pending/${designId}/proof-2x2.svg`, pf.proof, 'image/svg+xml', token);
+      printUrl = a.url || null; proofUrl = b.url || null;
+    }
+
     const meta = {
       designId, filename: name, url: art.url, type: EXT_OK[ext],
       bytes: body.length,
       width: dim ? dim.w : null, height: dim ? dim.h : null,
       vector: !dim, warnings,
       sticker: '2x2in front sticker',
+      printUrl, proofUrl,
+      printSpec: pf ? pf.spec : null,
       uploadedAt: new Date().toISOString(),
     };
     await blobPut(`designs/pending/${designId}/meta.json`, JSON.stringify(meta, null, 2), 'application/json', token);
 
-    return res.status(200).json({ designId, url: art.url, filename: name, warnings });
+    return res.status(200).json({ designId, url: art.url, filename: name, warnings, proofUrl });
   } catch (e) {
     return res.status(502).json({ error: 'network' });
   }

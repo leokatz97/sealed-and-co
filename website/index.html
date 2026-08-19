@@ -184,6 +184,18 @@ footer .logo{display:inline-flex;align-items:center}
 .stepper button{width:42px;height:42px;border:none;background:none;font-size:20px;font-weight:700;cursor:pointer;color:var(--ink)}
 .stepper span{min-width:34px;text-align:center;font-family:'Hanken Grotesk',sans-serif;font-weight:700}
 .prod-info .btn{margin-top:20px;width:100%;text-align:center}
+.designbox{background:var(--cream2);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:20px;font-size:13px}
+.designbox.done{background:var(--sky)}
+.db-h{font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+.db-p{margin-top:7px;line-height:1.55}
+.db-p.dim{opacity:.7;font-size:12.5px}
+.db-warn{margin-top:7px;color:var(--pink);font-weight:600}
+.db-msg{margin-top:8px;font-weight:600}
+.db-msg.bad{color:#B02A2A}
+.db-file{display:inline-flex;align-items:center;gap:9px;margin-top:11px;cursor:pointer}
+.db-file input{position:absolute;width:1px;height:1px;opacity:0}
+.db-file span{display:inline-block;background:var(--lime);color:var(--pink);border-radius:10px;padding:10px 18px;font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+.dbslot-cart{margin-top:0}
 .prod-note{margin-top:16px;font-size:13px;background:var(--cream2);border:1px solid var(--line);border-radius:8px;padding:12px 16px}
 .legal h3{margin-top:26px;font-size:17px}
 .legal p{margin-top:6px;font-size:14px;max-width:640px;line-height:1.6}
@@ -555,6 +567,13 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
       <p style="font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.04em">order received - thank you.</p>
       <p style="margin-top:6px;font-size:14px">your payment went through and a receipt is on its way to your inbox. we'll reach out within 24 hours to arrange delivery and setup.</p>
     </div>
+    <div class="designbox" id="artCatch" style="display:none;margin-bottom:34px">
+      <p class="db-h">one thing left: your label design</p>
+      <p class="db-p">send it now and we start straight away. png, jpg, svg or pdf under 4mb - square art at 600px or more works best. your 5-7 business days begin once we approve it.</p>
+      <label class="db-file"><input type="file" class="design-file" accept=".png,.jpg,.jpeg,.svg,.pdf"><span>upload your design</span></label>
+      <p class="db-msg" style="display:none"></p>
+      <p class="db-p dim">or reply to your receipt email with the file attached and we'll add it for you.</p>
+    </div>
     <div class="panel-head">
       <h2>shop sealed &amp; co.</h2>
       <p>one-time cost. no fees, no contracts - you own everything. add to cart, review, and check out when you're ready.</p>
@@ -664,6 +683,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <button class="on" data-colour="white">white machine</button>
           <button data-colour="black">black machine</button>
         </div>
+        <div data-design-slot="product"></div>
         <div class="qtyrow"><span style="font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:14px">qty</span>
           <div class="stepper"><button data-q="-1">−</button><span id="qty-signature">1</span><button data-q="1">+</button></div>
         </div>
@@ -770,6 +790,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <li>upload your design in the cart - we check it before anything prints</li>
           <li>requires a sealing machine</li>
         </ul>
+        <div data-design-slot="product"></div>
         <div class="qtyrow"><span style="font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:14px">qty</span>
           <div class="stepper"><button data-q="-1">−</button><span id="qty-cans-branded">1</span><button data-q="1">+</button></div>
         </div>
@@ -945,6 +966,7 @@ function showTab(key, {push = true, scroll = true} = {}) {
   const hiTab = TABS.includes(key) ? key : 'order';
   TABS.forEach(k => document.getElementById('tab-' + k).setAttribute('aria-selected', String(k === hiTab)));
   PANELS.forEach(k => { document.getElementById('panel-' + k).hidden = (k !== key); });
+  renderDesignSlots();
   closeMenu();
   document.querySelectorAll('video').forEach(v => {
     const active = !v.closest('.panel').hidden;
@@ -1056,7 +1078,7 @@ function renderCart() {
         '<p style="font-size:13px;margin-top:14px">questions before you order? <button class="backlink" data-goto="contact">contact us</button> - we reply within 24 hours.</p>' +
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:12px">' +
-        (cartNeedsDesign() ? designBlockHtml() : '') +
+        (cartNeedsDesign() ? '<div data-design-slot="cart" class="dbslot-cart"></div>' : '') +
         '<button class="btn" id="checkoutCard">checkout with card - ' + money(card) + '</button>' +
         '<button class="btn ghost" id="checkoutEt">pay by e-transfer - ' + money(et) + '</button>' +
         '<div id="etBox" style="display:none;background:var(--cream2);border:1px solid var(--line);border-radius:16px;padding:18px;font-size:13px">' +
@@ -1073,7 +1095,7 @@ function renderCart() {
       '</div>' +
     '</div>';
   document.getElementById('checkoutCard').addEventListener('click', checkoutCard);
-  wireDesignBox();
+  renderDesignSlots();
   document.getElementById('checkoutEt').addEventListener('click', () => {
     const box = document.getElementById('etBox');
     box.style.display = box.style.display === 'none' ? 'block' : 'none';
@@ -1123,45 +1145,69 @@ window.cartStep = (i, d) => { cart[i].qty = Math.min(99, Math.max(1, cart[i].qty
 window.cartRemove = (i) => { cart.splice(i, 1); saveCart(); renderCart(); };
 
 /* ---------- card checkout: stripe opens in a NEW TAB ---------- */
-/* ---------- design upload (cart) ---------- */
+/* ---------- design upload: offered on the product page, confirmed in the cart,
+   and caught on the thank-you page if they checked out without a file ---------- */
 const DESIGN_ITEMS = ['signature', 'cans-branded'];
 function getDesign() { try { return JSON.parse(localStorage.getItem('sc_design') || 'null'); } catch { return null; } }
 function setDesign(d) { if (d) localStorage.setItem('sc_design', JSON.stringify(d)); else localStorage.removeItem('sc_design'); }
 function cartNeedsDesign() { return cart.some(it => DESIGN_ITEMS.includes(it.id)); }
-function designBlockHtml() {
+
+function designBlockHtml(where) {
   const d = getDesign();
-  return '<div id="designBox" style="background:var(--cream2);border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-size:13px">' +
-    '<p style="font-family:Hanken Grotesk,sans-serif;font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase">your label design</p>' +
-    (d
-      ? '<p style="margin-top:8px">&#10003; <strong>' + d.filename + '</strong>' + (d.filename === 'your design on file' ? ' - loaded from your last order. nothing to upload.' : ' uploaded. we review every design before it prints.') + '</p>' +
-        ((d.warnings && d.warnings.length) ? '<p style="margin-top:6px;color:var(--pink);font-weight:600">heads up: ' + d.warnings.join('; ') + '. we\'ll confirm it works before printing.</p>' : '') +
-        '<button class="backlink" id="designClear" style="margin-top:6px">use a different file</button>'
-      : '<p style="margin-top:8px">png, jpg, svg, or pdf - under 4mb. we print a 2x2 inch front sticker, so square art at 600px or more works best. we review every design before it prints.</p>' +
-        '<input type="file" id="designFile" accept=".png,.jpg,.jpeg,.svg,.pdf" style="margin-top:10px;font-size:12.5px;width:100%">' +
-        '<p id="designMsg" style="margin-top:8px;font-weight:600;display:none"></p>' +
-        '<p style="margin-top:10px;opacity:.7">no file handy? check out anyway - we\'ll ask for it by email right after.</p>') +
+  const onFile = d && d.filename === 'your design on file';
+  if (d) {
+    return '<div class="designbox done">' +
+      '<p class="db-h">&#10003; your design is attached</p>' +
+      '<p class="db-p"><strong>' + d.filename + '</strong>' + (onFile ? ' - loaded from your last order.' : '') +
+        ' we check every design against the 2x2 inch sticker before anything prints.</p>' +
+      ((d.warnings && d.warnings.length) ? '<p class="db-warn">heads up: ' + d.warnings.join('; ') + '. we\'ll confirm it works before printing.</p>' : '') +
+      (d.proofUrl ? '<p class="db-p"><a href="' + d.proofUrl + '" target="_blank" rel="noopener">see it on the sticker &rarr;</a></p>' : '') +
+      '<button class="backlink design-clear">use a different file</button>' +
     '</div>';
+  }
+  return '<div class="designbox">' +
+    '<p class="db-h">your label design</p>' +
+    '<p class="db-p">upload your logo and we print it on 2x2 inch labels, then apply every one. png, jpg, svg or pdf under 4mb - square art at 600px or more works best.</p>' +
+    '<label class="db-file"><input type="file" class="design-file" accept=".png,.jpg,.jpeg,.svg,.pdf"><span>choose your file</span></label>' +
+    '<p class="db-msg" style="display:none"></p>' +
+    '<p class="db-p dim">' + (where === 'cart'
+      ? 'no file handy? check out anyway - we\'ll ask for it on the next screen and by email.'
+      : 'don\'t have it on this device? add to cart anyway - you can send it after checkout.') + '</p>' +
+  '</div>';
 }
-function wireDesignBox() {
-  const clear = document.getElementById('designClear');
-  if (clear) clear.addEventListener('click', () => { setDesign(null); renderCart(); });
-  const inp = document.getElementById('designFile');
-  if (inp) inp.addEventListener('change', async () => {
-    const f = inp.files && inp.files[0];
-    if (!f) return;
-    const msg = document.getElementById('designMsg');
-    msg.style.display = 'block'; msg.textContent = 'uploading...';
-    try {
-      const r = await fetch('/api/upload?name=' + encodeURIComponent(f.name), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/octet-stream' },
-        body: f,
-      });
-      const d = await r.json();
-      if (r.ok && d.designId) { setDesign({ designId: d.designId, filename: d.filename, warnings: d.warnings || [] }); renderCart(); return; }
-      msg.textContent = d.message || 'upload failed - try again, or check out and email it after.';
-    } catch { msg.textContent = 'upload failed - try again, or check out and email it after.'; }
+
+function renderDesignSlots() {
+  document.querySelectorAll('[data-design-slot]').forEach(slot => {
+    slot.innerHTML = designBlockHtml(slot.dataset.designSlot);
+    const clear = slot.querySelector('.design-clear');
+    if (clear) clear.addEventListener('click', () => { setDesign(null); renderDesignSlots(); if (!document.getElementById('panel-cart').hidden) renderCart(); });
+    const inp = slot.querySelector('.design-file');
+    if (inp) inp.addEventListener('change', () => uploadDesign(inp, slot.querySelector('.db-msg')));
   });
+}
+
+async function uploadDesign(inp, msg, endpoint) {
+  const f = inp.files && inp.files[0];
+  if (!f) return;
+  msg.style.display = 'block'; msg.className = 'db-msg'; msg.textContent = 'checking your file...';
+  try {
+    const r = await fetch(endpoint || ('/api/upload?name=' + encodeURIComponent(f.name)), {
+      method: 'POST', headers: { 'Content-Type': 'application/octet-stream' }, body: f,
+    });
+    const d = await r.json();
+    if (r.ok && d.designId) {
+      setDesign({ designId: d.designId, filename: d.filename || f.name, warnings: d.warnings || [], proofUrl: d.proofUrl });
+      renderDesignSlots();
+      if (!document.getElementById('panel-cart').hidden) renderCart();
+      return d;
+    }
+    msg.className = 'db-msg bad';
+    msg.textContent = d.message || 'that file did not work - try another, or send it after checkout.';
+  } catch {
+    msg.className = 'db-msg bad';
+    msg.textContent = 'upload failed - try again, or send it after checkout.';
+  }
+  return null;
 }
 
 async function checkoutCard() {
@@ -1185,6 +1231,23 @@ async function checkoutCard() {
 }
 
 /* clear the cart when stripe redirects back after payment */
+/* thank-you page: the order is paid but we still need their artwork */
+function showArtCatch(sid) {
+  const box = document.getElementById('artCatch');
+  if (!box) return;
+  box.style.display = 'block';
+  const inp = box.querySelector('.design-file');
+  const msg = box.querySelector('.db-msg');
+  inp.addEventListener('change', async () => {
+    const d = await uploadDesign(inp, msg, '/api/attach?sid=' + encodeURIComponent(sid) + '&name=' + encodeURIComponent(inp.files[0].name));
+    if (d) {
+      box.innerHTML = '<p class="db-h">&#10003; got your design</p>' +
+        '<p class="db-p">we\'ll check it against the 2x2 inch sticker and email you if anything needs a tweak. your 5-7 business days start once it\'s approved.</p>' +
+        (d.proofUrl ? '<p class="db-p"><a href="' + d.proofUrl + '" target="_blank" rel="noopener">see it on the sticker &rarr;</a></p>' : '');
+    }
+  });
+}
+
 /* reorder link from a handoff email: sealedandco.ca/?d=dsn_xxx */
 (function reorder() {
   const q = new URLSearchParams(location.search);
@@ -1202,7 +1265,10 @@ if (location.hash === '#thanks') {
   document.getElementById('orderBanner').style.display = 'block';
   const sid = new URLSearchParams(location.search).get('sid');
   if (sid) {
-    fetch('/api/confirm?sid=' + encodeURIComponent(sid)).catch(() => {});
+    fetch('/api/confirm?sid=' + encodeURIComponent(sid))
+      .then(r => r.json())
+      .then(d => { if (d && d.needsArt) showArtCatch(sid); })
+      .catch(() => {});
     history.replaceState(null, '', '/#thanks');
   }
   try { localStorage.removeItem('sc_design'); } catch {}

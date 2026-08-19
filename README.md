@@ -17,10 +17,24 @@ Everything for the business lives here.
 ## The order desk
 
 https://sealedandco.ca/admin.html — paste your ADMIN_TOKEN once and the browser remembers it.
-Shows every order with the customer's design (proof, print file, original), any art flags, and
-a dropdown to move it along: paid → art review → art approved → supplies ordered → received →
-labelled → boxed → handed off. Approving the art stamps a due date 7 business days out.
+Every order shows an 8-step tracker with a progress bar: payment in → design received →
+design approved → supplies ordered → everything here → labels applied → boxed → handed off.
+Finished steps carry a tick and a timestamp; the current step tells you what to do next in
+plain words. Orders without artwork (blank cans, machine only) show a shorter 5-step track.
+One button marks the next step done. Approving the art stamps a due date 7 business days out.
 Marking an e-transfer order paid is what releases its supplier to-dos.
+
+## Where customers upload their design
+
+Three chances, never a requirement to buy:
+1. On the branded-cans and signature product pages, beside colour and quantity.
+2. In the cart, as a confirmation ("your design is attached", with a link to see it on the sticker).
+3. On the thank-you page right after payment, if they checked out without one — it attaches
+   straight to the order and moves it to art review.
+
+Deliberate: a shop owner's logo is usually not on the phone they're browsing with, so demanding
+a file before payment would cost real orders. Instead the order simply can't pass art approval
+without it, and the desk shows it as blocked.
 
 ## Still to switch on (Leo, 2 minutes)
 

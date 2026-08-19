@@ -139,10 +139,30 @@ STORAGE: Vercel Blob (created: store_YtbZsEzY52kiL9Y7, token injected).
 - Orders: orders/{ORDER_ID}.json — one JSON per order, timeline of states inside.
 - No database until volume demands it. List-by-prefix is the "index".
 
-ART UPLOAD: in the CART (before payment) when the cart contains a design-bearing item.
-Required-by-default with an "email it after checkout" escape hatch (some owners won't
-have their logo on their phone; don't lose the sale). Deferred art → order lands in
-"art-missing" state with an upload link in the confirmation flow.
+ART UPLOAD - REVISED Aug 19 2026 to THREE TOUCHES, never a gate:
+
+  1. PRODUCT PAGE (the ask). The upload box sits with the colour and quantity choices on
+     the branded-cans and signature pages, because for those products the design IS the
+     product. Highest intent, and if they can't produce a file they learn there and can
+     pick blank cans instead of abandoning at checkout.
+  2. CART (the confirm). Same component, different wording: "your design is attached"
+     with a link to see it on the sticker, or one more chance to add it.
+  3. THANK-YOU PAGE (the catch). If the order needs art and none is attached,
+     /api/confirm returns needsArt and the page shows an upload panel immediately, which
+     posts to /api/attach?sid=... and moves the order to art-review. This is where most
+     "I'll send it later" cases actually resolve, while they are still at the keyboard.
+
+  WHY NOT A HARD GATE BEFORE PAYMENT: a cafe owner's logo lives with their designer, in
+  Canva, or on a laptop - not on the phone they are browsing with. Requiring a file to
+  buy would lose real orders. So art is never required to check out; it is asked for
+  three times, and the order simply cannot progress past art approval without it.
+
+  WHY NOT PRODUCT PAGE ONLY: the file picker is the highest-friction control on the page.
+  Asking before they have committed to anything suppresses add-to-cart.
+
+  ONE DESIGN PER ORDER (deliberate). It is their brand, so one file covers everything in
+  the cart. Two different brands in one order would need per-item designs - not built,
+  and if it ever comes up, treat it as two orders.
 Constraints v1 (LIVE): .png .jpg .svg .pdf, ≤4MB (serverless relay limit; bigger files =
 the email hatch; Phase 2 = signed client uploads). PNG and JPEG dimensions parsed
 server-side. Hard reject under 600px short side or past 3:1 aspect; flag under 675px
@@ -216,6 +236,18 @@ WHAT IS LIVE
   shows the art with proof/print/original links and any flags, advances state with a note,
   and stamps dueBy (7 business days) when the art is approved. Advancing an e-transfer
   order to 'paid' is what fires its supplier tasks.
+- SLICE 3b step tracker (Aug 19 2026): every order card now shows the full 8-step pipeline
+  - payment in, design received, design approved, supplies ordered, everything here,
+  labels applied, boxed, handed off - with a progress bar, a tick and timestamp on what is
+  done, and the next step spelled out as an instruction ("approve it - that starts their
+  5-7 business day clock"). Steps that don't apply are hidden: a blank-cans or machine-only
+  order shows 5 steps, not 8, because there is no artwork in it. Blocked orders say why
+  (paid but no artwork / waiting on the e-transfer). A one-click button marks the next step
+  done, with the dropdown kept for jumping around or cancelling.
+  BUG FOUND AND FIXED IN TESTING: the current step was computed as last-done + 1, so an
+  order that received artwork before its e-transfer landed showed step 3 as current while
+  step 1 (payment) was still open. It is now the FIRST unfinished step, which is what Leo
+  actually needs to look at.
 - SLICE 4 reorders: sealedandco.ca/?d=dsn_xxx loads their design from file and drops a
   branded pack in the cart. Verified: two clicks to repurchase, no re-upload.
 - SLICE 5 webhook: api/webhook.js. It does NOT trust the payload; it takes the session id

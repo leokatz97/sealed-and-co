@@ -1,6 +1,7 @@
 // the thank-you page calls this after Stripe redirects back. verifies the payment
 // with Stripe server-side, then writes the order record. idempotent.
-const { fromStripeSession } = require('./_order');
+const { fromStripeSession, readOrder } = require('./_order');
+const { itemNeeds } = require('./_suppliers');
 
 module.exports = async (req, res) => {
   const stripeKey = process.env.STRIPE_SECRET_KEY;
@@ -12,5 +13,14 @@ module.exports = async (req, res) => {
 
   const r = await fromStripeSession(sid, { stripeKey, blobToken });
   if (!r.ok) return res.status(r.code || 502).json({ error: r.error, detail: r.detail });
-  return res.status(200).json({ ok: true, id: r.id, existing: !!r.existing });
+
+  // does this order still owe us artwork? the thank-you page uses this to ask for it
+  let needsArt = false;
+  const found = await readOrder(r.id, blobToken);
+  if (found) {
+    const o = found.order;
+    const wantsLabels = (o.items || []).some((i) => itemNeeds(i).includes('labels'));
+    needsArt = wantsLabels && !(o.design && o.design.id);
+  }
+  return res.status(200).json({ ok: true, id: r.id, existing: !!r.existing, needsArt });
 };

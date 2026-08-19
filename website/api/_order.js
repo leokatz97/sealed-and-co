@@ -48,6 +48,7 @@ function fold(base, events) {
     else if (e.note) o.timeline.push({ state: o.state, at: e.at, note: e.note });
     if (e.dueBy) o.dueBy = e.dueBy;
     if (e.paidAt) o.paidAt = e.paidAt;
+    if (e.design) o.design = Object.assign({}, o.design || {}, e.design);
     if (e.artStatus && o.design) { o.design.status = e.artStatus; if (e.artStatus === 'approved') o.artApprovedAt = e.at; }
     if (e.supplierTasks) o.supplierTasks = e.supplierTasks;
     if (e.flags) o.flags = Object.assign({}, o.flags || {}, e.flags);

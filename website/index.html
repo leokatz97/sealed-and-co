@@ -1079,9 +1079,10 @@ function designBlockHtml() {
     '<p style="font-family:Hanken Grotesk,sans-serif;font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase">your label design</p>' +
     (d
       ? '<p style="margin-top:8px">&#10003; <strong>' + d.filename + '</strong> uploaded. we review every design before it prints.</p>' +
+        ((d.warnings && d.warnings.length) ? '<p style="margin-top:6px;color:var(--pink);font-weight:600">heads up: ' + d.warnings.join('; ') + '. we\'ll confirm it works before printing.</p>' : '') +
         '<button class="backlink" id="designClear" style="margin-top:6px">use a different file</button>'
-      : '<p style="margin-top:8px">png, svg, or pdf - under 4mb, at least 500px. we review it before anything prints.</p>' +
-        '<input type="file" id="designFile" accept=".png,.svg,.pdf" style="margin-top:10px;font-size:12.5px;width:100%">' +
+      : '<p style="margin-top:8px">png, jpg, svg, or pdf - under 4mb. we print a 2x2 inch front sticker, so square art at 600px or more works best. we review every design before it prints.</p>' +
+        '<input type="file" id="designFile" accept=".png,.jpg,.jpeg,.svg,.pdf" style="margin-top:10px;font-size:12.5px;width:100%">' +
         '<p id="designMsg" style="margin-top:8px;font-weight:600;display:none"></p>' +
         '<p style="margin-top:10px;opacity:.7">no file handy? check out anyway - we\'ll ask for it by email right after.</p>') +
     '</div>';
@@ -1102,7 +1103,7 @@ function wireDesignBox() {
         body: f,
       });
       const d = await r.json();
-      if (r.ok && d.designId) { setDesign({ designId: d.designId, filename: d.filename }); renderCart(); return; }
+      if (r.ok && d.designId) { setDesign({ designId: d.designId, filename: d.filename, warnings: d.warnings || [] }); renderCart(); return; }
       msg.textContent = d.message || 'upload failed - try again, or check out and email it after.';
     } catch { msg.textContent = 'upload failed - try again, or check out and email it after.'; }
   });

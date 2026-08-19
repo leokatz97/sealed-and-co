@@ -1,9 +1,47 @@
 # sealed & co. — ordering system design (Aug 19 2026)
 
-NOTE: labels/SUPPLIERS.md and labels/ORDERING-PLAN.md from the prior session were not found
-on this machine, in the repo, or in any local session transcript. This doc uses Leo's
-Aug 19 summary as source of truth. When those files resurface, reconcile: exact supplier
-quotes, chosen sticker dimensions, and tier names.
+RECONCILED Aug 19 2026 against the real labels/SUPPLIERS.md + labels/ORDERING-PLAN.md
+(both now in the repo). Locked decisions: 2" x 2" FRONT sticker · .jpg accepted ·
+tier prices approved. See "RECONCILIATION" below for what changed and what is still open.
+
+## RECONCILIATION with SUPPLIERS.md / ORDERING-PLAN.md
+
+CORRECTION - I WAS WRONG ABOUT THE APPLICATOR JIG. SUPPLIERS.md is explicit: "Spot stickers
+apply by hand in seconds - no applicator machine needed (that was only ever needed for
+full-wrap labels)." A 2x2 front sticker is a spot sticker. DO NOT buy the jig. Scratch
+that line item and the $150-300.
+  What survives: labelling is still real labour, ~10s a can plus setup, so roughly 45 min
+  per 250-can order. The pre-applied premium stays justified, and +$150 sits inside
+  SUPPLIERS.md's own guidance of +$0.50-0.75/can (= $125-190 at 250).
+
+STICKER SPEC (locked): 2" x 2" finished front sticker.
+  - dieline: 2.00" finished · 2.25" with 1/8" bleed · keep type inside 1.75" safe area
+  - at 300dpi: 600px finished, 675px with bleed
+  - upload gate now enforces: >=600px short side (hard), flags under 675px, rejects art
+    wider/taller than 3:1, flags past 1.5:1
+  - .jpg now accepted alongside png/svg/pdf (half of small-biz logos are jpg)
+
+PRICING FLAG - THE STICKER PACK IS UNDERPRICED AGAINST YOUR OWN MATH. SUPPLIERS.md targets
+$1.25-1.50/can for unapplied custom branding (2.5-4x markup on $0.26-0.60 label cost).
+The approved $225/250 pack is $0.90/can, about 30% under that. At ~$110 COGS with white ink
+and overage, $225 is a 51% margin; $295 is 63% and still under your own $1.25 floor.
+RECOMMEND raising the sticker pack to $295 (card $304). Everything else is consistent.
+
+BIGGEST OPEN QUESTION, and it changes cost AND which suppliers qualify: clear BOPP with
+white ink, or the white BOPP circle look? SUPPLIERS.md: white-on-clear needs a white-ink
+printer (+15-25%, and it cuts Custom Sticker Print out entirely), while a white BOPP spot
+sticker needs no white ink and any CMYK shop can run it same-day and cheapest. "Front
+sticker, 2x2" does not settle this. Decide before you compare the quotes.
+
+ALSO CARRIED IN FROM SUPPLIERS.md:
+  - material rule for wet cans: clear or white BOPP/vinyl, laminated, PERMANENT adhesive.
+    Never paper. Test any POD supplier's adhesive on a sweating can (Prodigi's transparent
+    stock is removable - a real risk for the dropship tier).
+  - self-apply sticker packs must ship with an instruction card: apply to dry, room-temp
+    cans BEFORE filling and chilling.
+  - SinaLite roll orders skip human proofing, so the upload gate is the ONLY proof step
+    before Phase 2 auto-ordering. That is why the dieline checks are now hard rules.
+  - quote chase due ~Aug 22 (9 vendors emailed Aug 19).
 
 ## 1. AUDIT — why today's checkout can't run this business
 
@@ -105,10 +143,12 @@ ART UPLOAD: in the CART (before payment) when the cart contains a design-bearing
 Required-by-default with an "email it after checkout" escape hatch (some owners won't
 have their logo on their phone; don't lose the sale). Deferred art → order lands in
 "art-missing" state with an upload link in the confirmation flow.
-Constraints v1: .png .svg .pdf, ≤4MB (serverless relay limit; bigger files = the email
-hatch; Phase 2 = signed client uploads for 100MB+). PNG width/height parsed server-side,
-min 500px short side. Dieline check is MANUAL in review until sticker dimensions are
-locked (open decision — from SUPPLIERS.md).
+Constraints v1 (LIVE): .png .jpg .svg .pdf, ≤4MB (serverless relay limit; bigger files =
+the email hatch; Phase 2 = signed client uploads). PNG and JPEG dimensions parsed
+server-side. Hard reject under 600px short side or past 3:1 aspect; flag under 675px
+(bleed) and past 1.5:1 (off-square). Vector files skip the pixel check. Every upload also
+writes designs/pending/{id}/meta.json with dimensions + flags, which the order sheet
+email reports so art problems are visible before you order labels.
 
 ORDER RECORD (JSON):
 { id, createdAt, channel: card|etransfer, stripeSessionId, customer{email,name,phone,
@@ -129,7 +169,8 @@ PRICING PROPOSAL (e-transfer base · card = ×1.03; label COGS $0.45 avg incl. o
 applying labour inside the pre-applied gap). PENDING real quotes from SUPPLIERS.md:
 - machine only .................... $1,400 · $1,442 (unchanged)
 - cans — 250 pack, blank .......... $475 · $489
-- sticker pack — 250 custom ....... $225 · $232   (reorder hero; COGS ~$115)
+- sticker pack — 250 custom ....... $225 · $232 approved, but see PRICING FLAG: $295 fits
+                                     your own $1.25/can floor (COGS ~$110)
 - peel & stick bundle (250+250) ... $650 · $670   (save $50 vs parts)
 - ready to pour (pre-applied) ..... $800 · $824   (+$150 applying gap)
 - basic package (machine + blank cans) $1,699 · $1,750 (unchanged, still saves vs parts)
@@ -166,4 +207,6 @@ OPEN DECISIONS FOR LEO:
 2. Tier prices above: sign off or adjust.
 3. Buy the label applicator jig (~$150–300) before order #1: strongly recommended.
 4. Promise wording: "1 week from art approval, guaranteed under 2" — approve.
-5. Accept .jpg uploads too? (Spec said PNG/SVG/PDF; half of small-biz logos are jpg.)
+5. DONE - .jpg accepted.
+6. NEW: clear BOPP + white ink, or white BOPP circle? (see RECONCILIATION - blocks quotes)
+7. NEW: raise the sticker pack to $295? (see PRICING FLAG)

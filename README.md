@@ -88,11 +88,11 @@ Branded cans ($500/$515) are archived in Stripe — reactivate when printing is 
 - Land one pilot cafe → testimonial + real photos
 
 ### Decisions to make (ordering system — see labels/ORDERING-SYSTEM.md)
-- Sticker size / dieline for the 330ml tall can (front sticker vs full wrap)
-- Sign off tier prices: cans 250 $475 · sticker pack 250 $225 · peel & stick $650 · ready to pour $800 · rush +$125
-- Buy a manual round-container label applicator jig (~$150-300) before order #1
-- Approve the promise wording: "1 week from art approval, guaranteed under 2"
-- Accept .jpg uploads too?
+- LOCKED: 2" x 2" front sticker (2.25" with bleed, 600px min at 300dpi). Tier prices approved. .jpg accepted.
+- OPEN: clear BOPP + white ink, or white BOPP circle? Changes cost 15-25% and cuts some suppliers out. Blocks the quote comparison.
+- OPEN: raise the sticker pack from $225 to $295? $225 is ~30% under the $1.25/can floor in labels/SUPPLIERS.md.
+- OPEN: approve the promise wording "1 week from art approval, guaranteed under 2"
+- No applicator jig needed (SUPPLIERS.md: spot stickers apply by hand)
 
 ### Other decisions
 - Product name for the machine (shortlist: the seal bar · sealé · the stamp · the S1)

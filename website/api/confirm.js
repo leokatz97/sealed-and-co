@@ -43,6 +43,23 @@ module.exports = async (req, res) => {
   const addr = ship && ship.address ? ship.address : (s.customer_details && s.customer_details.address) || {};
   const bizField = (s.custom_fields || []).find((f) => f.key === 'business_name');
   const designId = (s.metadata && s.metadata.design_id) || null;
+
+  // pull the art's meta sidecar (dimensions, warnings) written at upload time
+  let art = null;
+  if (designId) {
+    try {
+      const l = await fetch(`https://blob.vercel-storage.com/?prefix=designs/pending/${designId}/&limit=10`, {
+        headers: { authorization: `Bearer ${blobToken}`, 'x-api-version': '7' },
+      }).then((r) => r.json());
+      const blobs = (l && l.blobs) || [];
+      const metaBlob = blobs.find((b) => b.pathname.endsWith('meta.json'));
+      if (metaBlob) art = await fetch(metaBlob.url).then((r) => r.json()).catch(() => null);
+      if (!art) {
+        const f = blobs.find((b) => !b.pathname.endsWith('meta.json'));
+        if (f) art = { url: f.url, filename: f.pathname.split('/').pop(), warnings: [] };
+      }
+    } catch {}
+  }
   const colours = (s.metadata && s.metadata.machine_colour) || null;
 
   const order = {
@@ -60,7 +77,7 @@ module.exports = async (req, res) => {
     items,
     colours,
     amounts: { total: s.amount_total, currency: s.currency },
-    design: designId ? { id: designId, status: 'review' } : null,
+    design: designId ? { id: designId, status: 'review', ...(art || {}) } : null,
     state: designId ? 'art-review' : 'paid',
     timeline: [{ state: 'paid', at: new Date().toISOString() }],
     flags: {},
@@ -91,7 +108,10 @@ module.exports = async (req, res) => {
     `phone: ${order.customer.phone || '-'}`,
     `address: ${[addr.line1, addr.line2, addr.city, addr.state, addr.postal_code].filter(Boolean).join(', ')}`,
     colours ? `machine colour: ${colours}` : null,
-    designId ? `design: ${designId} (in art review - check the file)` : 'design: none uploaded - customer will email it',
+    designId ? `design: ${designId} (ART REVIEW - approve before ordering labels)` : 'design: NONE UPLOADED - chase the customer for their art',
+    art && art.url ? `art file: ${art.url}` : null,
+    art && (art.width || art.vector) ? `art size: ${art.vector ? 'vector (scales fine)' : art.width + 'x' + art.height + 'px'}` : null,
+    art && art.warnings && art.warnings.length ? `art flags: ${art.warnings.join(' | ')}` : null,
     '',
     `stripe: https://dashboard.stripe.com/payments (search ${sid.slice(-8)})`,
   ].filter((x) => x !== null).join('\n');

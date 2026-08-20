@@ -1,5 +1,16 @@
 # custom labels — supplier research & status
 
+> READ FIRST (added Aug 19 2026): this is the original research trail and the supplier
+> table is still current. Two things in it are OUT OF DATE because the business model
+> changed after it was written:
+>   - the three "product tiers" (sticker pack / unapplied / pre-applied) are GONE. Cans are
+>     either blank or branded; branded means we print AND apply, with the label cost, margin
+>     and labour baked into the can price. There is no self-apply tier and no dropshipping.
+>   - "customers must be able to reorder stickers alone" is now a reorder of branded cans
+>     (design on file, one link), not a sticker-only product.
+> The sticker is 2" x 2", a front sticker. Everything about materials, adhesive, white ink
+> and the API landscape below still stands.
+
 Research done Aug 19, 2026. Goal: per-order custom labels for our clear 330ml tall cans —
 every customer order carries a different design, ~250 labels per run, repeat orders expected.
 **Turnaround goal: 1 week door-to-door** (so supplier production must be 1–3 days).

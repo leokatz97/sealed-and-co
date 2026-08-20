@@ -53,11 +53,13 @@ checkout started → orders placed, with the drop-off between each. It's our own
 (`api/track.js` + `api/stats.js`), no cookies and nothing personal. Vercel's Web Analytics
 script was 404ing, so it never recorded anything despite being switched on.
 
-## Still to switch on (Leo, 2 minutes)
+## Stripe webhook — DONE (Aug 19 2026)
 
-Stripe → Developers → Webhooks → Add endpoint → `https://sealedandco.ca/api/webhook`,
-event `checkout.session.completed`. Without it, an order only records if the buyer's browser
-comes back from Stripe. With it, orders record no matter what.
+Destination `sealed-co-orders` → `https://sealedandco.ca/api/webhook`, listening to
+`checkout.session.completed`. Created and confirmed reachable. Orders now record even if the
+buyer closes the tab. Only that one event is handled; anything else is ignored on purpose, so
+don't subscribe to more until there's a handler for it (refund + dispute handlers are the
+next two worth writing).
 
 ## More files
 - **labels/ORDERING-SYSTEM.md** — the ordering-system audit, scenario map, system design, and build slices. Read this before touching the order flow.

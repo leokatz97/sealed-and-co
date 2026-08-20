@@ -90,12 +90,13 @@ file conversion. A "small tweak" is NOT a reorder — it's a new design version 
 review cycle), price it or it eats you.
 
 ### C. Unapplied vs pre-applied ("ready to pour")
-CHALLENGE (the weakest part of the plan): hand-applying 250 labels straight on cylindrical
-clear PET is 2–4 hours of tedium per order, and crooked labels are worse than none. At a
-small price gap everyone picks pre-applied and Leo becomes the worst-paid labeller in
-Toronto. Fix BOTH: buy a manual round-container label applicator jig (~$150–300, cuts it
-to ~45 min and makes it straight) AND price the gap for real (+$150 minimum). Pre-applied
-also scuffs in transit — pack with paper interleave.
+SUPERSEDED - this whole scenario is gone. There is no unapplied tier: branded cans are
+always applied by us. My original note here recommended buying a ~$150-300 applicator jig
+and pricing an "unapplied vs pre-applied" gap. Both are dead: SUPPLIERS.md says spot
+stickers apply by hand in seconds (a jig is only for full wraps), and Leo dropped the
+self-apply tier entirely. Kept only so nobody re-derives the same wrong conclusion.
+Real numbers that survive: ~200 stickers by hand is 35-45 minutes, and that labour lives
+inside the branded can price.
 
 ### D. Bad artwork
 Upload constraints stated inline: PNG/SVG/PDF, min resolution for print size, dieline
@@ -316,58 +317,25 @@ STILL NOT BUILT (deliberately)
   label ordering, Stripe webhook hardening, client-side big-file uploads. ~1-2 days,
   gated on API credentials. Printful/Prodigi dropship is NO LONGER NEEDED.
 
-OPEN DECISIONS FOR LEO:
-1. Sticker size/dieline for the 330ml tall can (front sticker vs full wrap) — from quotes.
-2. Tier prices above: sign off or adjust.
-3. Buy the label applicator jig (~$150–300) before order #1: strongly recommended.
-4. Promise wording: "1 week from art approval, guaranteed under 2" — approve.
-5. DONE - .jpg accepted.
-6. NEW: clear BOPP + white ink, or white BOPP circle? (see RECONCILIATION - blocks quotes)
-7. NEW: raise the sticker pack to $295? (see PRICING FLAG)
+OPEN DECISIONS FOR LEO (everything else on this list is settled - see history above):
+1. STICKER MATERIAL + INK. Blocks comparing the 9 quotes. Three real options, not two:
+   a. clear BOPP + DARK ink (forest #0B4924) - the "printed on the can" look the whole site
+      sells, needs NO white ink, so every supplier qualifies and it prices like the cheap
+      option. Only weakness: dark ink vanishes on a dark drink (cold brew, red juice).
+   b. clear BOPP + WHITE ink - same look on any drink colour, but +15-25% and it cuts
+      suppliers (Custom Sticker Print is CMYK only).
+   c. white BOPP circle - cheapest and fastest, no white ink, but it reads as a sticker stuck
+      on a can rather than printing on the can, which is a different product than the site's
+      photos promise.
+   RECOMMENDATION: (a) as the default, and get (b) quoted as an upgrade for dark drinks.
+2. Price review pass. All prices frozen until Leo does it. 'svc-design-branded' at
+   $150/$155 is a PLACEHOLDER.
+3. Design direction: Leo is picking reference sites; the site gets rebuilt in that language.
+4. Real product photos to replace every borrowed can image.
 
-## API READINESS (asked Aug 19 2026) — honest status
-
-Verdict: the DATA and the SEAM are ready; no supplier API is connected yet, and one of the
-three you asked about has no API to connect to.
-
-READY (built and tested):
-- api/_catalog.js — one source of truth for price, copy, and what each product NEEDS
-  ('machine' / 'cans' / 'labels'). checkout.js prices from it; supplier routing reads it.
-  Supplier orders never depend on guessing from a product name.
-- api/_suppliers.js — dispatch layer with four adapters (label run, sticker dropship, cans,
-  machine). Each has mode 'to-leo' or 'dropship' and a send() to fill in later.
-- Idempotency: every task is CLAIMED in Blob (suppliers/{orderId}/{task}.json) before any
-  call, so a retried webhook or a refreshed thank-you page cannot double-order. This is the
-  thing that would otherwise cost real money the day automation goes on.
-- Routing verified for all 6 order shapes, incl. the sticker-only reorder routing to
-  dropship and machine-only NOT triggering a cans order.
-- Art is stored at a public HTTPS URL and pre-validated against the 2x2 dieline, which is
-  exactly the shape print APIs consume, and is SinaLite's precondition (no proofing).
-- Order record already carries everything an API needs: items+sku, qty, machine colour,
-  ship-to address, contact, art URL and dimensions.
-- Phase 1 payoff already live: the order-sheet email now ends in a TO ORDER checklist,
-  marking which lines ship to the customer instead of to Leo.
-
-NOT READY, in the order it will bite:
-1. No print-ready file step. Customers upload logos; SinaLite/Printful want a 2.25" bleed
-   300dpi print file. Something must place the logo on the dieline. Options: a template PDF
-   the customer fills, a server-side composite step, or Sticker it's "Glide" auto-proofer.
-   THIS is the real blocker for label automation, not the API.
-2. No Stripe webhook. Order creation currently rides the thank-you page redirect. Fine for
-   manual ordering; not fine for spending money automatically. Add the webhook before
-   flipping any adapter to ready.
-3. No credentials: SinaLite needs a trade account; Printful/Prodigi need API keys.
-4. Prodigi's transparent stock uses REMOVABLE adhesive (per SUPPLIERS.md). Test on a
-   sweating can before any clear dropship goes live.
-5. Adapters return status only; no retry/backoff or failure alert yet.
-
-THE MACHINE / ALIBABA ANSWER — no, and probably never:
-- Alibaba factories do not offer an ordering API. Orders are placed by message, PO, and
-  Trade Assurance. The Alibaba open platform is for marketplace apps, not for placing
-  custom orders with an arbitrary supplier. The adapter is therefore documented as manual
-  by design, and it appears on the checklist instead.
-- Bigger point: machine DROPSHIP contradicts the decided flow and your moat. Machines are
-  supposed to arrive at Leo so they get boxed with the labelled cans and set up on the
-  customer's counter. Direct-from-factory means weeks of transit, customs paperwork in the
-  customer's name, no setup, and no way to catch a dented unit. Keep machines coming to you
-  and hold stock; automate the LABEL loop, which is the part that repeats.
+SETTLED, DO NOT REOPEN:
+- No applicator jig (spot stickers apply by hand - his own SUPPLIERS.md says so).
+- No sticker packs, no dropship tier, no self-apply tier. Cans are blank or branded.
+- Pack size stays 200. Delivery promise 5-7 business days from art approval.
+- Artwork question is mandatory before add to cart, with three ways to answer it.
+- Stripe webhook is created and live.

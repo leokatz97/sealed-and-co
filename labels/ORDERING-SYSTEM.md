@@ -317,18 +317,13 @@ STILL NOT BUILT (deliberately)
   label ordering, Stripe webhook hardening, client-side big-file uploads. ~1-2 days,
   gated on API credentials. Printful/Prodigi dropship is NO LONGER NEEDED.
 
+STICKER MATERIAL DECIDED (Aug 19 2026, Leo said use my call): clear BOPP, laminated,
+permanent adhesive, DARK ink (forest #0B4924) as standard; white-on-clear quoted as an
+upgrade for dark drinks; white BOPP circle only as a fallback if clear prices badly.
+Rationale and how to rank the quotes are at the top of labels/SUPPLIERS.md.
+
 OPEN DECISIONS FOR LEO (everything else on this list is settled - see history above):
-1. STICKER MATERIAL + INK. Blocks comparing the 9 quotes. Three real options, not two:
-   a. clear BOPP + DARK ink (forest #0B4924) - the "printed on the can" look the whole site
-      sells, needs NO white ink, so every supplier qualifies and it prices like the cheap
-      option. Only weakness: dark ink vanishes on a dark drink (cold brew, red juice).
-   b. clear BOPP + WHITE ink - same look on any drink colour, but +15-25% and it cuts
-      suppliers (Custom Sticker Print is CMYK only).
-   c. white BOPP circle - cheapest and fastest, no white ink, but it reads as a sticker stuck
-      on a can rather than printing on the can, which is a different product than the site's
-      photos promise.
-   RECOMMENDATION: (a) as the default, and get (b) quoted as an upgrade for dark drinks.
-2. Price review pass. All prices frozen until Leo does it. 'svc-design-branded' at
+1. Price review pass. All prices frozen until Leo does it. 'svc-design-branded' at
    $150/$155 is a PLACEHOLDER.
 3. Design direction: Leo is picking reference sites; the site gets rebuilt in that language.
 4. Real product photos to replace every borrowed can image.

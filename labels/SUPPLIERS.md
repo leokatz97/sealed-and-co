@@ -10,6 +10,16 @@
 >     (design on file, one link), not a sticker-only product.
 > The sticker is 2" x 2", a front sticker. Everything about materials, adhesive, white ink
 > and the API landscape below still stands.
+>
+> MATERIAL DECIDED (Aug 19 2026): **clear BOPP, laminated, permanent adhesive, printed in
+> DARK ink (forest #0B4924)** as the standard. It needs no white ink, so all nine quoted
+> suppliers stay eligible, it prices at the low end, and it gives the "printed on the can"
+> look the whole site sells. White-on-clear is quoted as an UPGRADE for customers whose
+> drink is too dark for dark ink (cold brew, red juice). The white BOPP circle is the
+> fallback only if clear turns out to be slow or badly priced.
+> When comparing the nine quotes, rank on: (1) price per label at 200 in clear BOPP with
+> dark ink, (2) production days, (3) Toronto pickup vs ship, (4) the separate white-ink
+> price as an add-on. Do NOT let a supplier's lack of white ink disqualify them.
 
 Research done Aug 19, 2026. Goal: per-order custom labels for our clear 330ml tall cans —
 every customer order carries a different design, ~250 labels per run, repeat orders expected.

@@ -39,6 +39,13 @@ a catalogue, and every card goes to its product page where colour, artwork and q
 The cart is review only. `/api/attach` still exists as a repair tool (wrong file, or you
 uploading a fetched logo), just not as part of the buying flow.
 
+## Proofs and shipping
+
+- Shipping is locked to Canada at Stripe: the country field has one option and it's disabled.
+  Billing country is left open on purpose so a US-issued card still works.
+- Proof emails are manual: the proof file is generated for you, and the order desk has an
+  "email them the proof" button that pre-writes the whole email. Click, glance, send.
+
 ## Funnel
 
 The order desk shows the last 30 days: product views → added to cart → designs uploaded →

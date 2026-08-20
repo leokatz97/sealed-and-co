@@ -166,6 +166,22 @@ have fails the 600px check, at 11pm, with a card in their hand".
   from the order desk), for "I sent the wrong file" and for Leo uploading a fetched or
   self-designed label. It is no longer advertised in the buying flow.
 
+  PROOF EMAILS ARE MANUAL BY DESIGN (checked Aug 19 2026). The site promises "we email you
+  a proof before anything prints", and the system generates proof-2x2.svg automatically -
+  but nothing emails the customer, because Formspree only delivers to Leo and a real
+  transactional sender (Resend/Postmark) would mean another account and API key. Instead
+  the order desk now has an "email them the proof" button that opens Leo's mail app with
+  the customer's address, the order number, the proof link and the cut-line explanation
+  already written. One click, the promise stays true, no new service. If proof volume ever
+  makes that tedious, THEN wire a real sender.
+
+  SHIPPING IS HARD-LOCKED TO CANADA (verified on a live checkout Aug 19 2026): the Stripe
+  shipping country field has exactly one option, Canada, and it is disabled - a customer
+  cannot type a foreign address. Billing country is deliberately NOT restricted: Stripe
+  Checkout has no allowed_countries for billing, and blocking foreign billing would reject
+  legitimate cards (a US-issued card, someone travelling) for no gain. Where the goods go
+  is what matters, and that is locked.
+
   RESULT: an order can no longer exist in "we have no idea how to get their art". Every
   branded order arrives with a definite plan, and the order desk tells Leo which of the
   three it is and what he owes.

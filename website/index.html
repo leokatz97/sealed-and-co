@@ -216,6 +216,8 @@ footer .logo{display:inline-flex;align-items:center}
 /* ---------- cart ---------- */
 .cartbtn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--cream);border:1px solid var(--line);border-radius:10px;padding:9px 18px;font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;white-space:nowrap}
 .cartbtn .count{background:var(--lime);color:var(--ink);border-radius:10px;padding:1px 9px;font-size:13px}
+.cartbtn.empty{background:none;color:var(--ink)}
+.cartbtn.empty .count{background:var(--cream2);color:var(--ink);opacity:.75}
 .cartrows{margin-top:30px;display:flex;flex-direction:column;gap:14px}
 .cartrow{display:grid;grid-template-columns:84px 1fr auto auto auto;gap:16px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--cream)}
 .cartrow .thumb{width:84px;height:84px;border-radius:8px;object-fit:cover;border:1px solid var(--line)}
@@ -609,7 +611,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <p class="blurb">the machine, 200 cans wearing your logo, lids, and we draw the label for you - send a logo or just your instagram. $2,475 of parts.</p>
           <p class="needs-art">your design is set up on the next page</p>
           <div class="row">
-            <button class="btn" data-goto="p-signature">view + choose &rarr;</button>
+            <button class="btn" data-goto="p-signature">view &rarr;</button>
           </div>
         </div>
       </div>
@@ -622,7 +624,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <div class="prices"><span class="p-main">$1,699</span><span class="p-sub">e-transfer · $1,750 by card · save $101 vs buying separately</span></div>
           <p class="blurb">the machine plus 200 blank cans and lids. bring your own labels, or add branding later.</p>
           <div class="row">
-            <button class="btn" data-goto="p-basic">view + choose &rarr;</button>
+            <button class="btn" data-goto="p-basic">view &rarr;</button>
           </div>
         </div>
       </div>
@@ -635,7 +637,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <div class="prices"><span class="p-main">$1,400</span><span class="p-sub">e-transfer · $1,442 by card</span></div>
           <p class="blurb">the commercial can sealer on its own - white or black. seals in about 3 seconds.</p>
           <div class="row">
-            <button class="btn" data-goto="p-machine">view + choose &rarr;</button>
+            <button class="btn" data-goto="p-machine">view &rarr;</button>
           </div>
         </div>
       </div>
@@ -647,7 +649,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <div class="prices"><span class="p-main">$400</span><span class="p-sub">e-transfer · $412 by card</span></div>
           <p class="blurb">plain packs of 200 clear tall cans with aluminum lids. label them yourself, or pick the branded pack.</p>
           <div class="row">
-            <button class="btn" data-goto="p-cans">view + choose &rarr;</button>
+            <button class="btn" data-goto="p-cans">view &rarr;</button>
           </div>
         </div>
       </div>
@@ -660,7 +662,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <p class="blurb">the same cans with your design printed on 2x2 labels - and we apply every one before delivery.</p>
           <p class="needs-art">your design is set up on the next page</p>
           <div class="row">
-            <button class="btn" data-goto="p-cans-branded">view + choose &rarr;</button>
+            <button class="btn" data-goto="p-cans-branded">view &rarr;</button>
           </div>
         </div>
       </div>
@@ -1033,7 +1035,11 @@ let cart = [];
 try { cart = JSON.parse(localStorage.getItem('sc_cart') || '[]').filter(it => PRODUCTS[it.id]); } catch {}
 function saveCart() { localStorage.setItem('sc_cart', JSON.stringify(cart)); updateCartBtn(); }
 function cartQty() { return cart.reduce((s, it) => s + it.qty, 0); }
-function updateCartBtn() { document.getElementById('cartCount').textContent = String(cartQty()); }
+function updateCartBtn() {
+  const n = cartQty();
+  document.getElementById('cartCount').textContent = String(n);
+  document.getElementById('cartBtn').classList.toggle('empty', n === 0);
+}
 const MACHINE_ITEMS = ['signature', 'basic', 'machine'];
 const colourState = {signature: 'white', basic: 'white', machine: 'white'};
 document.querySelectorAll('.variant[data-colour-for]').forEach(v => {
@@ -1430,6 +1436,7 @@ if (newsForm) newsForm.addEventListener('submit', async (e) => {
   b.textContent = 'try again'; b.disabled = false;
 });
 
+updateCartBtn();
 showTab(location.hash === '#thanks' ? 'order' : (location.hash.replace('#', '') || 'what'), {push: false, scroll: false});
 
 document.querySelectorAll('video').forEach(v => {

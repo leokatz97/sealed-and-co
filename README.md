@@ -136,31 +136,36 @@ counted from art approval on branded orders.
 
 ## Still to do
 
-### Leo only (dashboard/accounts)
-- Stripe branding: upload brand/ logos, set brand #0B4924 + accent #F8CFD9 (Settings → Branding)
-- Stripe: payouts are still MANUAL — flip to daily or weekly in Payouts settings
-- Stripe: turn on customer email receipts (Settings → Emails) + app push notifications
-- Formspree: log in once at formspree.io to confirm where form emails land
-- Instagram: grab @sealedandco, then link it on the site
-- CRA: register business + HST number, then add HST back to checkout
-- Business email on sealedandco.ca (Google Workspace ~$8/mo or improvmx.com forwarding)
-- Lock supplier lead times for machines and cans
-- Land one pilot cafe → testimonial + real photos
+### Leo only (accounts and decisions — nobody else can do these)
+- Stripe: payouts are still MANUAL. Flip to daily or weekly, or money just sits there.
+- Stripe: turn on customer email receipts (Settings → Emails) + phone app push notifications.
+- Stripe: upload brand/wordmark.png + brand/icon.png, set brand #0B4924 + accent #F8CFD9.
+- Chase the 9 label quotes (sent Aug 19, chase date Aug 22). This is the critical path.
+- Price review pass. Everything is frozen until then; `svc-design-branded` at $150 is a placeholder.
+- Product photos: machine mid-seal, a can in hand, cans in a row, a stocked fridge, hands
+  applying a label. Phone camera, daylight. Every can on the site is another brand's.
+- Design direction: send 2-3 reference sites and the look gets rebuilt to match.
+- Name for the machine (shortlist: the seal bar · sealé · the stamp · the S1).
+- Formspree: log in once to confirm where form emails land.
+- Instagram @sealedandco, business email on the domain, CRA/HST registration.
+- Land one pilot cafe for a testimonial and real photos.
 
-### Decisions to make (ordering system — see labels/ORDERING-SYSTEM.md)
-- LOCKED: 2" x 2" front sticker (2.25" with bleed, 600px min at 300dpi). Tier prices approved. .jpg accepted.
-- OPEN: clear BOPP + white ink, or white BOPP circle? Changes cost 15-25% and cuts some suppliers out. Blocks the quote comparison.
-- DONE: sticker packs dropped. Branded cans $775/$798 with label cost baked in.
-- DONE: delivery promise is 5-7 business days (from art approval on branded orders).
-- No applicator jig needed (SUPPLIERS.md: spot stickers apply by hand)
+### Settled — do not reopen
+- Sticker: 2" x 2" front sticker, clear BOPP, laminated, permanent adhesive, DARK forest ink
+  (#0B4924) as standard. White-on-clear is an upgrade quote for dark drinks. White BOPP
+  circle is the fallback only. Details at the top of labels/SUPPLIERS.md.
+- No sticker packs, no dropship, no self-apply tier. Cans are blank or branded.
+- No applicator jig (spot stickers apply by hand).
+- Pack size 200. Delivery 5-7 business days from art approval.
+- Artwork question mandatory before add to cart, three ways to answer it.
+- Stripe webhook created and live.
+- .jpg accepted alongside png/svg/pdf.
 
-### Other decisions
-- Product name for the machine (shortlist: the seal bar · sealé · the stamp · the S1)
-- FAQ: 3 open answers — machine size/plug, hot drinks yes/no, is label design included in signature
-- Comparison table: approved concept = DIY import vs co-packer vs sealed & co. (say go)
-- Real footer build: shop links + help links + email signup + legal line (say go)
-
-### Done recently
-- Mix 2 "matcha counter" design live · green maple leaf in header/footer · meta/SEO rewritten
-- Stripe fully working: approved, bank connected (CIBC), multi-item card checkout tested live
-- 5 new reference photos placed · all collage tiles stickered · "200" scrubbed from general copy
+### Built and live (don't rebuild these)
+- FAQ page (12 questions, grouped), the comparison table on why-buy ("the hard way" vs us),
+  the full footer with shop/help links and newsletter signup, policies incl. the custom-goods
+  refund carve-out, trust marks under every buy button, cross-sell from machine to cans.
+- Order desk with the 8-step tracker, one-click proof email, admin artwork upload.
+- Print-ready file generation, reorder links, first-party funnel counter.
+- The 3 previously-open FAQ answers are written and live (counter fit, cold drinks only,
+  design included in signature). Correct them if any is wrong.

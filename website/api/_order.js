@@ -134,7 +134,10 @@ function orderSheet(order, tasks) {
     `address: ${[a.line1, a.line2, a.city, a.state, a.postal_code].filter(Boolean).join(', ') || '-'}`,
     order.colours ? `machine colour: ${order.colours}` : null,
     '',
-    art.id ? `DESIGN ${art.id} - approve before ordering labels` : 'DESIGN: none uploaded - chase the customer for their art',
+    art.path === 'fetch' ? `DESIGN: pull their logo from ${art.source || '(no source given)'} - then upload it in the order desk`
+      : art.path === 'service' ? 'DESIGN: WE are drawing this one. make the label, upload the proof in the order desk, get their ok.'
+      : art.id ? `DESIGN ${art.id} - approve before ordering labels`
+      : 'DESIGN: nothing on file - chase the customer for their art',
     art.url ? `  original: ${art.url}` : null,
     art.proofUrl ? `  proof (with cut lines): ${art.proofUrl}` : null,
     art.printUrl ? `  PRINT FILE (send this to the printer): ${art.printUrl}` : null,
@@ -185,6 +188,7 @@ async function fromStripeSession(sid, { stripeKey, blobToken }) {
   const addr = (ship && ship.address) || (s.customer_details && s.customer_details.address) || {};
   const biz = (s.custom_fields || []).find((f) => f.key === 'business_name');
   const designId = (s.metadata && s.metadata.design_id) || null;
+  const artPath = (s.metadata && s.metadata.art_path) || null;
   const art = await loadArt(designId, blobToken);
   const now = new Date().toISOString();
 
@@ -200,8 +204,11 @@ async function fromStripeSession(sid, { stripeKey, blobToken }) {
     items,
     colours: (s.metadata && s.metadata.machine_colour) || null,
     amounts: { total: s.amount_total, currency: s.currency },
-    design: designId ? { id: designId, status: 'review', ...(art || {}) } : null,
-    state: designId ? 'art-review' : 'paid',
+    design: (designId || artPath) ? Object.assign({
+      id: designId || null, path: artPath || (designId ? 'upload' : null),
+      source: (s.metadata && s.metadata.art_source) || null, status: 'review',
+    }, art || {}) : null,
+    state: (designId || artPath) ? 'art-review' : 'paid',
     timeline: [{ state: 'paid', at: now, note: 'stripe card payment' }],
     flags: {},
   };
@@ -237,7 +244,10 @@ async function createEtransfer(body, { blobToken }) {
     items,
     colours: String(body.colours || '').slice(0, 120) || null,
     amounts: { total: Math.max(0, parseInt(body.total, 10) || 0), currency: 'cad' },
-    design: body.designId ? { id: body.designId, status: 'review', ...(art || {}) } : null,
+    design: (body.designId || body.artPath) ? Object.assign({
+      id: body.designId || null, path: body.artPath || (body.designId ? 'upload' : null),
+      source: String(body.artSource || '').slice(0, 300) || null, status: 'review',
+    }, art || {}) : null,
     state: 'awaiting-payment',
     timeline: [{ state: 'awaiting-payment', at: now, note: 'e-transfer requested from the cart' }],
     flags: {},

@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
   if (found) {
     const o = found.order;
     const wantsLabels = (o.items || []).some((i) => itemNeeds(i).includes('labels'));
-    needsArt = wantsLabels && !(o.design && o.design.id);
+    needsArt = wantsLabels && !(o.design && (o.design.id || o.design.path));
   }
   return res.status(200).json({ ok: true, id: r.id, existing: !!r.existing, needsArt });
 };

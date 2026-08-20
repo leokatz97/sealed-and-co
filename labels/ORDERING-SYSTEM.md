@@ -139,46 +139,36 @@ STORAGE: Vercel Blob (created: store_YtbZsEzY52kiL9Y7, token injected).
 - Orders: orders/{ORDER_ID}.json — one JSON per order, timeline of states inside.
 - No database until volume demands it. List-by-prefix is the "index".
 
-ART UPLOAD - REVISED Aug 19 2026 to THREE TOUCHES, never a gate:
+ARTWORK - REBUILT Aug 19 2026 (v3). The three-touch escape-hatch version was scrapped:
+too many states, and it let paid orders exist that Leo could not start. The rule now is
+that the artwork question must be ANSWERED before add to cart, but it is never a file
+requirement, because the dead end was never "they have no logo" - it was "the logo they
+have fails the 600px check, at 11pm, with a card in their hand".
 
-  1. PRODUCT PAGE (the ask). The upload box sits with the colour and quantity choices on
-     the branded-cans and signature pages, because for those products the design IS the
-     product. Highest intent, and if they can't produce a file they learn there and can
-     pick blank cans instead of abandoning at checkout.
-  2. CART (the confirm). Same component, different wording: "your design is attached"
-     with a link to see it on the sticker, or one more chance to add it.
-  3. THANK-YOU PAGE (the catch). If the order needs art and none is attached,
-     /api/confirm returns needsArt and the page shows an upload panel immediately, which
-     posts to /api/attach?sid=... and moves the order to art-review. This is where most
-     "I'll send it later" cases actually resolve, while they are still at the keyboard.
+  THE REQUIRED FIELD IS "HOW WE GET YOUR ARTWORK", NOT "A FILE". Three answers:
+    upload   - they have a print-ready logo. validated against the 2x2 dieline as before.
+    fetch    - "pull it from my socials". a required text field (@handle or a URL). five
+               seconds on a phone; Leo grabs the asset and uploads it from the order desk.
+    service  - "design it for me". free inside signature (that is what justifies its
+               price); a paid line item alongside branded cans.
+  Add to cart stays disabled until one of the three is satisfied, with the reason shown.
 
-  WHY NOT A HARD GATE BEFORE PAYMENT: a cafe owner's logo lives with their designer, in
-  Canva, or on a laptop - not on the phone they are browsing with. Requiring a file to
-  buy would lose real orders. So art is never required to check out; it is asked for
-  three times, and the order simply cannot progress past art approval without it.
+  SHOP PAGE IS NOW A CATALOGUE. Every card is "view + choose ->"; there is no add to cart
+  on it at all. Two reasons: it removes the path that skipped the artwork question, and it
+  fixes a quiet bug where adding a machine from the shop page silently defaulted it to
+  white. Configuration (colour, artwork, quantity) happens in exactly one place.
 
-  WHY NOT PRODUCT PAGE ONLY: the file picker is the highest-friction control on the page.
-  Asking before they have committed to anything suppresses add-to-cart.
+  CART IS REVIEW ONLY. It restates the chosen artwork path with a "change this" link back
+  to the product page. No uploader, no prompts, no surprises.
 
-  THE SHOP-PAGE HOLE, FOUND AND CLOSED: "add to cart" straight off the shop card skipped
-  the product page, so the first time a customer heard about artwork was in the cart. Fixed
-  by inverting the buttons on the two design-bearing cards only: the primary button is now
-  "add your design ->" (which opens the product page), with "skip, add to cart" as the quiet
-  secondary, plus a pink "your logo goes on next" line above them. The other three cards
-  keep a plain one-click add-to-cart, because colour has a sane default and is editable in
-  the cart while a design has no default at all. If they do skip, the cart box heading
-  changes to "one thing left: your label design", gets a pink outline, and a line under the
-  checkout button tells them they can send it afterwards.
+  THE POST-PAYMENT UPLOAD SURVIVES AS A REPAIR TOOL, not a normal path: /api/attach still
+  accepts a file against an order (by session id from the thank-you page, or by order id
+  from the order desk), for "I sent the wrong file" and for Leo uploading a fetched or
+  self-designed label. It is no longer advertised in the buying flow.
 
-  ONE DESIGN PER ORDER (deliberate). It is their brand, so one file covers everything in
-  the cart. Two different brands in one order would need per-item designs - not built,
-  and if it ever comes up, treat it as two orders.
-Constraints v1 (LIVE): .png .jpg .svg .pdf, ≤4MB (serverless relay limit; bigger files =
-the email hatch; Phase 2 = signed client uploads). PNG and JPEG dimensions parsed
-server-side. Hard reject under 600px short side or past 3:1 aspect; flag under 675px
-(bleed) and past 1.5:1 (off-square). Vector files skip the pixel check. Every upload also
-writes designs/pending/{id}/meta.json with dimensions + flags, which the order sheet
-email reports so art problems are visible before you order labels.
+  RESULT: an order can no longer exist in "we have no idea how to get their art". Every
+  branded order arrives with a definite plan, and the order desk tells Leo which of the
+  three it is and what he owes.
 
 ORDER RECORD (JSON):
 { id, createdAt, channel: card|etransfer, stripeSessionId, customer{email,name,phone,
@@ -260,6 +250,17 @@ WHAT IS LIVE
   actually needs to look at.
 - SLICE 4 reorders: sealedandco.ca/?d=dsn_xxx loads their design from file and drops a
   branded pack in the cart. Verified: two clicks to repurchase, no re-upload.
+- SITE AUDIT PASS (Aug 19 2026): shop grid 3-up on desktop so five cards sit 3+2; a
+  plain-english eyebrow over each package name; trust marks (30-day replacement, stripe,
+  5-7 days, toronto) under every buy button; cross-sell from the machine page to cans;
+  a call to action halfway down "who it's for"; the FAQ grouped into product / your design
+  / money and delivery; the 3.5MB hero clip no longer downloads on phones until tapped.
+- FIRST-PARTY FUNNEL (Aug 19 2026): Vercel Web Analytics was returning 404 for its script,
+  so nothing had ever been recorded despite being "enabled". Replaced with api/track.js +
+  api/stats.js: one empty blob per event with the event name in the path, so counting is a
+  prefix listing and never a read-modify-write. Five steps - product views, added to cart,
+  designs uploaded, checkout started, orders placed - shown across the top of the order
+  desk with the drop-off between each. No cookies, no ids, nothing personal.
 - SLICE 5 webhook: api/webhook.js. It does NOT trust the payload; it takes the session id
   and re-fetches that session from Stripe with our own key, recording it only if Stripe
   says paid. So a forged call can at most trigger an idempotent re-check of a real payment.

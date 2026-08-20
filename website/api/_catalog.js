@@ -36,6 +36,14 @@ const CATALOG = {
     img: 'https://sealedandco.ca/img/steel-matcha.jpg',
     desc: 'clear tall cans + aluminum lids\nyour design printed on 2x2in labels\nwe apply every label before delivery\n5-7 business days from art approval\ncard price includes 3% processing',
   },
+  // Leo draws the label for them. included free in signature; a paid add-on with
+  // branded cans. PRICE IS A PLACEHOLDER pending Leo's pricing review.
+  'svc-design-branded': {
+    key: 'svc-design', name: 'label design service', amount: 15500,
+    machine: false, needs: [], designService: true,
+    img: 'https://sealedandco.ca/img/matcha-box.jpg',
+    desc: 'we draw your label for the 2x2in sticker\nyou approve a proof before anything prints\ncard price includes 3% processing',
+  },
 };
 
 const COLOURS = new Set(['white', 'black']);

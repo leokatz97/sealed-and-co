@@ -151,7 +151,8 @@ footer .logo{display:inline-flex;align-items:center}
 
 
 /* ---------- shop / product cards ---------- */
-.shopgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:36px}
+.shopgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:36px}
+@media(max-width:1000px){.shopgrid{grid-template-columns:repeat(2,1fr)}}
 .pcard{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--cream);display:flex;flex-direction:column}
 .pcard.featured{background:var(--lime)}
 .pcard .photo{border:none;border-radius:0;border-bottom:1px solid var(--line);aspect-ratio:4/3;cursor:pointer}
@@ -184,6 +185,12 @@ footer .logo{display:inline-flex;align-items:center}
 .stepper button{width:42px;height:42px;border:none;background:none;font-size:20px;font-weight:700;cursor:pointer;color:var(--ink)}
 .stepper span{min-width:34px;text-align:center;font-family:'Hanken Grotesk',sans-serif;font-weight:700}
 .prod-info .btn{margin-top:20px;width:100%;text-align:center}
+.req{background:var(--lime);color:var(--pink);border-radius:999px;padding:2px 9px;font-size:9.5px;letter-spacing:.08em;margin-left:7px;vertical-align:1px}
+.art-paths{flex-wrap:wrap;margin-top:12px;margin-bottom:4px}
+.art-paths button{flex:1 1 30%;min-width:130px;font-size:12px;padding:10px 8px}
+.designbox input.design-source{width:100%;font-size:15px;padding:11px 13px;border:1px solid var(--line);border-radius:8px;background:var(--cream)}
+.gate-hint{display:none;margin-top:8px;font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--pink)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
 .needs-art{font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-top:2px}
 .designbox{background:var(--cream2);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:20px;font-size:13px}
 .designbox.done{background:var(--sky)}
@@ -198,6 +205,8 @@ footer .logo{display:inline-flex;align-items:center}
 .db-file input{position:absolute;width:1px;height:1px;opacity:0}
 .db-file span{display:inline-block;background:var(--lime);color:var(--pink);border-radius:10px;padding:10px 18px;font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
 .dbslot-cart{margin-top:0}
+.trust{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.72}
+.trust span{display:inline-flex;align-items:center;gap:5px}
 .prod-note{margin-top:16px;font-size:13px;background:var(--cream2);border:1px solid var(--line);border-radius:8px;padding:12px 16px}
 .legal h3{margin-top:26px;font-size:17px}
 .legal p{margin-top:6px;font-size:14px;max-width:640px;line-height:1.6}
@@ -269,6 +278,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--matcha)}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"+";font-size:19px;flex:none;color:var(--pink)}
 .faq details[open] summary::after{content:"-"}
+
+.faq-g{font-size:12px;letter-spacing:.12em;margin-top:16px;color:var(--pink)}
 .faq details p{padding:0 0 18px;font-size:14px;max-width:66ch}
 
 footer{border-top:1px solid var(--line);background:var(--cream2);padding:46px 0 26px;font-size:13px}
@@ -371,7 +382,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
         </div>
       </div>
       <div class="photo hero-img">
-        <video src="img/seal-demo.mp4" poster="img/seal-poster.jpg" autoplay muted loop playsinline aria-label="The can sealing machine sealing a fresh iced drink in about three seconds"></video>
+        <video class="lazyvid" poster="img/seal-poster.jpg" preload="none" muted loop playsinline aria-label="The can sealing machine sealing a fresh iced drink in about three seconds"></video>
       </div>
     </div>
 
@@ -412,7 +423,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
 
     <div class="demo">
       <div class="photo">
-        <video src="img/seal-demo.mp4" poster="img/seal-poster.jpg" autoplay muted loop playsinline aria-label="The sealing machine pressing a lid onto a can of iced coffee"></video>
+        <video class="lazyvid" poster="img/seal-poster.jpg" preload="none" muted loop playsinline aria-label="The sealing machine pressing a lid onto a can of iced coffee"></video>
       </div>
       <div>
         <span class="eyebrow">see it in action</span>
@@ -439,6 +450,11 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
     <div class="panel-head">
       <h2>built for counters that already make great drinks.</h2>
       <p>if you blend, brew, or juice it - you can seal it and sell it under your own name.</p>
+    </div>
+
+    <div class="cta-row" style="margin-top:26px">
+      <a class="btn" href="#order" data-goto="order">see the packages</a>
+      <span class="price-line">from $1,400 &middot; one-time</span>
     </div>
 
     <div class="collage">
@@ -587,13 +603,13 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
       <div class="pcard featured">
         <div class="photo" data-goto="p-signature"><img src="img/captain-lineup.jpg" alt="A lineup of clear cans printed with a cafe's own branding" loading="lazy"></div>
         <div class="body">
+          <p class="eyebrow">machine + branded cans + we design it</p>
           <h3>signature package</h3>
-          <div class="prices"><span class="p-main">$2,399</span><span class="p-sub">e-transfer · $2,471 by card · $2,475 value</span></div>
-          <p class="blurb">the machine, 200 cans wearing your logo, lids, and we design the label with you. everything to launch your line.</p>
-          <p class="needs-art">your logo goes on next</p>
+          <div class="prices"><span class="p-main">$2,399</span><span class="p-sub">e-transfer · $2,471 by card</span></div>
+          <p class="blurb">the machine, 200 cans wearing your logo, lids, and we draw the label for you - send a logo or just your instagram. $2,475 of parts.</p>
+          <p class="needs-art">your design is set up on the next page</p>
           <div class="row">
-            <button class="btn" data-goto="p-signature">add your design →</button>
-            <button class="details" data-add="signature">skip, add to cart</button>
+            <button class="btn" data-goto="p-signature">view + choose &rarr;</button>
           </div>
         </div>
       </div>
@@ -601,12 +617,12 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
       <div class="pcard">
         <div class="photo" data-goto="p-basic"><img src="img/hero-cans.jpg" alt="Two clear cans of green smoothie on a marble counter" loading="lazy"></div>
         <div class="body">
+          <p class="eyebrow">machine + blank cans</p>
           <h3>basic package</h3>
           <div class="prices"><span class="p-main">$1,699</span><span class="p-sub">e-transfer · $1,750 by card · save $101 vs buying separately</span></div>
           <p class="blurb">the machine plus 200 blank cans and lids. bring your own labels, or add branding later.</p>
           <div class="row">
-            <button class="btn" data-add="basic">add to cart</button>
-            <button class="details" data-goto="p-basic">details →</button>
+            <button class="btn" data-goto="p-basic">view + choose &rarr;</button>
           </div>
         </div>
       </div>
@@ -614,12 +630,12 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
       <div class="pcard">
         <div class="photo" data-goto="p-machine"><img src="img/machine-white.jpg" alt="The white can sealing machine on a cafe counter" loading="lazy"></div>
         <div class="body">
+          <p class="eyebrow">the sealer on its own</p>
           <h3>machine only</h3>
           <div class="prices"><span class="p-main">$1,400</span><span class="p-sub">e-transfer · $1,442 by card</span></div>
           <p class="blurb">the commercial can sealer on its own - white or black. seals in about 3 seconds.</p>
           <div class="row">
-            <button class="btn" data-add="machine">add to cart</button>
-            <button class="details" data-goto="p-machine">details →</button>
+            <button class="btn" data-goto="p-machine">view + choose &rarr;</button>
           </div>
         </div>
       </div>
@@ -631,8 +647,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <div class="prices"><span class="p-main">$400</span><span class="p-sub">e-transfer · $412 by card</span></div>
           <p class="blurb">plain packs of 200 clear tall cans with aluminum lids. label them yourself, or pick the branded pack.</p>
           <div class="row">
-            <button class="btn" data-add="cans-blank">add to cart</button>
-            <button class="details" data-goto="p-cans">details →</button>
+            <button class="btn" data-goto="p-cans">view + choose &rarr;</button>
           </div>
         </div>
       </div>
@@ -643,10 +658,9 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <h3>cans - 200 pack, your branding</h3>
           <div class="prices"><span class="p-main">$775</span><span class="p-sub">e-transfer · $798 by card</span></div>
           <p class="blurb">the same cans with your design printed on 2x2 labels - and we apply every one before delivery.</p>
-          <p class="needs-art">your logo goes on next</p>
+          <p class="needs-art">your design is set up on the next page</p>
           <div class="row">
-            <button class="btn" data-goto="p-cans-branded">add your design →</button>
-            <button class="details" data-add="cans-branded">skip, add to cart</button>
+            <button class="btn" data-goto="p-cans-branded">view + choose &rarr;</button>
           </div>
         </div>
       </div>
@@ -675,7 +689,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
       <div class="photo prod-img"><img src="img/steel-matcha.jpg" alt="Two branded matcha cans on a steel table" loading="lazy"></div>
       <div class="prod-info">
         <h2>signature package</h2>
-        <div class="prices"><span class="p-main">$2,399</span><span class="p-sub">e-transfer · $2,471 by card · $2,475 value</span></div>
+        <div class="prices"><span class="p-main">$2,399</span><span class="p-sub">e-transfer · $2,471 by card</span></div>
         <ul>
           <li>commercial can sealing machine - white or black</li>
           <li><strong>200 clear tall cans with your logo on 2x2in labels, applied by us</strong></li>
@@ -687,11 +701,13 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <button class="on" data-colour="white">white machine</button>
           <button data-colour="black">black machine</button>
         </div>
-        <div data-design-slot="product"></div>
+        <div data-design-slot="signature"></div>
         <div class="qtyrow"><span style="font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:14px">qty</span>
           <div class="stepper"><button data-q="-1">−</button><span id="qty-signature">1</span><button data-q="1">+</button></div>
         </div>
         <button class="btn" data-add="signature">add to cart</button>
+        <p class="gate-hint">choose how we get your label design first</p>
+        <div class="trust"><span>&#10003; 30-day replacement</span><span>&#10003; secure stripe checkout</span><span>&#10003; 5-7 business days</span><span>&#10003; toronto based</span></div>
         <p class="prod-note">save 3% by paying e-transfer - pick it at checkout in your cart. delivery in 5-7 business days.</p>
       </div>
     </div>
@@ -720,6 +736,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <div class="stepper"><button data-q="-1">−</button><span id="qty-basic">1</span><button data-q="1">+</button></div>
         </div>
         <button class="btn" data-add="basic">add to cart</button>
+        <div class="trust"><span>&#10003; 30-day replacement</span><span>&#10003; secure stripe checkout</span><span>&#10003; 5-7 business days</span><span>&#10003; toronto based</span></div>
         <p class="prod-note">save 3% by paying e-transfer - pick it at checkout in your cart. delivery in 5-7 business days.</p>
       </div>
     </div>
@@ -740,6 +757,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <li>seals airtight in about 3 seconds, one press</li>
           <li>you own it outright - no fees, no contracts</li>
         </ul>
+        <p class="prod-note" style="margin-top:14px">machine only? you'll need cans too - <button class="backlink" data-goto="p-cans-branded">branded</button> or <button class="backlink" data-goto="p-cans">blank</button>.</p>
         <div class="variant" data-colour-for="machine">
           <button class="on" data-colour="white">white machine</button>
           <button data-colour="black">black machine</button>
@@ -748,6 +766,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <div class="stepper"><button data-q="-1">−</button><span id="qty-machine">1</span><button data-q="1">+</button></div>
         </div>
         <button class="btn" data-add="machine">add to cart</button>
+        <div class="trust"><span>&#10003; 30-day replacement</span><span>&#10003; secure stripe checkout</span><span>&#10003; 5-7 business days</span><span>&#10003; toronto based</span></div>
         <p class="prod-note">save 3% by paying e-transfer - pick it at checkout in your cart. delivery in 5-7 business days.</p>
       </div>
     </div>
@@ -772,6 +791,7 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <div class="stepper"><button data-q="-1">−</button><span id="qty-cans">1</span><button data-q="1">+</button></div>
         </div>
         <button class="btn" data-add="cans-blank">add to cart</button>
+        <div class="trust"><span>&#10003; 30-day replacement</span><span>&#10003; secure stripe checkout</span><span>&#10003; 5-7 business days</span><span>&#10003; toronto based</span></div>
         <p class="prod-note">save 3% by paying e-transfer - pick it at checkout in your cart. bulk pricing on 3+ packs - contact us.</p>
       </div>
     </div>
@@ -794,11 +814,13 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
           <li>upload your design in the cart - we check it before anything prints</li>
           <li>requires a sealing machine</li>
         </ul>
-        <div data-design-slot="product"></div>
+        <div data-design-slot="cans-branded"></div>
         <div class="qtyrow"><span style="font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:14px">qty</span>
           <div class="stepper"><button data-q="-1">−</button><span id="qty-cans-branded">1</span><button data-q="1">+</button></div>
         </div>
         <button class="btn" data-add="cans-branded">add to cart</button>
+        <p class="gate-hint">choose how we get your label design first</p>
+        <div class="trust"><span>&#10003; 30-day replacement</span><span>&#10003; secure stripe checkout</span><span>&#10003; 5-7 business days</span><span>&#10003; toronto based</span></div>
         <p class="prod-note">save 3% by paying e-transfer - pick it at checkout in your cart. delivery in 5-7 business days from art approval.</p>
       </div>
     </div>
@@ -852,16 +874,19 @@ footer .logo{font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;let
       <p>anything we missed - <a href="#contact" data-goto="contact">send us a note</a> and we'll reply within 24 hours.</p>
     </div>
     <div class="faq">
+      <h3 class="faq-g">the product</h3>
       <details><summary>what drinks can i seal?</summary><p>anything cold you already make: matcha, smoothies, cold brew, juice, protein shakes, lemonade. if you serve it cold, you can seal it.</p></details>
       <details><summary>how fast does it seal?</summary><p>about 3 seconds a can. one button, no training.</p></details>
       <details><summary>what size are the cans?</summary><p>330 ml tall clear cans with aluminum lids. the clear body is the point - people photograph the drink.</p></details>
       <details><summary>what comes in each package?</summary><p>signature: the machine, cans printed with your logo, lids, and label design. basic: the machine plus blank cans and lids. machine only: just the sealer, in white or black.</p></details>
+      <h3 class="faq-g">your design</h3>
       <details><summary>how does the branding work?</summary><p>you upload your design in the cart and we check it against the 2x2 inch sticker before anything prints. we print the labels and apply every one, so the cans arrive ready to fill. the signature package also includes designing the label with you. basic comes blank if you'd rather label them yourself later.</p></details>
       <details><summary>how long do sealed drinks last?</summary><p>the seal keeps drinks fresh and spill-proof - it doesn't preserve them. treat a sealed can like the drink inside: keep it refrigerated and follow your kitchen's usual shelf life.</p></details>
       <details><summary>will it fit my counter?</summary><p>yes. it's a countertop machine that plugs into a normal outlet. no plumbing, no special power.</p></details>
       <details><summary>can i seal hot drinks?</summary><p>the machine is designed for cold drinks. if you serve it over ice, you can seal it.</p></details>
       <details><summary>where do i get more cans?</summary><p>refill packs on the <a href='#order' data-goto='order'>shop page</a>. reorder any time, delivered to your door.</p></details>
       <details><summary>what if something breaks?</summary><p>if your machine arrives damaged or stops working in your first 30 days, we replace it. unopened orders can be returned within 14 days. cans with your branding can be refunded any time before your labels go to print, and if a print doesn't match the proof you approved we reprint it free.</p></details>
+      <h3 class="faq-g">money &amp; delivery</h3>
       <details><summary>how do i pay?</summary><p>card checkout by stripe, or e-transfer and save 3% on everything.</p></details>
       <details><summary>how do i get it?</summary><p>delivery takes 5-7 business days. for cans with your branding that clock starts once we approve your design. delivery and setup are free in the gta; outside it we ship anywhere in canada and confirm shipping cost within 1 business day.</p></details>
     </div>
@@ -943,7 +968,8 @@ const PRODUCTS = {
   'basic':        {name:'basic package',                 price:1699, card:1750, img:'img/hero-cans.jpg',      priceId:'price_1U5aMkH7FooXMM913ShzlTUr'},
   'machine':      {name:'machine only',                  price:1400, card:1442, img:'img/machine-white.jpg',  priceId:'price_1U5aWBH7FooXMM91QjonZ8K8'},
   'cans-blank':   {name:'cans - 200 pack, blank',         price:400,  card:412,  img:'img/apero-ice.jpg',      priceId:'price_1U5aMyH7FooXMM91QyQjUqKR'},
-  'cans-branded': {name:'cans - 200 pack, your branding', price:775,  card:798,  img:'img/steel-matcha.jpg',   priceId:'price_1U5aNCH7FooXMM910AuFuNyY'}
+  'cans-branded': {name:'cans - 200 pack, your branding', price:775,  card:798,  img:'img/steel-matcha.jpg',   priceId:'price_1U5aNCH7FooXMM910AuFuNyY'},
+  'svc-design':   {name:'label design service',           price:150,  card:155,  img:'img/matcha-box.jpg',     priceId:'svc-design-branded'}
 };
 const money = n => '$' + n.toLocaleString('en-CA');
 
@@ -970,6 +996,7 @@ function showTab(key, {push = true, scroll = true} = {}) {
   const hiTab = TABS.includes(key) ? key : 'order';
   TABS.forEach(k => document.getElementById('tab-' + k).setAttribute('aria-selected', String(k === hiTab)));
   PANELS.forEach(k => { document.getElementById('panel-' + k).hidden = (k !== key); });
+  if (key.indexOf('p-') === 0) track('product_viewed', key.slice(2));
   renderDesignSlots();
   closeMenu();
   document.querySelectorAll('video').forEach(v => {
@@ -1015,12 +1042,19 @@ document.querySelectorAll('.variant[data-colour-for]').forEach(v => {
     v.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
   }));
 });
+function track(name, tag) {
+  try {
+    fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, tag }), keepalive: true }).catch(() => {});
+  } catch {}
+}
 function addToCart(id, qty) {
   qty = Math.max(1, qty | 0);
   const colour = MACHINE_ITEMS.includes(id) ? (colourState[id] || 'white') : null;
   const row = cart.find(it => it.id === id && (it.colour || null) === colour);
   if (row) row.qty = Math.min(99, row.qty + qty); else cart.push(colour ? {id, qty, colour} : {id, qty});
   saveCart();
+  track('add_to_cart', id);
   showTab('cart');
 }
 function cartColour(i, colour) {
@@ -1047,6 +1081,22 @@ document.querySelectorAll('[data-add]').forEach(b => {
 });
 
 /* ---------- cart render ---------- */
+function artSummaryHtml() {
+  const d = getDesign() || {};
+  const line = d.path === 'upload' ? ('your file: <strong>' + (d.filename || 'uploaded') + '</strong>')
+    : d.path === 'fetch' ? ('we pull your logo from <strong>' + (d.source || '') + '</strong>')
+    : d.path === 'service' ? 'we design your label and send you a proof'
+    : 'not set yet';
+  const which = cart.some(it => it.id === 'signature') ? 'p-signature' : 'p-cans-branded';
+  return '<div class="designbox done">' +
+    '<p class="db-h">your label design</p>' +
+    '<p class="db-p">' + line + '</p>' +
+    ((d.warnings && d.warnings.length) ? '<p class="db-warn">heads up: ' + d.warnings.join('; ') + '</p>' : '') +
+    (d.proofUrl ? '<p class="db-p"><a href="' + d.proofUrl + '" target="_blank" rel="noopener">see it on the sticker &rarr;</a></p>' : '') +
+    '<button class="backlink" data-goto="' + which + '">change this</button>' +
+  '</div>';
+}
+
 function renderCart() {
   const el = document.getElementById('cartBody');
   if (!cart.length) {
@@ -1055,6 +1105,7 @@ function renderCart() {
       '<button class="btn" data-goto="order" style="margin-top:18px">browse the shop</button></div>';
     return;
   }
+  reconcileServiceLine();
   let card = 0, et = 0;
   const rows = cart.map((it, i) => {
     const p = PRODUCTS[it.id];
@@ -1082,9 +1133,9 @@ function renderCart() {
         '<p style="font-size:13px;margin-top:14px">questions before you order? <button class="backlink" data-goto="contact">contact us</button> - we reply within 24 hours.</p>' +
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:12px">' +
-        (cartNeedsDesign() ? '<div data-design-slot="cart" class="dbslot-cart"></div>' : '') +
+        (cartNeedsDesign() ? artSummaryHtml() : '') +
         '<button class="btn" id="checkoutCard">checkout with card - ' + money(card) + '</button>' +
-        ((cartNeedsDesign() && !getDesign()) ? '<p style="font-size:12.5px;opacity:.75;text-align:center">you can check out now and send your design after - we\'ll ask again on the next screen.</p>' : '') +
+
         '<button class="btn ghost" id="checkoutEt">pay by e-transfer - ' + money(et) + '</button>' +
         '<div id="etBox" style="display:none;background:var(--cream2);border:1px solid var(--line);border-radius:16px;padding:18px;font-size:13px">' +
           '<p style="font-family:Hanken Grotesk,sans-serif;font-weight:700;font-size:14px">save 3% - we\'ll reach out to arrange it.</p>' +
@@ -1100,7 +1151,6 @@ function renderCart() {
       '</div>' +
     '</div>';
   document.getElementById('checkoutCard').addEventListener('click', checkoutCard);
-  renderDesignSlots();
   document.getElementById('checkoutEt').addEventListener('click', () => {
     const box = document.getElementById('etBox');
     box.style.display = box.style.display === 'none' ? 'block' : 'none';
@@ -1109,6 +1159,7 @@ function renderCart() {
   if (etForm) etForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const fd = new FormData(etForm);
+    track('checkout_started', 'etransfer');
     fd.append('_subject', 'E-TRANSFER ORDER REQUEST - sealed & co.');
     fd.append('order', cart.map(it => PRODUCTS[it.id].name + (it.colour ? ' (' + it.colour + ' machine)' : '') + ' x' + it.qty).join(', '));
     fd.append('etransfer_total', document.querySelectorAll('.totalcard .line')[1].innerText);
@@ -1125,6 +1176,8 @@ function renderCart() {
             colours: cart.filter(it => it.colour).map(it => PRODUCTS[it.id].name + ': ' + it.colour).join(', '),
             total: cart.reduce((t, it) => t + PRODUCTS[it.id].price * it.qty, 0) * 100,
             designId: (cartNeedsDesign() && getDesign() || {}).designId,
+            artPath: (cartNeedsDesign() && getDesign() || {}).path,
+            artSource: (cartNeedsDesign() && getDesign() || {}).source,
           }),
         });
       } catch {}
@@ -1150,44 +1203,97 @@ window.cartStep = (i, d) => { cart[i].qty = Math.min(99, Math.max(1, cart[i].qty
 window.cartRemove = (i) => { cart.splice(i, 1); saveCart(); renderCart(); };
 
 /* ---------- card checkout: stripe opens in a NEW TAB ---------- */
-/* ---------- design upload: offered on the product page, confirmed in the cart,
-   and caught on the thank-you page if they checked out without a file ---------- */
+/* ---------- artwork: chosen on the product page, required before add to cart ----------
+   three ways to satisfy it, so nobody hits a dead end:
+     upload  - they have a print-ready logo
+     fetch   - we pull it from their instagram or website
+     service - we draw the label (free with signature, paid with branded cans)         */
 const DESIGN_ITEMS = ['signature', 'cans-branded'];
+const SERVICE_INCLUDED = ['signature'];
 function getDesign() { try { return JSON.parse(localStorage.getItem('sc_design') || 'null'); } catch { return null; } }
 function setDesign(d) { if (d) localStorage.setItem('sc_design', JSON.stringify(d)); else localStorage.removeItem('sc_design'); }
 function cartNeedsDesign() { return cart.some(it => DESIGN_ITEMS.includes(it.id)); }
 
-function designBlockHtml(where) {
+function designReady() {
   const d = getDesign();
-  const onFile = d && d.filename === 'your design on file';
-  if (d) {
-    return '<div class="designbox done">' +
-      '<p class="db-h">&#10003; your design is attached</p>' +
-      '<p class="db-p"><strong>' + d.filename + '</strong>' + (onFile ? ' - loaded from your last order.' : '') +
-        ' we check every design against the 2x2 inch sticker before anything prints.</p>' +
-      ((d.warnings && d.warnings.length) ? '<p class="db-warn">heads up: ' + d.warnings.join('; ') + '. we\'ll confirm it works before printing.</p>' : '') +
-      (d.proofUrl ? '<p class="db-p"><a href="' + d.proofUrl + '" target="_blank" rel="noopener">see it on the sticker &rarr;</a></p>' : '') +
-      '<button class="backlink design-clear">use a different file</button>' +
-    '</div>';
+  if (!d || !d.path) return false;
+  if (d.path === 'upload') return !!d.designId;
+  if (d.path === 'fetch') return !!(d.source && d.source.trim().length > 2);
+  return d.path === 'service';
+}
+
+function artPathHtml(pid) {
+  const d = getDesign() || {};
+  const path = d.path || '';
+  const freeService = SERVICE_INCLUDED.includes(pid);
+  const on = (k) => path === k ? ' class="on"' : '';
+  let body = '';
+  if (path === 'upload') {
+    body = d.designId
+      ? '<p class="db-p">&#10003; <strong>' + d.filename + '</strong> is attached. we check it against the 2x2 inch sticker before printing.</p>' +
+        ((d.warnings && d.warnings.length) ? '<p class="db-warn">heads up: ' + d.warnings.join('; ') + '</p>' : '') +
+        (d.proofUrl ? '<p class="db-p"><a href="' + d.proofUrl + '" target="_blank" rel="noopener">see it on the sticker &rarr;</a></p>' : '') +
+        '<button class="backlink design-clear">use a different file</button>'
+      : '<p class="db-p">png, jpg, svg or pdf under 4mb. square art at 600px or more prints sharpest.</p>' +
+        '<label class="db-file"><input type="file" class="design-file" accept=".png,.jpg,.jpeg,.svg,.pdf"><span>choose your file</span></label>' +
+        '<p class="db-msg" style="display:none"></p>';
+  } else if (path === 'fetch') {
+    body = '<p class="db-p">tell us where to find it and we will pull your logo ourselves.</p>' +
+      '<input class="design-source" placeholder="@yourcafe or yourcafe.com" value="' + (d.source || '').replace(/"/g, '&quot;') + '" style="margin-top:10px">' +
+      '<p class="db-p dim">we email you a proof before anything prints.</p>';
+  } else if (path === 'service') {
+    body = '<p class="db-p">' + (freeService
+      ? 'included in this package. we design your label and send a proof for your ok before it prints.'
+      : 'we design your label from scratch and send a proof for your ok. adds the label design service to your order.') + '</p>';
+  } else {
+    body = '<p class="db-p dim">pick one to keep going.</p>';
   }
-  return '<div class="designbox todo">' +
-    '<p class="db-h">' + (where === 'cart' ? 'one thing left: your label design' : 'your label design') + '</p>' +
-    '<p class="db-p">upload your logo and we print it on 2x2 inch labels, then apply every one. png, jpg, svg or pdf under 4mb - square art at 600px or more works best.</p>' +
-    '<label class="db-file"><input type="file" class="design-file" accept=".png,.jpg,.jpeg,.svg,.pdf"><span>choose your file</span></label>' +
-    '<p class="db-msg" style="display:none"></p>' +
-    '<p class="db-p dim">' + (where === 'cart'
-      ? 'no file handy? check out anyway - we\'ll ask for it on the next screen and by email.'
-      : 'don\'t have it on this device? add to cart anyway - you can send it after checkout.') + '</p>' +
+  return '<div class="designbox' + (designReady() ? ' done' : ' todo') + '">' +
+    '<p class="db-h">your label design <span class="req">required</span></p>' +
+    '<div class="variant art-paths">' +
+      '<button data-path="upload"' + on('upload') + '>i have my logo</button>' +
+      '<button data-path="fetch"' + on('fetch') + '>pull it from my socials</button>' +
+      '<button data-path="service"' + on('service') + '>' + (freeService ? 'design it for me (included)' : 'design it for me') + '</button>' +
+    '</div>' + body +
   '</div>';
 }
 
 function renderDesignSlots() {
   document.querySelectorAll('[data-design-slot]').forEach(slot => {
-    slot.innerHTML = designBlockHtml(slot.dataset.designSlot);
+    const pid = slot.dataset.designSlot;
+    slot.innerHTML = artPathHtml(pid);
+    slot.querySelectorAll('.art-paths button').forEach(b => b.addEventListener('click', () => {
+      const cur = getDesign() || {};
+      setDesign(Object.assign({}, cur, { path: b.dataset.path }));
+      renderDesignSlots(); gateAddButtons();
+    }));
     const clear = slot.querySelector('.design-clear');
-    if (clear) clear.addEventListener('click', () => { setDesign(null); renderDesignSlots(); if (!document.getElementById('panel-cart').hidden) renderCart(); });
+    if (clear) clear.addEventListener('click', () => {
+      const cur = getDesign() || {};
+      setDesign({ path: 'upload' }); renderDesignSlots(); gateAddButtons();
+    });
     const inp = slot.querySelector('.design-file');
     if (inp) inp.addEventListener('change', () => uploadDesign(inp, slot.querySelector('.db-msg')));
+    const src = slot.querySelector('.design-source');
+    if (src) src.addEventListener('input', () => {
+      const cur = getDesign() || {};
+      setDesign(Object.assign({}, cur, { path: 'fetch', source: src.value }));
+      gateAddButtons();
+    });
+  });
+  gateAddButtons();
+}
+
+// add-to-cart stays locked on design products until the artwork question is answered
+function gateAddButtons() {
+  const ready = designReady();
+  DESIGN_ITEMS.forEach(id => {
+    document.querySelectorAll('[data-add="' + id + '"]').forEach(btn => {
+      btn.disabled = !ready;
+      btn.title = ready ? '' : 'choose how we get your label design first';
+      const hint = btn.parentElement && btn.parentElement.querySelector('.gate-hint');
+      if (hint) hint.style.display = ready ? 'none' : 'block';
+    });
   });
 }
 
@@ -1201,29 +1307,41 @@ async function uploadDesign(inp, msg, endpoint) {
     });
     const d = await r.json();
     if (r.ok && d.designId) {
-      setDesign({ designId: d.designId, filename: d.filename || f.name, warnings: d.warnings || [], proofUrl: d.proofUrl });
+      const cur = getDesign() || {};
+      track('design_uploaded');
+      setDesign(Object.assign({}, cur, { path: 'upload', designId: d.designId, filename: d.filename || f.name, warnings: d.warnings || [], proofUrl: d.proofUrl }));
       renderDesignSlots();
       if (!document.getElementById('panel-cart').hidden) renderCart();
       return d;
     }
     msg.className = 'db-msg bad';
-    msg.textContent = d.message || 'that file did not work - try another, or send it after checkout.';
+    msg.textContent = d.message || 'that file did not work - try another, or pick one of the other two options.';
   } catch {
     msg.className = 'db-msg bad';
-    msg.textContent = 'upload failed - try again, or send it after checkout.';
+    msg.textContent = 'upload failed - try again, or pick one of the other two options.';
   }
   return null;
+}
+
+// the paid design service rides along with branded cans (it is free inside signature)
+function reconcileServiceLine() {
+  const d = getDesign() || {};
+  const wants = d.path === 'service' && cart.some(it => it.id === 'cans-branded') && !cart.some(it => it.id === 'signature');
+  const has = cart.some(it => it.id === 'svc-design');
+  if (wants && !has) { cart.push({ id: 'svc-design', qty: 1 }); saveCart(); }
+  if (!wants && has) { cart = cart.filter(it => it.id !== 'svc-design'); saveCart(); }
 }
 
 async function checkoutCard() {
   const btn = document.getElementById('checkoutCard');
   btn.textContent = 'opening checkout…'; btn.disabled = true;
+  track('checkout_started', 'card');
   const items = cart.map(it => ({price: PRODUCTS[it.id].priceId, qty: it.qty, colour: it.colour || undefined}));
   try {
     const r = await fetch('/api/checkout', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({items, designId: (cartNeedsDesign() && getDesign() || {}).designId})
+      body: JSON.stringify({items, designId: (cartNeedsDesign() && getDesign() || {}).designId, artPath: (cartNeedsDesign() && getDesign() || {}).path, artSource: (cartNeedsDesign() && getDesign() || {}).source})
     });
     const d = await r.json();
     if (d && d.url) { window.open(d.url, '_blank'); resetBtn(); return; }
@@ -1253,6 +1371,22 @@ function showArtCatch(sid) {
   });
 }
 
+/* the hero clip is 3.5MB, so phones get the poster with a tap to play */
+(function lazyVideos() {
+  const small = window.matchMedia('(max-width:640px)').matches;
+  document.querySelectorAll('video.lazyvid').forEach(v => {
+    const src = 'img/seal-demo.mp4';
+    const start = () => { if (!v.src) { v.src = src; v.muted = true; v.play().catch(() => {}); } };
+    if (small) {
+      // phones: hold the 3.5MB clip until they ask for it
+      v.setAttribute('controls', '');
+      v.parentElement.addEventListener('click', start, { once: true });
+    } else {
+      start();
+    }
+  });
+})();
+
 /* reorder link from a handoff email: sealedandco.ca/?d=dsn_xxx */
 (function reorder() {
   const q = new URLSearchParams(location.search);
@@ -1268,6 +1402,7 @@ function showArtCatch(sid) {
 if (location.hash === '#thanks') {
   cart = []; saveCart();
   document.getElementById('orderBanner').style.display = 'block';
+  track('order_placed', 'card');
   const sid = new URLSearchParams(location.search).get('sid');
   if (sid) {
     fetch('/api/confirm?sid=' + encodeURIComponent(sid))
@@ -1332,6 +1467,5 @@ form.addEventListener('submit', async (e) => {
   }
 });
 </script>
-<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

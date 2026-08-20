@@ -29,6 +29,11 @@ input,select,textarea{font-family:Inter,sans-serif;font-size:15px;padding:11px 1
 .btn.ghost{background:var(--cream2);color:var(--ink);border:1px solid var(--line)}
 .btn.pink{background:var(--lime);color:var(--pink)}
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.funnel{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.fstep{background:var(--cream2);border:1px solid var(--line);border-radius:10px;padding:12px 16px;min-width:120px}
+.fstep b{display:block;font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:22px}
+.fstep span{font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.65}
+.fstep i{display:block;font-size:11px;font-style:normal;opacity:.6;margin-top:2px}
 .chip{background:var(--cream2);border:1px solid var(--line);border-radius:999px;padding:7px 15px;font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
 .chip.on{background:var(--lime);color:var(--pink);border-color:var(--lime)}
 .order{background:var(--cream2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin-bottom:14px}
@@ -60,6 +65,9 @@ input,select,textarea{font-family:Inter,sans-serif;font-size:15px;padding:11px 1
 .v{font-size:14px;margin-bottom:10px;word-break:break-word}
 .art a{font-weight:600}
 .flag{color:#B02A2A;font-weight:700;font-size:13px}
+.upl input{position:absolute;width:1px;height:1px;opacity:0}
+.upl span{display:inline-block;background:var(--lime);color:var(--pink);border-radius:8px;padding:8px 14px;font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.uplmsg{margin-left:9px;font-size:12.5px;font-weight:600}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
 .row select{width:auto;min-width:190px}
 .tl{margin-top:12px;font-size:12.5px;opacity:.8}
@@ -84,6 +92,7 @@ input,select,textarea{font-family:Inter,sans-serif;font-size:15px;padding:11px 1
     <p id="gateMsg" style="margin-top:10px;color:#B02A2A;font-size:13px;display:none">that key didn't work.</p>
   </div>
   <div id="app" style="display:none">
+    <div id="funnel" class="funnel"></div>
     <div class="filters" id="filters"></div>
     <div id="list"></div>
   </div>
@@ -97,6 +106,24 @@ const OPEN = (o) => o.state !== 'handed-off' && o.state !== 'cancelled';
 const money = (c) => '$' + ((c || 0) / 100).toLocaleString('en-CA', {minimumFractionDigits: 2});
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
+const FLABEL = { product_viewed: 'product views', add_to_cart: 'added to cart', design_uploaded: 'designs uploaded', checkout_started: 'checkout started', order_placed: 'orders placed' };
+
+async function loadFunnel() {
+  try {
+    const r = await fetch('/api/stats?k=' + encodeURIComponent(KEY) + '&days=30');
+    if (!r.ok) return;
+    const d = await r.json();
+    const f = d.funnel || {};
+    const first = f[d.steps[0]] || 0;
+    $('funnel').innerHTML = d.steps.map((st, i) => {
+      const n = f[st] || 0;
+      const prev = i ? (f[d.steps[i - 1]] || 0) : 0;
+      const rate = i && prev ? Math.round(n / prev * 100) + '% of previous' : (i ? '-' : 'last 30 days');
+      return '<div class="fstep"><span>' + FLABEL[st] + '</span><b>' + n + '</b><i>' + rate + '</i></div>';
+    }).join('');
+  } catch {}
+}
+
 async function load() {
   const r = await fetch('/api/orders?k=' + encodeURIComponent(KEY));
   if (r.status === 401) { localStorage.removeItem('sc_admin'); $('gate').style.display = 'block'; $('app').style.display = 'none'; $('gateMsg').style.display = KEY ? 'block' : 'none'; return; }
@@ -106,6 +133,7 @@ async function load() {
   if (history.replaceState) history.replaceState(null, '', '/admin.html');
   $('gate').style.display = 'none'; $('app').style.display = 'block';
   render();
+  loadFunnel();
 }
 
 function render() {
@@ -121,13 +149,25 @@ function render() {
     '<div class="empty"><h3 style="font-size:18px">nothing here yet.</h3><p style="margin-top:8px;font-size:14px">orders show up the moment someone pays or requests an e-transfer.</p></div>';
   $('list').querySelectorAll('[data-adv]').forEach((b) => b.onclick = () => advance(b.dataset.adv, b.parentElement.querySelector('select').value, b.parentElement.querySelector('input').value));
   $('list').querySelectorAll('[data-quick]').forEach((b) => b.onclick = () => advance(b.dataset.quick, b.dataset.state, ''));
+  $('list').querySelectorAll('[data-upl]').forEach((inp) => inp.onchange = async () => {
+    const f = inp.files && inp.files[0]; if (!f) return;
+    const msg = inp.closest('div').querySelector('.uplmsg');
+    msg.textContent = 'uploading...';
+    try {
+      const r = await fetch('/api/attach?oid=' + encodeURIComponent(inp.dataset.upl) + '&name=' + encodeURIComponent(f.name), {
+        method: 'POST', headers: {'Content-Type': 'application/octet-stream'}, body: f });
+      const d = await r.json();
+      msg.textContent = r.ok ? 'done' : (d.message || 'failed');
+      if (r.ok) setTimeout(load, 500);
+    } catch { msg.textContent = 'failed'; }
+  });
 }
 
 // the real pipeline, and what Leo actually does at each step. steps that don't apply
 // to an order (art steps on a blank-cans order) are shown greyed as "not needed".
 const PIPELINE = [
   { state: 'paid',             label: 'payment in',      art: false, todo: 'confirm the e-transfer landed, then mark it paid.' },
-  { state: 'art-review',       label: 'design received', art: true,  todo: 'open the proof. does the art fill the 2x2 sticker and look sharp?' },
+  { state: 'art-review',       label: 'design in hand',  art: true,  todo: 'get the artwork sorted (see their design, right).' },
   { state: 'art-approved',     label: 'design approved', art: true,  todo: 'approve it - that starts their 5-7 business day clock.' },
   { state: 'supplies-ordered', label: 'supplies ordered',art: false, todo: 'order the labels and the cans (see the to-order list).' },
   { state: 'received',         label: 'everything here', art: false, todo: 'check the delivery: right label, right count, no dents.' },
@@ -138,6 +178,14 @@ const PIPELINE = [
 
 const NEEDS_ART = (o) => !!(o.design && o.design.id) ||
   (o.items || []).some(i => /brand|signature/i.test(i.name || ''));
+
+function artTodo(o) {
+  const d = o.design || {};
+  if (d.path === 'fetch') return 'pull their logo from ' + (d.source || 'their socials') + ', then upload it below.';
+  if (d.path === 'service') return 'draw their label, then upload the proof below for their ok.';
+  if (!d.id) return 'no file yet - chase them for it.';
+  return 'open the proof. does the art fill the 2x2 sticker and look sharp?';
+}
 
 function stepsFor(o) {
   const wantsArt = NEEDS_ART(o);
@@ -151,7 +199,8 @@ function stepsFor(o) {
     let status = 'todo';
     if (hist[p.state]) status = 'done';
     else if (i === firstOpen) status = 'now';
-    return Object.assign({}, p, { status, at: hist[p.state] || null, n: i + 1 });
+    const todo = p.state === 'art-review' ? artTodo(o) : p.todo;
+    return Object.assign({}, p, { todo, status, at: hist[p.state] || null, n: i + 1 });
   });
 }
 
@@ -197,6 +246,9 @@ function card(o) {
       '</div>' +
       '<div class="art">' +
         '<div class="k">their design</div><div class="v">' +
+          (d.path ? '<div style="margin-bottom:6px"><span class="state" style="background:var(--lime);color:var(--pink)">' +
+            esc(d.path === 'upload' ? 'they uploaded it' : d.path === 'fetch' ? 'we fetch it' : 'we design it') + '</span>' +
+            (d.source ? ' <span class="sm">' + esc(d.source) + '</span>' : '') + '</div>' : '') +
           (d.id
             ? esc(d.id) + (d.filename ? ' · ' + esc(d.filename) : '') +
               (d.width ? ' · ' + d.width + 'x' + d.height + 'px' : d.vector ? ' · vector' : '') +
@@ -204,7 +256,10 @@ function card(o) {
               '<br>' + [d.proofUrl ? '<a href="' + esc(d.proofUrl) + '" target="_blank">proof</a>' : '',
                          d.printUrl ? '<a href="' + esc(d.printUrl) + '" target="_blank">print file</a>' : '',
                          d.url ? '<a href="' + esc(d.url) + '" target="_blank">original</a>' : ''].filter(Boolean).join(' · ')
-            : (NEEDS_ART(o) ? '<span class="flag">nothing uploaded yet</span>' : 'not needed for this order')) +
+            : (NEEDS_ART(o)
+                ? '<span class="flag">no file yet</span>' +
+                  '<div style="margin-top:8px"><label class="upl"><input type="file" data-upl="' + esc(o.id) + '" accept=".png,.jpg,.jpeg,.svg,.pdf"><span>upload the artwork</span></label><span class="uplmsg"></span></div>'
+                : 'not needed for this order')) +
         '</div>' +
         '<div class="k">history</div><div class="tl">' + (o.timeline || []).map((t) =>
           '<div>' + esc(String(t.at).slice(0, 16).replace('T', ' ')) + ' · ' + esc(t.state) + (t.note ? ' · ' + esc(t.note) : '') + '</div>').join('') + '</div>' +

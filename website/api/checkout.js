@@ -55,6 +55,13 @@ module.exports = async (req, res) => {
   const designId = typeof (req.body && req.body.designId) === 'string' && /^dsn_[a-z0-9]+$/.test(req.body.designId) ? req.body.designId : null;
   if (designId) p.set('metadata[design_id]', designId);
 
+  // how we get their artwork: they upload it, we fetch it from their socials, or we draw it
+  const PATHS = new Set(['upload', 'fetch', 'service']);
+  const artPath = PATHS.has(req.body && req.body.artPath) ? req.body.artPath : null;
+  if (artPath) p.set('metadata[art_path]', artPath);
+  const artSource = typeof (req.body && req.body.artSource) === 'string' ? req.body.artSource.slice(0, 300) : '';
+  if (artSource) p.set('metadata[art_source]', artSource);
+
   const orderDesc = 'sealed & co. - online order' + (colourNotes.length ? ' (' + colourNotes.join(', ') + ')' : '');
   p.set('payment_intent_data[description]', orderDesc.slice(0, 900));
   if (colourNotes.length) p.set('metadata[machine_colour]', colourNotes.join(', ').slice(0, 480));

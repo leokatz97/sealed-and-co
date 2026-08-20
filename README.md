@@ -26,18 +26,25 @@ Marking an e-transfer order paid is what releases its supplier to-dos.
 
 ## Where customers upload their design
 
-Three chances, never a requirement to buy:
-0. On the shop page, the two branded products lead with "add your design →" instead of
-   "add to cart", so nobody meets the upload for the first time in their cart. "skip, add to
-   cart" is still there for anyone who'd rather send it later.
-1. On the branded-cans and signature product pages, beside colour and quantity.
-2. In the cart, as a confirmation ("your design is attached", with a link to see it on the sticker).
-3. On the thank-you page right after payment, if they checked out without one — it attaches
-   straight to the order and moves it to art review.
+Answering the artwork question is REQUIRED before add to cart — but it is never a file
+requirement. On the branded-cans and signature pages the customer picks one of three:
 
-Deliberate: a shop owner's logo is usually not on the phone they're browsing with, so demanding
-a file before payment would cost real orders. Instead the order simply can't pass art approval
-without it, and the desk shows it as blocked.
+1. **I have my logo** → upload it (checked against the 2x2in sticker).
+2. **Pull it from my socials** → they type @handle or a URL; you fetch it and upload it from
+   the order desk.
+3. **Design it for me** → included in signature, a paid line item with branded cans.
+
+Add to cart stays locked until one is answered. The shop page has no add-to-cart at all — it's
+a catalogue, and every card goes to its product page where colour, artwork and quantity live.
+The cart is review only. `/api/attach` still exists as a repair tool (wrong file, or you
+uploading a fetched logo), just not as part of the buying flow.
+
+## Funnel
+
+The order desk shows the last 30 days: product views → added to cart → designs uploaded →
+checkout started → orders placed, with the drop-off between each. It's our own counter
+(`api/track.js` + `api/stats.js`), no cookies and nothing personal. Vercel's Web Analytics
+script was 404ing, so it never recorded anything despite being switched on.
 
 ## Still to switch on (Leo, 2 minutes)
 

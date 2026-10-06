@@ -3,6 +3,7 @@
 // server, survives a closed tab), and /api/etransfer.
 
 const suppliers = require('./_suppliers');
+const { CATALOG } = require('./_catalog');
 
 const BLOB = 'https://blob.vercel-storage.com';
 const FORMSPREE = 'https://formspree.io/f/mwleqded';
@@ -13,11 +14,21 @@ const STATES = ['awaiting-payment', 'paid', 'art-missing', 'art-review', 'art-ap
 function money(cents, cur) { return '$' + (cents / 100).toFixed(2) + ' ' + String(cur || 'cad').toUpperCase(); }
 
 async function blobList(prefix, token, limit) {
-  const r = await fetch(`${BLOB}/?prefix=${encodeURIComponent(prefix)}&limit=${limit || 100}`, {
-    headers: { authorization: `Bearer ${token}`, 'x-api-version': '7' },
-  });
-  const d = await r.json().catch(() => ({}));
-  return (d && d.blobs) || [];
+  // Blob returns at most 1000 per page. follow the cursor, so a busy store never hides
+  // older orders from the desk. `limit` is the total we are willing to walk.
+  const want = limit || 100;
+  const out = [];
+  let cursor = null, guard = 0;
+  do {
+    const u = `${BLOB}/?prefix=${encodeURIComponent(prefix)}&limit=${Math.min(1000, want - out.length)}` +
+      (cursor ? `&cursor=${encodeURIComponent(cursor)}` : '');
+    const d = await fetch(u, { headers: { authorization: `Bearer ${token}`, 'x-api-version': '7' } })
+      .then((r) => r.json()).catch(() => null);
+    if (!d) break;
+    out.push(...((d.blobs) || []));
+    cursor = d.hasMore && out.length < want ? d.cursor : null;
+  } while (cursor && ++guard < 20);
+  return out;
 }
 
 async function blobPutJson(path, obj, token, cacheSeconds) {
@@ -83,7 +94,7 @@ async function readOrder(orderId, token) {
 }
 
 async function listOrders(token) {
-  const blobs = await blobList('orders/', token, 500);
+  const blobs = await blobList('orders/', token, 20000);
   const byId = {};
   blobs.forEach((b) => {
     const m = b.pathname.match(/^orders\/([^/]+)\//);
@@ -169,7 +180,7 @@ async function emailSheet(order, tasks) {
 async function fromStripeSession(sid, { stripeKey, blobToken }) {
   const orderId = 'SC-' + sid.slice(-8).toUpperCase();
   const existing = await readOrder(orderId, blobToken);
-  if (existing) return { ok: true, id: orderId, existing: true };
+  if (existing) return { ok: true, id: orderId, existing: true, order: existing.order };
 
   const get = (path) => fetch(`https://api.stripe.com/v1/${path}`, {
     headers: { Authorization: `Bearer ${stripeKey}` },
@@ -218,7 +229,7 @@ async function fromStripeSession(sid, { stripeKey, blobToken }) {
   let tasks = [];
   try { tasks = await suppliers.dispatch(order, blobToken); } catch {}
   await emailSheet(order, tasks);
-  return { ok: true, id: orderId, tasks };
+  return { ok: true, id: orderId, tasks, order };
 }
 
 // ---------- create from an e-transfer request (not yet paid) ----------
@@ -226,11 +237,20 @@ async function createEtransfer(body, { blobToken }) {
   const now = new Date().toISOString();
   const orderId = 'SC-ET' + Date.now().toString(36).toUpperCase().slice(-6);
   const art = await loadArt(body.designId, blobToken);
-  const items = Array.isArray(body.items) ? body.items.slice(0, 10).map((i) => ({
-    sku: i.sku || null, name: String(i.name || '').slice(0, 120),
-    qty: Math.min(99, Math.max(1, parseInt(i.qty, 10) || 1)),
-    amount: Math.max(0, parseInt(i.amount, 10) || 0),
-  })) : [];
+  // prices come from the catalog, not the browser. a line we can't price is kept but flagged.
+  let unpriced = false;
+  const items = Array.isArray(body.items) ? body.items.slice(0, 10).map((i) => {
+    const qty = Math.min(99, Math.max(1, parseInt(i.qty, 10) || 1));
+    const c = i.sku && CATALOG[i.sku];
+    if (!c) unpriced = true;
+    return {
+      sku: i.sku || null,
+      name: c ? c.name + (/machine$/.test(String(i.name || '')) ? String(i.name).slice(c.name.length) : '') : String(i.name || '').slice(0, 120),
+      qty,
+      amount: c ? c.et * qty : Math.max(0, parseInt(i.amount, 10) || 0),
+    };
+  }) : [];
+  const total = items.reduce((t, i) => t + i.amount, 0);
 
   const order = {
     id: orderId, createdAt: now, channel: 'etransfer',
@@ -243,14 +263,14 @@ async function createEtransfer(body, { blobToken }) {
     address: {},
     items,
     colours: String(body.colours || '').slice(0, 120) || null,
-    amounts: { total: Math.max(0, parseInt(body.total, 10) || 0), currency: 'cad' },
+    amounts: { total, currency: 'cad' },
     design: (body.designId || body.artPath) ? Object.assign({
       id: body.designId || null, path: body.artPath || (body.designId ? 'upload' : null),
       source: String(body.artSource || '').slice(0, 300) || null, status: 'review',
     }, art || {}) : null,
     state: 'awaiting-payment',
     timeline: [{ state: 'awaiting-payment', at: now, note: 'e-transfer requested from the cart' }],
-    flags: {},
+    flags: unpriced ? { unpriced: true } : {},
   };
 
   if (!(await createOrder(order, blobToken))) return { ok: false, code: 502, error: 'store' };

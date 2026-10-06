@@ -12,6 +12,10 @@ Everything for the business lives here.
 - **website/api/_dieline.js** — turns a customer logo into a print-ready 2x2in file + a proof with cut lines.
 - **website/api/_order.js** — order records. Immutable base + append-only events (Blob is eventually consistent, so nothing is ever read-modify-written).
 - **website/api/upload.js / confirm.js / webhook.js / etransfer.js / orders.js** — art upload, order creation from Stripe, the webhook, e-transfer orders, admin API.
+  E-transfer orders are priced server-side from `_catalog.js` (the `et` field); the browser's
+  numbers are ignored. A line with an unknown sku is kept and flagged `unpriced`.
+- **Deploying:** `vercel deploy --prod` from `website/`, OR from the Vercel dashboard. Production
+  was 3 commits behind main from Aug 19 to Oct 6 because nobody ran the deploy.
 - **website/admin.html** — the order desk. Open it, paste your admin key, work your orders.
 
 ## The order desk
@@ -80,24 +84,26 @@ cd "/Users/leokatz/Desktop/Sealed and Co/website" && vercel deploy --prod
 - Domain: GoDaddy (sealedandco.ca, renews Aug 2027) — DNS is handled by Vercel
 - Contact form + e-transfer requests: Formspree form `mwleqded` → emails the Formspree account (leokat97@gmail.com)
 
-## Style: LIVE — "Mix 2 · matcha counter" (Aug 18 2026)
+## Style: LIVE — "Cream Counter" (picked Oct 6 2026)
 
-Cha Cha Matcha volume on Erewhon discipline. Built from `brand/mix-erewhon-chacha.html`.
+Final 1 of the two Aug 20 redesigns (artifact "Sealed & Co. Cream Counter"). Final 2, "Loud
+Counter", was not used. Same green and pink as before, calmer and more premium type.
 
-- Page: warm white #FFFAF5 · cards white #FFFFFF · hairlines #F0E4D8
-- Text + dark buttons: forest #0B4924 · filled panels: deep matcha #0E6B38
-- Accents: baby pink #F8CFD9 (bar, primary buttons, active tab, featured card) · pale matcha #DCE9C9
-- Hero panel: gradient #DCE9C9 -> #B9D394 -> #8DBF5A, dark green uppercase headline, pink button
-- Fonts: Hanken Grotesk 800 uppercase (headings, buttons, chips, labels) · Inter (body) · Archivo letter-spaced caps (wordmark)
-- Shapes: 10px corners, 1px hairlines, no thick borders, no hard shadows
-- Logo: wordmark only, plus a small GREEN maple leaf (real flag shape) after the name in header + footer; favicon is a pink tile with a forest "S"
-- Copy rule: never mention "200" cans outside the shop/product pages — say "cans" or "tall clear cans"
-- Meta/SEO done: title "sealed & co. | can sealing machine + branded cans, toronto", full OG + Twitter cards, og:image = captain-lineup.jpg
-- "Who it's for" collage: all 8 tiles have sticker tags (incl. weddings & events, brand launches, run clubs, markets & pop-ups)
-- New reference photos live: steel-matcha (signature page), apero-ice (cans page + cart), leora-pink (why buy), lyon-trio + mine-cooler (collage). These are other brands' photos - replace with real sealed & co. shots over time
-- Stripe branding to set in the dashboard: brand #0B4924, accent #F8CFD9
+- Page: cream #FFFAF5 · cards white #FFFFFF · hairlines #F0E4D8 · pale matcha bands #DCE9C9
+- Text + dark buttons + forest band: #0B4924 · accent pink #F8CFD9 · leaf/dots #8DBF5A
+- Fonts: Instrument Serif (headings, prices, sentence case, italic for the emphasis word) ·
+  Inter (body) · DM Mono uppercase letter-spaced (labels, nav, buttons)
+- Shapes: 8px corners, 1px hairlines, no heavy shadows. Nav is a floating pill once you scroll.
+- Home is one long page: hero + spec list + sealing video, who it's for (8 numbered rows +
+  photo strip), five product cards, how it works (stacking cards), "the look" carousel,
+  comparison table, forest band with the payback line, short faq, closing call to action.
+- The carousel is labelled as inspiration from drinks brands, because those photos are other
+  brands' cans, not our customers. Replace with real sealed & co. shots as they come in.
+- Shop cards render from one list (`SHOP_CARDS` in index.html) on both home and the shop page.
+- Product structured data (schema.org JSON-LD) is in the head for Google.
 
-Other directions explored and NOT used: brand/style-options.html (9), style-variants.html,
+Previous live style was "Mix 2 · matcha counter" (Aug 18): Hanken Grotesk uppercase, gradient
+hero. Other directions explored and NOT used: brand/style-options.html (9), style-variants.html,
 style-8b-remixes.html, inspo-templates.html, template1-blue.html (an "Erewhon + denim"
 version was deployed briefly, then reverted).
 
@@ -142,9 +148,10 @@ counted from art approval on branded orders.
 - Stripe: upload brand/wordmark.png + brand/icon.png, set brand #0B4924 + accent #F8CFD9.
 - Chase the 9 label quotes (sent Aug 19, chase date Aug 22). This is the critical path.
 - Price review pass. Everything is frozen until then; `svc-design-branded` at $150 is a placeholder.
+  BUG TO DECIDE: signature ($2,399) costs MORE than its parts (machine $1,400 + branded cans
+  $775 + design $150 = $2,325). The old "$2,475 of parts" line was wrong and has been removed.
 - Product photos: machine mid-seal, a can in hand, cans in a row, a stocked fridge, hands
   applying a label. Phone camera, daylight. Every can on the site is another brand's.
-- Design direction: send 2-3 reference sites and the look gets rebuilt to match.
 - Name for the machine (shortlist: the seal bar · sealé · the stamp · the S1).
 - Formspree: log in once to confirm where form emails land.
 - Instagram @sealedandco, business email on the domain, CRA/HST registration.

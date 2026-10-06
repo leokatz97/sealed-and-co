@@ -155,7 +155,7 @@ function render() {
     const msg = inp.closest('div').querySelector('.uplmsg');
     msg.textContent = 'uploading...';
     try {
-      const r = await fetch('/api/attach?oid=' + encodeURIComponent(inp.dataset.upl) + '&name=' + encodeURIComponent(f.name), {
+      const r = await fetch('/api/attach?oid=' + encodeURIComponent(inp.dataset.upl) + '&k=' + encodeURIComponent(KEY) + '&name=' + encodeURIComponent(f.name), {
         method: 'POST', headers: {'Content-Type': 'application/octet-stream'}, body: f });
       const d = await r.json();
       msg.textContent = r.ok ? 'done' : (d.message || 'failed');

@@ -1,6 +1,7 @@
 // art attached AFTER payment, for customers who checked out without a file.
 // the order is found from the Stripe session id, so only someone holding that id
 // (i.e. the buyer, fresh off checkout, or their emailed link) can attach to it.
+// attaching by ORDER id is the order desk's repair tool and needs the admin key.
 const { receiveArt, readBody } = require('./_art');
 const { readOrder, appendEvent } = require('./_order');
 
@@ -13,7 +14,12 @@ module.exports = async (req, res) => {
   const oid = String(req.query.oid || '');
   let orderId = null;
   if (/^cs_(live|test)_[a-zA-Z0-9]+$/.test(sid)) orderId = 'SC-' + sid.slice(-8).toUpperCase();
-  else if (/^SC-[A-Z0-9]{4,12}$/.test(oid)) orderId = oid;
+  else if (/^SC-[A-Z0-9]{4,12}$/.test(oid)) {
+    const admin = process.env.ADMIN_TOKEN;
+    const given = String(req.query.k || (req.headers.authorization || '').replace(/^Bearer /, ''));
+    if (!admin || given.length < 9 || given !== admin) return res.status(401).json({ error: 'unauthorized' });
+    orderId = oid;
+  }
   if (!orderId) return res.status(400).json({ error: 'bad-order' });
 
   const found = await readOrder(orderId, token);

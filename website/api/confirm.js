@@ -15,10 +15,10 @@ module.exports = async (req, res) => {
   if (!r.ok) return res.status(r.code || 502).json({ error: r.error, detail: r.detail });
 
   // does this order still owe us artwork? the thank-you page uses this to ask for it
+  // use the record we just wrote: Blob is eventually consistent, so a re-read this soon can miss it
   let needsArt = false;
-  const found = await readOrder(r.id, blobToken);
-  if (found) {
-    const o = found.order;
+  const o = r.order || ((await readOrder(r.id, blobToken)) || {}).order;
+  if (o) {
     const wantsLabels = (o.items || []).some((i) => itemNeeds(i).includes('labels'));
     needsArt = wantsLabels && !(o.design && (o.design.id || o.design.path));
   }

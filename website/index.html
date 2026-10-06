@@ -1525,7 +1525,8 @@ function reconcileServiceLine() {
   if (!wants && has) { cart = cart.filter(it => it.id !== 'svc-design'); saveCart(); }
 }
 
-/* ---------- card checkout: stripe opens in a NEW TAB ---------- */
+/* ---------- card checkout: hand the tab to Stripe. (a new tab after an await gets
+   popup-blocked on Safari and most phones.) Stripe's success/cancel urls bring them back. */
 async function checkoutCard() {
   const btn = document.getElementById('checkoutCard');
   btn.textContent = 'opening checkout...'; btn.disabled = true;
@@ -1538,7 +1539,7 @@ async function checkoutCard() {
       body: JSON.stringify({items, designId: (cartNeedsDesign() && getDesign() || {}).designId, artPath: (cartNeedsDesign() && getDesign() || {}).path, artSource: (cartNeedsDesign() && getDesign() || {}).source})
     });
     const d = await r.json();
-    if (d && d.url) { window.open(d.url, '_blank'); resetBtn(); return; }
+    if (d && d.url) { location.href = d.url; return; }
     throw new Error('no url');
   } catch {
     alert('Card checkout hit a hiccup. Try again in a minute, or pay by e-transfer (you save 3%) and we\'ll sort it out.');

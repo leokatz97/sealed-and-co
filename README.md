@@ -12,6 +12,10 @@ Everything for the business lives here.
 - **website/api/_dieline.js** — turns a customer logo into a print-ready 2x2in file + a proof with cut lines.
 - **website/api/_order.js** — order records. Immutable base + append-only events (Blob is eventually consistent, so nothing is ever read-modify-written).
 - **website/api/upload.js / confirm.js / webhook.js / etransfer.js / orders.js** — art upload, order creation from Stripe, the webhook, e-transfer orders, admin API.
+  E-transfer orders are priced server-side from `_catalog.js` (the `et` field); the browser's
+  numbers are ignored. A line with an unknown sku is kept and flagged `unpriced`.
+- **Deploying:** `vercel deploy --prod` from `website/`, OR from the Vercel dashboard. Production
+  was 3 commits behind main from Aug 19 to Oct 6 because nobody ran the deploy.
 - **website/admin.html** — the order desk. Open it, paste your admin key, work your orders.
 
 ## The order desk
